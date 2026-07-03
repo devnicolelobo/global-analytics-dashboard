@@ -19,7 +19,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 
 | Document | Description | Status |
 |----------|-------------|--------|
-| [REQUIREMENTS.md](./REQUIREMENTS.md) | Functional and non-functional requirements, acceptance criteria | Planned |
+| [REQUIREMENTS.md](./REQUIREMENTS.md) | Functional and non-functional requirements, acceptance criteria | Available |
 
 ---
 
