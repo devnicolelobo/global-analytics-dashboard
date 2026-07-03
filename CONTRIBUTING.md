@@ -161,8 +161,15 @@ Refs: DEV-05
 
 - Title: `[DEV-XX] <summary>`
 - Body filled according to the [pull request template](.github/pull_request_template.md)
+- GitHub labels applied — one or more, as relevant (see [Labels](#labels))
 - CI pipeline green before merge
 - Self-review completed (see [Review Checklist](#review-checklist))
+
+### Labels
+
+Apply labels manually in GitHub when opening a pull request. Use **one or more** labels that describe the change. There is no fixed label list — create and apply labels that fit the context (e.g. `api`, `web`, `docs`, `feature`, `bugfix`, `integration`).
+
+Record the labels applied in the pull request body for traceability.
 
 ### Merge policy
 
@@ -182,6 +189,7 @@ Required sections:
 |---------|---------|
 | **Objective** | What the change delivers and why it is needed |
 | **Linear** | Card identifier and link |
+| **Labels** | Labels applied in GitHub (recorded in PR body) |
 | **Changes** | Concrete list of modifications |
 | **Tests** | Results, coverage by layer, commands executed |
 
