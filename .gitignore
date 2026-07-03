@@ -1,5 +1,57 @@
-node_modules/ 
-dist/ 
-.env 
-.env.* 
-npm-debug.log* 
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js
+.vercel
+
+# IDE / editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Certificates and keys
+*.pem
+
+# Local database files
+*.sqlite
+*.db
+
+# Turborepo (if adopted)
+.turbo
+
+# Draw.io backups
+*.bkp
+*.drawio.bkp
