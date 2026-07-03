@@ -29,7 +29,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 |----------|-------------|--------|
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | System architecture, layers, data flow | Planned |
 | [DATA_MODEL.md](./DATA_MODEL.md) | Domain entities, Prisma schema, ER overview | Planned |
-| [adr/](./adr/) | Architecture Decision Records (ADRs) | Planned |
+| [adr/](./adr/) | Architecture Decision Records (ADRs) | Available |
 | [diagrams/](./diagrams/) | Draw.io diagrams (architecture, ER, sequence, deployment) | Planned |
 | [assets/](./assets/) | Exported diagram images (PNG/SVG) | Planned |
 

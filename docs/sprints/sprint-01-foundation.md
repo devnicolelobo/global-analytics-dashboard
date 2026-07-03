@@ -21,7 +21,7 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint covers repository scaffold
 | Documentation index | `docs/README.md` | Done |
 | Project governance | `docs/PROJECT_MANAGEMENT.md` | Done |
 | Sprint records | `docs/sprints/README.md`, this file | In progress |
-| Architecture decisions | `docs/adr/` (ADR-001–005) | Planned |
+| Architecture decisions | `docs/adr/` (ADR-001–005) | Done |
 | Product scope | `docs/REQUIREMENTS.md` | Planned |
 | External integrations | `docs/EXTERNAL_APIS.md` | Planned |
 
@@ -45,7 +45,7 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint covers repository scaffold
 - [x] [docs/PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md)
 - [x] [docs/sprints/README.md](./README.md)
 - [x] [docs/sprints/sprint-01-foundation.md](./sprint-01-foundation.md) (this record)
-- [ ] [docs/adr/README.md](../adr/README.md) + ADR-001–005
+- [x] [docs/adr/README.md](../adr/README.md) + ADR-001–005
 - [ ] [docs/REQUIREMENTS.md](../REQUIREMENTS.md)
 - [ ] [docs/EXTERNAL_APIS.md](../EXTERNAL_APIS.md)
 
