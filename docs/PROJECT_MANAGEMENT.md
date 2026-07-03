@@ -388,7 +388,7 @@ Lightweight metrics — no formal velocity or burndown ceremony:
 - [ ] Tag `vX.Y.Z` on `main`
 - [ ] Production deploy completed
 
-Sprint index: [docs/sprints/README.md](./sprints/README.md) (planned).  
+Sprint index: [docs/sprints/README.md](./sprints/README.md).  
 First sprint record: `sprint-01-foundation.md` — Phase 0 deliverables and Phase 1 progress.
 
 ---
