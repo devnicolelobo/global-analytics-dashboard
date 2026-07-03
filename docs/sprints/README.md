@@ -35,7 +35,7 @@ sprint-<number>-<theme>.md
 
 | Sprint | Period (target) | Goal | Record | Status |
 |--------|-----------------|------|--------|--------|
-| 01 | Jul 2026 | Repository foundation and Phase 1 governance documentation | [sprint-01-foundation.md](./sprint-01-foundation.md) | Planned |
+| 01 | Jul 2026 | Repository foundation and Phase 1 governance documentation | [sprint-01-foundation.md](./sprint-01-foundation.md) | In progress |
 
 *Dates are targets; revised at sprint close per [PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md#18-sprint-management).*
 
