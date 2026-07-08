@@ -42,6 +42,7 @@ This document defines **what the system must do** for the MVP and establishes a 
 | Technology choices | [docs/adr/](./adr/) |
 | Upstream API contracts | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
 | Internal REST contract | [API_SPEC.md](./API_SPEC.md) (planned) |
+| Persistence model | [DATA_MODEL.md](./DATA_MODEL.md) |
 
 ---
 

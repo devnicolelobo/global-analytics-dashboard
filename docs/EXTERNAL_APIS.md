@@ -183,7 +183,7 @@ Documentation states daily updates. **Empirical validation:** latest series poin
 
 ## 4. Normalized domain mapping
 
-Target persistence shape (detail in DATA_MODEL.md):
+Target persistence shape: [DATA_MODEL.md](./DATA_MODEL.md).
 
 | Normalized field | Source |
 |------------------|--------|
@@ -198,7 +198,7 @@ Target persistence shape (detail in DATA_MODEL.md):
 | `source` | `api-ninjas` |
 | `ingestedAt` | Server timestamp at sync |
 
-Natural key for upsert (proposed): `(countryCode, region, referenceDate, metricType)` or split case/death columns per row — finalized in DATA_MODEL.
+Natural key for upsert: `(countryCode, region, referenceDate)` — see [DATA_MODEL.md](./DATA_MODEL.md).
 
 ---
 

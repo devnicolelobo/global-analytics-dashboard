@@ -51,4 +51,4 @@ PostgreSQL runs as a separate service; the application does not embed a database
 
 - [ADR-001](./ADR-001-technology-stack.md) — stack
 - [ADR-002](./ADR-002-project-architecture.md) — persistence boundary in `api/`
-- [DATA_MODEL.md](../DATA_MODEL.md) — entities and schema (planned)
+- [DATA_MODEL.md](../DATA_MODEL.md) — entities and schema
