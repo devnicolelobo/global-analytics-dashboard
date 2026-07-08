@@ -271,9 +271,9 @@ Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md) (planned). Git work
 | Diagram | File | Description |
 |---------|------|-------------|
 | **System architecture** | [diagrams/architecture.drawio](./diagrams/architecture.drawio) | Layers, components, external systems |
-| Domain model | `diagrams/domain-model.drawio` | Planned (Phase 2) |
-| ER diagram | `diagrams/er-diagram.drawio` | See [DATA_MODEL.md](./DATA_MODEL.md) |
-| Sequence | `diagrams/sequence-diagram.drawio` | Planned — see [API_SPEC.md](./API_SPEC.md) |
+| Domain model | [diagrams/domain-model.drawio](./diagrams/domain-model.drawio) | Layers, services, entities |
+| ER diagram | [diagrams/er-diagram.drawio](./diagrams/er-diagram.drawio) | See [DATA_MODEL.md](./DATA_MODEL.md) |
+| Sequence | [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | See [API_SPEC.md](./API_SPEC.md) |
 | Deployment | `diagrams/deployment.drawio` | Planned with DEPLOYMENT |
 
 Open `.drawio` files with [draw.io](https://app.diagrams.net/) or the Draw.io integration in VS Code / Cursor.
@@ -292,8 +292,7 @@ Open `.drawio` files with [draw.io](https://app.diagrams.net/) or the Draw.io in
 
 | Phase | Deliverable |
 |-------|-------------|
-| 2 (current) | This document + architecture diagram |
-| 2 | DATA_MODEL, API_SPEC, additional diagrams |
+| 2 (current) | DATA_MODEL, API_SPEC, ER / sequence / domain diagrams |
 | 3 | Module implementation in `api/` |
 | 4 | Dashboard components in `web/` |
 

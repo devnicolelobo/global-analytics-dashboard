@@ -1,0 +1,187 @@
+<mxfile host="app.diagrams.net" modified="2026-07-08T00:00:00.000Z" agent="global-analytics-dashboard" version="22.1.0" type="device">
+  <diagram id="sequence-read-sync" name="Sequence Diagrams">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Sequence Diagrams - Global Analytics Dashboard (MVP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="15" width="700" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="read-title" value="A) Dashboard read path" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="55" width="300" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="viewer" value="Viewer&#xa;(Browser)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="web" value="web/&#xa;Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="180" y="90" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="covid-ctrl" value="api/&#xa;CovidController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="320" y="90" width="110" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="covid-svc" value="api/&#xa;CovidService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="470" y="90" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="prisma-read" value="Prisma" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="610" y="90" width="90" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="pg-read" value="PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="740" y="85" width="100" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;" edge="1" parent="1" source="viewer" target="web">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="40" y="170" as="sourcePoint"/><mxPoint x="180" y="170" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="r1l" value="1. Open dashboard" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;" edge="1" parent="1" source="web" target="covid-ctrl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="230" y="200"/><mxPoint x="375" y="200"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="r2l" value="2. GET /covid/summary&#xa;GET /covid/countries" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r2">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-12" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d6b656;endArrow=block;endFill=1;" edge="1" parent="1" source="covid-ctrl" target="covid-svc">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="375" y="230" as="sourcePoint"/><mxPoint x="520" y="230" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="r3l" value="3. query + aggregate" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r3">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;" edge="1" parent="1" source="covid-svc" target="prisma-read">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="260" as="sourcePoint"/><mxPoint x="655" y="260" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="r4l" value="4. SELECT metrics" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r4">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="prisma-read" target="pg-read">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="655" y="290" as="sourcePoint"/><mxPoint x="790" y="290" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="r5l" value="5. SQL" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r5">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="covid-ctrl" target="web">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="375" y="320"/><mxPoint x="230" y="320"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="r6l" value="6. 200 JSON (summary, countries)" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r6">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;" edge="1" parent="1" source="viewer" target="web">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="90" y="360"/><mxPoint x="230" y="360"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="r7l" value="7. Select country on map" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r7">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;" edge="1" parent="1" source="web" target="covid-ctrl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="230" y="390"/><mxPoint x="375" y="390"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="r8l" value="8. GET /covid/countries/:code&#xa;GET .../series?metric=casesTotal" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r8">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-12" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="web" target="viewer">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="230" y="430"/><mxPoint x="90" y="430"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="r9l" value="9. Render KPIs + chart" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="r9">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="sync-title" value="B) Sync path (operator / cron)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="480" width="350" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="operator" value="Operator&#xa;/ Cron" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="515" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="sync-ctrl" value="api/&#xa;SyncController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="180" y="515" width="110" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ingest" value="api/&#xa;IngestService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="330" y="515" width="110" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="integration" value="Integration&#xa;Client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="480" y="515" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ninjas" value="API Ninjas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="620" y="515" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="prisma-sync" value="Prisma" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="760" y="515" width="90" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="pg-sync" value="PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="890" y="510" width="100" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;" edge="1" parent="1" source="operator" target="sync-ctrl">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="90" y="590" as="sourcePoint"/><mxPoint x="235" y="590" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="s1l" value="1. POST /sync" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s1">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d6b656;endArrow=block;endFill=1;" edge="1" parent="1" source="sync-ctrl" target="ingest">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="235" y="620" as="sourcePoint"/><mxPoint x="385" y="620" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="s2l" value="2. create SyncRun (running)" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s2">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d79b00;endArrow=block;endFill=1;" edge="1" parent="1" source="ingest" target="integration">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="385" y="650" as="sourcePoint"/><mxPoint x="530" y="650" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="s3l" value="3. fetch cases + deaths" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s3">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#666666;endArrow=block;endFill=1;" edge="1" parent="1" source="integration" target="ninjas">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="530" y="680" as="sourcePoint"/><mxPoint x="670" y="680" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="s4l" value="4. GET /v1/covid19 (X-Api-Key)" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s4">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d6b656;endArrow=block;endFill=1;" edge="1" parent="1" source="ingest" target="prisma-sync">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="385" y="710"/><mxPoint x="805" y="710"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="s5l" value="5. normalize + upsert metrics" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s5">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="prisma-sync" target="pg-sync">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="805" y="740" as="sourcePoint"/><mxPoint x="940" y="740" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="s6l" value="6. UPSERT by natural key" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s6">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d6b656;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="sync-ctrl" target="operator">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="235" y="770"/><mxPoint x="90" y="770"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="s7l" value="7. 202 Accepted (syncRunId)" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s7">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="s8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;" edge="1" parent="1" source="operator" target="sync-ctrl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="90" y="800"/><mxPoint x="235" y="800"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="s8l" value="8. GET /sync/status (footer)" style="edgeLabel;html=1;align=center;fontSize=10;" vertex="1" connectable="0" parent="s8">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="legend" value="&lt;b&gt;Notes&lt;/b&gt;&lt;br&gt;Dashed return arrows = response&lt;br&gt;Read path: no upstream calls&lt;br&gt;Sync failure: keep existing rows (REQ-F-05)&lt;br&gt;Source: API_SPEC.md + ARCHITECTURE.md" style="text;html=1;strokeColor=#999999;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="830" width="320" height="90" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -331,7 +331,7 @@ model SyncRun {
 |------------|---------------|
 | [API_SPEC.md](./API_SPEC.md) | Response DTOs derived from entities |
 | `diagrams/er-diagram.drawio` | Visual ER |
-| `diagrams/domain-model.drawio` | Domain view (planned) |
+| `diagrams/domain-model.drawio` | Domain view |
 
 ---
 

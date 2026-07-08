@@ -583,7 +583,7 @@ Coverage expectation: [REQ-NF-04](./REQUIREMENTS.md) — ingest path plus **all 
 | Artifact | Relationship |
 |----------|--------------|
 | [DATA_MODEL.md](./DATA_MODEL.md) | Entity fields → DTO columns |
-| [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | Read and sync flows (planned) |
+| [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | Read and sync flows |
 | `api/src/covid/` | Controllers implement §6 |
 | `api/src/sync/` | Controllers implement §7 |
 | `web/lib/api/` | Typed client for §10 |
