@@ -10,7 +10,7 @@ System architecture for **Global Analytics Dashboard** — MVP `v0.1.0`.
 
 This document **consolidates** accepted decisions from [docs/adr/](./adr/) into a single technical view: layers, components, data flows, and boundaries. It does not replace ADRs — it explains how they compose at runtime.
 
-**Related:** [REQUIREMENTS.md](./REQUIREMENTS.md) (what) · [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) (upstream) · [API_SPEC.md](./API_SPEC.md) (internal REST, planned) · [DATA_MODEL.md](./DATA_MODEL.md) (persistence, planned)
+**Related:** [REQUIREMENTS.md](./REQUIREMENTS.md) (what) · [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) (upstream) · [API_SPEC.md](./API_SPEC.md) (internal REST) · [DATA_MODEL.md](./DATA_MODEL.md) (persistence)
 
 ---
 
@@ -273,7 +273,7 @@ Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md) (planned). Git work
 | **System architecture** | [diagrams/architecture.drawio](./diagrams/architecture.drawio) | Layers, components, external systems |
 | Domain model | `diagrams/domain-model.drawio` | Planned (Phase 2) |
 | ER diagram | `diagrams/er-diagram.drawio` | See [DATA_MODEL.md](./DATA_MODEL.md) |
-| Sequence | `diagrams/sequence-diagram.drawio` | Planned with API_SPEC |
+| Sequence | `diagrams/sequence-diagram.drawio` | Planned — see [API_SPEC.md](./API_SPEC.md) |
 | Deployment | `diagrams/deployment.drawio` | Planned with DEPLOYMENT |
 
 Open `.drawio` files with [draw.io](https://app.diagrams.net/) or the Draw.io integration in VS Code / Cursor.

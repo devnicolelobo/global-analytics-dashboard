@@ -277,5 +277,5 @@ Activated only if primary data is insufficient (ADR-004, G-02).
 | Document | Purpose |
 |----------|---------|
 | [REQUIREMENTS.md](./REQUIREMENTS.md) | MVP functional requirements |
-| [API_SPEC.md](./API_SPEC.md) | Internal REST contract (planned) |
+| [API_SPEC.md](./API_SPEC.md) | Internal REST contract |
 | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) | Risk register |

@@ -41,7 +41,7 @@ This document defines **what the system must do** for the MVP and establishes a 
 | Git workflow, releases | [CONTRIBUTING.md](../CONTRIBUTING.md), [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) |
 | Technology choices | [docs/adr/](./adr/) |
 | Upstream API contracts | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
-| Internal REST contract | [API_SPEC.md](./API_SPEC.md) (planned) |
+| Internal REST contract | [API_SPEC.md](./API_SPEC.md) |
 | Persistence model | [DATA_MODEL.md](./DATA_MODEL.md) |
 
 ---
@@ -305,5 +305,5 @@ Planned enhancements **after** `v0.1.0`. Each requires a new or updated requirem
 |----------|---------|
 | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) | Phases, MVP DoD, risks |
 | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) | Upstream field catalogue (planned) |
-| [API_SPEC.md](./API_SPEC.md) | Internal REST contract (planned) |
+| [API_SPEC.md](./API_SPEC.md) | Internal REST contract |
 | [docs/adr/](./adr/) | Architecture decisions |

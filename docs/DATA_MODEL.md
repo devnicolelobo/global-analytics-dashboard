@@ -9,7 +9,7 @@ Persistence model for **Global Analytics Dashboard** — PostgreSQL via Prisma (
 | **Last updated** | July 2026 |
 | **Implementation path** | `api/prisma/schema.prisma` (Phase 3) |
 
-This document defines **entities**, **relationships**, **natural keys**, and the **proposed Prisma schema**. Upstream field mapping: [EXTERNAL_APIS.md](./EXTERNAL_APIS.md). Internal read API: [API_SPEC.md](./API_SPEC.md) (planned).
+This document defines **entities**, **relationships**, **natural keys**, and the **proposed Prisma schema**. Upstream field mapping: [EXTERNAL_APIS.md](./EXTERNAL_APIS.md). Internal read API: [API_SPEC.md](./API_SPEC.md).
 
 ---
 
