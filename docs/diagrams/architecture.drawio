@@ -1,0 +1,130 @@
+<mxfile host="app.diagrams.net" modified="2026-07-08T00:00:00.000Z" agent="global-analytics-dashboard" version="22.1.0" type="device">
+  <diagram id="architecture-mvp" name="System Architecture">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="title" value="Global Analytics Dashboard — MVP Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="20" width="600" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Viewer -->
+        <mxCell id="viewer" value="Viewer&#xa;(Browser)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="120" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Operator -->
+        <mxCell id="operator" value="Operator&#xa;(sync trigger)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="220" width="120" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Presentation layer box -->
+        <mxCell id="layer-pres" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="280" y="90" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer-pres-label" value="Presentation" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="290" y="95" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="web" value="web/&#xa;Next.js + React&#xa;Leaflet · KPIs · Chart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Application layer box -->
+        <mxCell id="layer-app" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="280" y="250" width="360" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer-app-label" value="Application + Domain (api/)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="290" y="255" width="200" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="api-rest" value="REST Controllers&#xa;(Covid / Summary / Series)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="300" y="285" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="api-ingest" value="Ingest Service&#xa;Normalizer · Roll-up" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="470" y="285" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="api-integration" value="Integration Client&#xa;API Ninjas (+ Apify)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="470" y="360" width="150" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Persistence -->
+        <mxCell id="layer-data" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="280" y="460" width="360" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer-data-label" value="Persistence" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="290" y="465" width="100" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="prisma" value="Prisma ORM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="495" width="120" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="postgres" value="PostgreSQL&#xa;(system of record)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="480" y="485" width="130" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- External -->
+        <mxCell id="ninjas" value="API Ninjas&#xa;COVID-19 API&#xa;(primary)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="720" y="300" width="140" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="apify" value="Apify&#xa;(contingency)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="390" width="140" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: read path -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;" edge="1" parent="1" source="viewer" target="web">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1-label" value="HTTPS&#xa;read dashboard" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="e1">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;endArrow=block;endFill=1;" edge="1" parent="1" source="web" target="api-rest">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2-label" value="REST (internal)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="e2">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;" edge="1" parent="1" source="api-rest" target="prisma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85450;endArrow=block;endFill=1;" edge="1" parent="1" source="prisma" target="postgres">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: sync path -->
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;dashed=1;endArrow=block;endFill=1;" edge="1" parent="1" source="operator" target="api-ingest">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5-label" value="manual / cron" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="e5">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;endArrow=block;endFill=1;" edge="1" parent="1" source="api-ingest" target="api-integration">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;endArrow=block;endFill=1;" edge="1" parent="1" source="api-integration" target="ninjas">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7-label" value="X-Api-Key&#xa;(server only)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#CC0000;" vertex="1" connectable="0" parent="e7">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="api-integration" target="apify">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d6b656;endArrow=block;endFill=1;" edge="1" parent="1" source="api-ingest" target="prisma">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9-label" value="upsert" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="e9">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;Solid: MVP read/write path&lt;br&gt;Dashed: operator / contingency&lt;br&gt;Keys never flow to web/" style="text;html=1;strokeColor=#999999;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="120" width="180" height="70" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
