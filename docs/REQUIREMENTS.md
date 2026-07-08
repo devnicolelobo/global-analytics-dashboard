@@ -40,7 +40,7 @@ This document defines **what the system must do** for the MVP and establishes a 
 |-------|----------|
 | Git workflow, releases | [CONTRIBUTING.md](../CONTRIBUTING.md), [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) |
 | Technology choices | [docs/adr/](./adr/) |
-| Upstream API contracts | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) (planned) |
+| Upstream API contracts | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
 | Internal REST contract | [API_SPEC.md](./API_SPEC.md) (planned) |
 
 ---
@@ -138,7 +138,7 @@ Metric field names and historical depth are constrained by upstream data — see
 | **A-04** | Country codes can be aligned with map geometries (ISO-based GeoJSON) | Choropleth may defer to markers (REQ-F-21) |
 | **A-05** | Frontend never holds upstream API keys | Enforced by architecture ([ADR-002](./adr/ADR-002-project-architecture.md)) |
 
-Detailed endpoint mapping, rate limits, and field catalogue: **EXTERNAL_APIS.md** (planned, Phase 1).
+Detailed endpoint mapping, rate limits, and field catalogue: [EXTERNAL_APIS.md](./EXTERNAL_APIS.md).
 
 ---
 

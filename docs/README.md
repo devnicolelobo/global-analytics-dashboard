@@ -40,7 +40,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | Document | Description | Status |
 |----------|-------------|--------|
 | [API_SPEC.md](./API_SPEC.md) | Internal REST API contract (NestJS) | Planned |
-| [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) | Upstream data sources (API Ninjas, Apify) | Planned |
+| [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) | Upstream data sources (API Ninjas, Apify) | Available |
 
 ---
 

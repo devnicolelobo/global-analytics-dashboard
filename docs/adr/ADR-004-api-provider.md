@@ -25,7 +25,7 @@ The dashboard depends on external COVID-19 statistics. The backend must ingest d
 4. The internal REST API exposes persisted data — not raw upstream payloads.
 5. If API Ninjas lacks required historical or geographic coverage, document gaps in `EXTERNAL_APIS.md` and activate the Apify contingency per risk R1 in [PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md).
 
-Detailed endpoint mapping, field contracts, and rate limits: `EXTERNAL_APIS.md` (planned).
+Detailed endpoint mapping, field contracts, and rate limits: [EXTERNAL_APIS.md](../EXTERNAL_APIS.md).
 
 ## Alternatives considered
 
@@ -53,5 +53,5 @@ Detailed endpoint mapping, field contracts, and rate limits: `EXTERNAL_APIS.md` 
 ## References
 
 - [ADR-002](./ADR-002-project-architecture.md) — ingest boundary
-- [EXTERNAL_APIS.md](../EXTERNAL_APIS.md) — provider analysis (planned)
+- [EXTERNAL_APIS.md](../EXTERNAL_APIS.md) — provider analysis
 - [PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md) — risk R1
