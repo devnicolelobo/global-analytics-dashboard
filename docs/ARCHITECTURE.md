@@ -272,7 +272,7 @@ Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md) (planned). Git work
 |---------|------|-------------|
 | **System architecture** | [diagrams/architecture.drawio](./diagrams/architecture.drawio) | Layers, components, external systems |
 | Domain model | `diagrams/domain-model.drawio` | Planned (Phase 2) |
-| ER diagram | `diagrams/er-diagram.drawio` | Planned with DATA_MODEL |
+| ER diagram | `diagrams/er-diagram.drawio` | See [DATA_MODEL.md](./DATA_MODEL.md) |
 | Sequence | `diagrams/sequence-diagram.drawio` | Planned with API_SPEC |
 | Deployment | `diagrams/deployment.drawio` | Planned with DEPLOYMENT |
 

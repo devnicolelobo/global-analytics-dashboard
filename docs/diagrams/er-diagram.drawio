@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net" modified="2026-07-08T00:00:00.000Z" agent="global-analytics-dashboard" version="22.1.0" type="device">
+  <diagram id="er-diagram-mvp" name="ER Diagram">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="ER Diagram - Global Analytics Dashboard (MVP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="20" width="600" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="country" value="&lt;b&gt;countries&lt;/b&gt; (Country)&#xa;──────────────&#xa;PK  iso2 : CHAR(2)&#xa;UQ  name : VARCHAR&#xa;UQ  upstream_name : VARCHAR&#xa;    created_at : TIMESTAMP&#xa;    updated_at : TIMESTAMP" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Courier New;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="260" height="140" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="metric" value="&lt;b&gt;covid_daily_metrics&lt;/b&gt; (CovidDailyMetric)&#xa;──────────────&#xa;PK  id : VARCHAR (cuid)&#xa;FK  country_code : CHAR(2)&#xa;    region : VARCHAR (default empty)&#xa;    reference_date : DATE&#xa;    cases_total : INT&#xa;    cases_new : INT&#xa;    deaths_total : INT&#xa;    deaths_new : INT&#xa;    source : VARCHAR&#xa;    ingested_at : TIMESTAMP&#xa;    created_at / updated_at&#xa;UQ  (country_code, region, reference_date)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Courier New;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="80" width="320" height="260" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sync" value="&lt;b&gt;sync_runs&lt;/b&gt; (SyncRun)&#xa;──────────────&#xa;PK  id : VARCHAR (cuid)&#xa;    started_at : TIMESTAMP&#xa;    completed_at : TIMESTAMP&#xa;    status : ENUM&#xa;    source : VARCHAR&#xa;    mode : VARCHAR&#xa;    records_upserted : INT&#xa;    error_message : VARCHAR&#xa;    metadata : JSON" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#ffe6cc;strokeColor=#d79b00;fontFamily=Courier New;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="280" width="260" height="200" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="country" target="metric">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel1-label" value="1 : N&#xa;FK country_code" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=1" vertex="1" connectable="0" parent="rel1">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-10" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="sync" target="metric">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel2-label" value="logical upsert&#xa;(no FK)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=2" vertex="1" connectable="0" parent="rel2">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="10" y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;PK = primary key&lt;br&gt;FK = foreign key&lt;br&gt;UQ = unique (upsert key)&lt;br&gt;Solid = relational FK&lt;br&gt;Dashed = operational link" style="text;html=1;strokeColor=#999999;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="380" width="220" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="doc-ref" value="Source: docs/DATA_MODEL.md | PostgreSQL via Prisma" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="60" y="520" width="400" height="20" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
