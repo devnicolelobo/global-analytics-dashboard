@@ -1,0 +1,26 @@
+# Local development database for Global Analytics Dashboard.
+# Usage: docker compose up -d
+# Connection (api/.env): postgresql://gad:gad@localhost:5432/global_analytics
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: gad-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: gad
+      POSTGRES_PASSWORD: gad
+      POSTGRES_DB: global_analytics
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gad -d global_analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data:
