@@ -1,163 +1,183 @@
-<mxfile host="app.diagrams.net" modified="2026-07-08T00:00:00.000Z" agent="global-analytics-dashboard" version="22.1.0" type="device">
-  <diagram id="domain-model-mvp" name="Domain Model">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1300" math="0" shadow="0">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-
-        <mxCell id="title" value="Domain Model - Global Analytics Dashboard (MVP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=18;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="25" width="800" height="35" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="col-read-label" value="READ FLOW (left)" style="text;html=1;strokeColor=none;fillColor=#dae8fc;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="120" y="75" width="400" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="col-sync-label" value="SYNC FLOW (right)" style="text;html=1;strokeColor=none;fillColor=#ffe6cc;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="1080" y="75" width="400" height="30" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="box-pres" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="60" y="120" width="1480" height="140" as="geometry"/>
-        </mxCell>
-        <mxCell id="lbl-pres" value="Presentation (web/)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" vertex="1" parent="1">
-          <mxGeometry x="80" y="128" width="200" height="22" as="geometry"/>
-        </mxCell>
-        <mxCell id="ui-components" value="Dashboard UI&#xa;MapView | KpiPanel | Chart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="80" y="175" width="200" height="50" as="geometry"/>
-        </mxCell>
-        <mxCell id="ui-apiclient" value="ApiClient" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="250" y="138" width="140" height="50" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="box-app" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="60" y="300" width="1480" height="140" as="geometry"/>
-        </mxCell>
-        <mxCell id="lbl-app" value="Application (api/)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" vertex="1" parent="1">
-          <mxGeometry x="80" y="308" width="200" height="22" as="geometry"/>
-        </mxCell>
-        <mxCell id="svc-covid" value="CovidReadService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="230" y="345" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="svc-rollup" value="CountryRollup&#xa;(helper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="450" y="350" width="120" height="45" as="geometry"/>
-        </mxCell>
-        <mxCell id="svc-ingest" value="IngestService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="345" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="svc-normalizer" value="MetricNormalizer&#xa;(helper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1410" y="350" width="120" height="45" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="box-domain" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="60" y="480" width="1480" height="320" as="geometry"/>
-        </mxCell>
-        <mxCell id="lbl-domain" value="Domain" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" vertex="1" parent="1">
-          <mxGeometry x="80" y="488" width="100" height="22" as="geometry"/>
-        </mxCell>
-        <mxCell id="ent-country" value="Country" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="80" y="560" width="160" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="ent-metric" value="CovidDailyMetric" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="230" y="680" width="200" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="ent-sync" value="SyncRun" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="560" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="vo-note" value="Value objects: MetricsSnapshot, SeriesPoint, MetricNaturalKey, REST DTOs" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;fontSize=11;rounded=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="690" width="400" height="35" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="box-infra" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="60" y="840" width="1480" height="200" as="geometry"/>
-        </mxCell>
-        <mxCell id="lbl-infra" value="Infrastructure" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" vertex="1" parent="1">
-          <mxGeometry x="80" y="848" width="150" height="22" as="geometry"/>
-        </mxCell>
-        <mxCell id="infra-prisma" value="PrismaRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="240" y="900" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="infra-pg" value="PostgreSQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="240" y="1020" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="infra-ninjas" value="ApiNinjasAdapter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="900" width="180" height="55" as="geometry"/>
-        </mxCell>
-        <mxCell id="infra-apify" value="ApifyAdapter&#xa;(contingency)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1410" y="905" width="120" height="45" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="e-ui-api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;" edge="1" parent="1" source="ui-components" target="ui-apiclient">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-
-        <mxCell id="e-read-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="ui-apiclient" target="svc-covid">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-read-1l" value="REST calls" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#6c8ebf;" vertex="1" connectable="0" parent="e-read-1">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="25" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-read-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-covid" target="ent-metric">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-read-2l" value="reads" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#82b366;" vertex="1" connectable="0" parent="e-read-2">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="20" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-read-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="ent-metric" target="infra-prisma">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-read-3l" value="via Prisma" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#9673a6;" vertex="1" connectable="0" parent="e-read-3">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="20" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-read-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="infra-prisma" target="infra-pg">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-read-4l" value="SQL" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#b85450;" vertex="1" connectable="0" parent="e-read-4">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="15" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-country-metric" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;startArrow=block;startFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="ent-country" target="ent-metric">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-country-l" value="1 : N" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;" vertex="1" connectable="0" parent="e-country-metric">
-          <mxGeometry relative="1" as="geometry"><mxPoint y="-12" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-sync-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d79b00;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-ingest" target="ent-sync">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-sync-1l" value="logs run" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#d79b00;" vertex="1" connectable="0" parent="e-sync-1">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="-20" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-sync-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="svc-ingest" target="ent-metric">
-          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1280" y="780"/><mxPoint x="480" y="780"/><mxPoint x="480" y="708"/></Array></mxGeometry>
-        </mxCell>
-        <mxCell id="e-sync-2l" value="upserts metrics" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#82b366;" vertex="1" connectable="0" parent="e-sync-2">
-          <mxGeometry relative="1" as="geometry"><mxPoint x="80" y="-12" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-sync-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#666666;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-ingest" target="infra-ninjas">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-sync-3l" value="fetches upstream" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#666666;" vertex="1" connectable="0" parent="e-sync-3">
-          <mxGeometry x="-0.15" relative="1" as="geometry"><mxPoint x="25" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="e-sync-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="ent-sync" target="infra-prisma">
-          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1280" y="850"/><mxPoint x="520" y="850"/><mxPoint x="520" y="928"/></Array></mxGeometry>
-        </mxCell>
-        <mxCell id="e-sync-4l" value="persists via Prisma" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#9673a6;" vertex="1" connectable="0" parent="e-sync-4">
-          <mxGeometry relative="1" as="geometry"><mxPoint x="60" y="-10" as="offset"/></mxGeometry>
-        </mxCell>
-
-        <mxCell id="legend" value="Read flow (left): follow vertical arrows top to bottom.&#xa;Sync flow (right): follow vertical arrows top to bottom.&#xa;Horizontal link: Country owns many CovidDailyMetric rows.&#xa;Sources: DATA_MODEL.md | API_SPEC.md" style="text;html=1;strokeColor=#999999;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="700" y="1100" width="420" height="90" as="geometry"/>
-        </mxCell>
-
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram id="domain-model-mvp" name="Domain Model">
+        <mxGraphModel dx="275" dy="355" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1300" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="Domain Model - Global Analytics Dashboard (MVP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=18;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="400" y="25" width="800" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="col-read-label" value="READ FLOW (left)" style="text;html=1;strokeColor=none;fillColor=#dae8fc;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="75" width="400" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="col-sync-label" value="SYNC FLOW (right)" style="text;html=1;strokeColor=none;fillColor=#ffe6cc;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="1080" y="75" width="400" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="box-pres" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="120" width="1480" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl-pres" value="Presentation (web/)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" parent="1" vertex="1">
+                    <mxGeometry x="80" y="128" width="200" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui-components" value="Dashboard UI&#10;MapView | KpiPanel | Chart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="175" width="200" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui-apiclient" value="ApiClient" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="370" y="138" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="box-app" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="300" width="1480" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl-app" value="Application (api/)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" parent="1" vertex="1">
+                    <mxGeometry x="80" y="308" width="200" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-covid" value="CovidReadService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="230" y="360" width="180" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-rollup" value="CountryRollup&#10;(helper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="350" width="120" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-ingest" value="IngestService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="345" width="180" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-normalizer" value="MetricNormalizer&#10;(helper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1410" y="350" width="120" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="box-domain" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="480" width="1480" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl-domain" value="Domain" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" parent="1" vertex="1">
+                    <mxGeometry x="80" y="488" width="100" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="ent-country" value="Country" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="560" width="160" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="ent-metric" value="CovidDailyMetric" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="230" y="680" width="200" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="ent-sync" value="SyncRun" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="560" width="180" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="vo-note" value="Value objects: MetricsSnapshot, SeriesPoint, MetricNaturalKey, REST DTOs" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;fontSize=11;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="690" width="400" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="box-infra" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="840" width="1480" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="lbl-infra" value="Infrastructure" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=13" parent="1" vertex="1">
+                    <mxGeometry x="80" y="848" width="150" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="infra-prisma" value="PrismaRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="900" width="180" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="infra-pg" value="PostgreSQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="1020" width="180" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="infra-ninjas" value="ApiNinjasAdapter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="900" width="180" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="infra-apify" value="ApifyAdapter&#10;(contingency)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1410" y="905" width="120" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-ui-api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;" edge="1" parent="1" source="ui-components" target="ui-apiclient">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-read-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="ui-apiclient" target="svc-covid">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="440" y="260"/>
+                            <mxPoint x="320" y="260"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-read-1l" value="REST calls" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#6c8ebf;" connectable="0" vertex="1" parent="e-read-1">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="25" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-read-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-covid" target="ent-metric">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-read-2l" value="reads" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#82b366;" connectable="0" vertex="1" parent="e-read-2">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-read-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="ent-metric" target="infra-prisma">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-read-3l" value="via Prisma" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#9673a6;" connectable="0" vertex="1" parent="e-read-3">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-read-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="infra-prisma" target="infra-pg">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-read-4l" value="SQL" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#b85450;" connectable="0" vertex="1" parent="e-read-4">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-country-metric" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6c8ebf;endArrow=block;endFill=1;startArrow=block;startFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="ent-country" target="ent-metric">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-country-l" value="1 : N" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;" connectable="0" vertex="1" parent="e-country-metric">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint y="-12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#d79b00;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-ingest" target="ent-sync">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-sync-1l" value="logs run" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#d79b00;" connectable="0" vertex="1" parent="e-sync-1">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="-20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#82b366;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="svc-ingest" target="ent-metric">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1280" y="780"/>
+                            <mxPoint x="480" y="780"/>
+                            <mxPoint x="480" y="708"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-2l" value="upserts metrics" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#82b366;" connectable="0" vertex="1" parent="e-sync-2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="80" y="-12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#666666;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc-ingest" target="infra-ninjas">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-sync-3l" value="fetches upstream" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#666666;" connectable="0" vertex="1" parent="e-sync-3">
+                    <mxGeometry x="-0.15" relative="1" as="geometry">
+                        <mxPoint x="25" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9673a6;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="ent-sync" target="infra-prisma">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1280" y="850"/>
+                            <mxPoint x="520" y="850"/>
+                            <mxPoint x="520" y="928"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-sync-4l" value="persists via Prisma" style="edgeLabel;html=1;align=center;fontSize=12;fontStyle=1;fontColor=#9673a6;" connectable="0" vertex="1" parent="e-sync-4">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="60" y="-10" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend" value="Read flow (left): follow vertical arrows top to bottom.&#10;Sync flow (right): follow vertical arrows top to bottom.&#10;Horizontal link: Country owns many CovidDailyMetric rows.&#10;Sources: DATA_MODEL.md | API_SPEC.md" style="text;html=1;strokeColor=#999999;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="1100" width="420" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.257;entryY=0.998;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="box-app" target="box-app">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
