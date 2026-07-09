@@ -31,7 +31,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | [DATA_MODEL.md](./DATA_MODEL.md) | Domain entities, Prisma schema, ER overview | Available |
 | [adr/](./adr/) | Architecture Decision Records (ADRs) | Available |
 | [diagrams/](./diagrams/) | Draw.io diagrams (architecture, ER, sequence, deployment) | Available |
-| [assets/](./assets/) | Exported diagram images (PNG/SVG) | Planned |
+| [assets/](./assets/) | Exported diagram images (PNG) for GitHub preview | Available |
 
 ---
 

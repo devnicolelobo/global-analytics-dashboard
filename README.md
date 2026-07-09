@@ -16,6 +16,14 @@ The monorepo structure and evaluated alternatives are recorded in `docs/adr/ADR-
 
 ---
 
+## Architecture (preview)
+
+![MVP system architecture](./docs/assets/architecture.png)
+
+Full technical view: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) · editable source: [docs/diagrams/architecture.drawio](./docs/diagrams/architecture.drawio)
+
+---
+
 ## Project status
 
 **Initial development phase** — monorepo scaffolding is in place; domain modules, data layer, and client features are under active implementation.

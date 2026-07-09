@@ -268,13 +268,25 @@ Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md) (planned). Git work
 
 ## 12. Diagrams
 
-| Diagram | File | Description |
-|---------|------|-------------|
+Source files live in `diagrams/` (editable in Draw.io). A **PNG preview** of the system architecture is kept in `assets/` for GitHub rendering without opening Draw.io.
+
+![MVP system architecture](./assets/architecture.png)
+
+| Diagram | Source (Draw.io) | Description |
+|---------|------------------|-------------|
 | **System architecture** | [diagrams/architecture.drawio](./diagrams/architecture.drawio) | Layers, components, external systems |
 | Domain model | [diagrams/domain-model.drawio](./diagrams/domain-model.drawio) | Layers, services, entities |
 | ER diagram | [diagrams/er-diagram.drawio](./diagrams/er-diagram.drawio) | See [DATA_MODEL.md](./DATA_MODEL.md) |
 | Sequence | [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | See [API_SPEC.md](./API_SPEC.md) |
 | Deployment | `diagrams/deployment.drawio` | Planned with DEPLOYMENT |
+
+**Regenerate PNG** (when `architecture.drawio` changes):
+
+```bash
+node scripts/export-drawio-png.mjs docs/diagrams/architecture.drawio docs/assets/architecture.png
+```
+
+Or export manually from Draw.io: *File → Export as → PNG* → save as `docs/assets/architecture.png`.
 
 Open `.drawio` files with [draw.io](https://app.diagrams.net/) or the Draw.io integration in VS Code / Cursor.
 
