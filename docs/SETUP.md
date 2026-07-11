@@ -9,7 +9,7 @@ Step-by-step guide to run **Global Analytics Dashboard** on your machine. Covers
 | **Last updated** | July 2026 |
 | **Audience** | Contributors setting up a local dev environment |
 
-**Related:** [CONTRIBUTING.md](../CONTRIBUTING.md) (workflow) · [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) (API keys) · [ARCHITECTURE.md](./ARCHITECTURE.md) (system design) · [DEPLOYMENT.md](./DEPLOYMENT.md) (staging/production — planned)
+**Related:** [CONTRIBUTING.md](../CONTRIBUTING.md) (workflow) · [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) (API keys) · [ARCHITECTURE.md](./ARCHITECTURE.md) (system design) · [DEPLOYMENT.md](./DEPLOYMENT.md) (staging/production)
 
 ---
 
@@ -369,4 +369,4 @@ You can develop and run the scaffolds without PostgreSQL. Start Docker when work
 | PostgreSQL + Prisma | [ADR-003](./adr/ADR-003-database-choice.md) |
 | Upstream API keys | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
 | Contribution workflow | [CONTRIBUTING.md](../CONTRIBUTING.md) |
-| Staging / production | [DEPLOYMENT.md](./DEPLOYMENT.md) (planned) |
+| Staging / production | [DEPLOYMENT.md](./DEPLOYMENT.md) |

@@ -49,7 +49,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | Document | Description | Status |
 |----------|-------------|--------|
 | [SETUP.md](./SETUP.md) | Local development environment setup | Available |
-| [DEPLOYMENT.md](./DEPLOYMENT.md) | Staging and production deployment | Planned |
+| [DEPLOYMENT.md](./DEPLOYMENT.md) | Staging and production deployment | Available |
 
 ---
 

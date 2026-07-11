@@ -40,7 +40,7 @@ This document defines **HTTP resources**, **request/response shapes**, **aggrega
 |-------|----------|
 | Upstream HTTP contracts | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
 | Prisma schema / ER | [DATA_MODEL.md](./DATA_MODEL.md) |
-| Deployment URLs and CORS policy | [DEPLOYMENT.md](./DEPLOYMENT.md) (planned) |
+| Deployment URLs and CORS policy | [DEPLOYMENT.md](./DEPLOYMENT.md) |
 | Public third-party API / versioning policy | Post-MVP |
 
 ---

@@ -250,7 +250,7 @@ Authentication is **out of scope** for MVP ([REQUIREMENTS.md §9](./REQUIREMENTS
 | **Staging** | `develop` | Integrated builds; pre-production validation |
 | **Production** | `main` | Tagged releases `v0.1.0` |
 
-Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md) (planned). Git workflow: [CONTRIBUTING.md](../CONTRIBUTING.md).
+Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md). Git workflow: [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ---
 
@@ -278,7 +278,7 @@ Source files live in `diagrams/` (editable in Draw.io). A **PNG preview** of the
 | Domain model | [diagrams/domain-model.drawio](./diagrams/domain-model.drawio) | Layers, services, entities |
 | ER diagram | [diagrams/er-diagram.drawio](./diagrams/er-diagram.drawio) | See [DATA_MODEL.md](./DATA_MODEL.md) |
 | Sequence | [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | See [API_SPEC.md](./API_SPEC.md) |
-| Deployment | `diagrams/deployment.drawio` | Planned with DEPLOYMENT |
+| Deployment | [diagrams/deployment.drawio](./diagrams/deployment.drawio) | Staging/production topology — [DEPLOYMENT.md](./DEPLOYMENT.md) |
 
 **Regenerate PNG** (when `architecture.drawio` changes):
 
