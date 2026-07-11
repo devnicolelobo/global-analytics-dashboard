@@ -1,0 +1,64 @@
+// MVP persistence model — see docs/DATA_MODEL.md §8.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SyncStatus {
+  running
+  success
+  failed
+}
+
+model Country {
+  iso2          String   @id @db.Char(2)
+  name          String   @unique
+  upstreamName  String   @unique @map("upstream_name")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  metrics CovidDailyMetric[]
+
+  @@map("countries")
+}
+
+model CovidDailyMetric {
+  id            String   @id @default(cuid())
+  countryCode   String   @map("country_code") @db.Char(2)
+  region        String   @default("") // Empty string, not NULL — stable upsert key
+  referenceDate DateTime @map("reference_date") @db.Date
+  casesTotal    Int?     @map("cases_total")
+  casesNew      Int?     @map("cases_new")
+  deathsTotal   Int?     @map("deaths_total")
+  deathsNew     Int?     @map("deaths_new")
+  source        String   @default("api-ninjas")
+  ingestedAt    DateTime @default(now()) @map("ingested_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  country Country @relation(fields: [countryCode], references: [iso2])
+
+  @@unique([countryCode, region, referenceDate])
+  @@index([countryCode, referenceDate])
+  @@index([referenceDate])
+  @@map("covid_daily_metrics")
+}
+
+model SyncRun {
+  id              String     @id @default(cuid())
+  startedAt       DateTime   @default(now()) @map("started_at")
+  completedAt     DateTime?  @map("completed_at")
+  status          SyncStatus @default(running)
+  source          String     @default("api-ninjas")
+  mode            String
+  recordsUpserted Int        @default(0) @map("records_upserted")
+  errorMessage    String?    @map("error_message")
+  metadata        Json?
+
+  @@index([startedAt])
+  @@map("sync_runs")
+}
