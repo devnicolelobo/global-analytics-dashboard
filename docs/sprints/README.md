@@ -35,7 +35,8 @@ sprint-<number>-<theme>.md
 
 | Sprint | Period (target) | Goal | Record | Status |
 |--------|-----------------|------|--------|--------|
-| 01 | Jul 2026 | Repository foundation and Phase 1 governance documentation | [sprint-01-foundation.md](./sprint-01-foundation.md) | In progress |
+| 01 | Jul 2026 | Repository foundation, governance, and specifications (M1 + M2) | [sprint-01-foundation.md](./sprint-01-foundation.md) | Complete |
+| 02 | Jul 2026 | Backend data layer — Prisma, ingest, internal API (M3) | [sprint-02-backend-data-layer.md](./sprint-02-backend-data-layer.md) | In progress |
 
 *Dates are targets; revised at sprint close per [PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md#18-sprint-management).*
 

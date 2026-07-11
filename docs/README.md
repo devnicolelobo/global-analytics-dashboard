@@ -11,7 +11,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | Document | Description | Status |
 |----------|-------------|--------|
 | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) | Methodology, Linear workflow, GitFlow, releases, definition of done | Available |
-| [sprints/](./sprints/) | Sprint records and summary index | Available |
+| [sprints/](./sprints/) | Sprint records — Sprint 01 complete; Sprint 02 in progress | Available |
 
 ---
 

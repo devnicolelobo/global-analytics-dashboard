@@ -329,8 +329,8 @@ Open `.drawio` files with [app.diagrams.net](https://app.diagrams.net/) if you p
 
 | Phase | Deliverable |
 |-------|-------------|
-| 2 (current) | DATA_MODEL, API_SPEC, ER / sequence / domain diagrams |
-| 3 | Module implementation in `api/` |
+| 2 | DATA_MODEL, API_SPEC, diagrams, SETUP, DEPLOYMENT — **complete** |
+| 3 (current) | Module implementation in `api/` — Prisma, ingest, REST |
 | 4 | Dashboard components in `web/` |
 
 ---

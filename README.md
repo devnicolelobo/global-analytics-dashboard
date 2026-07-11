@@ -26,16 +26,17 @@ Full technical view: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) · editable 
 
 ## Project status
 
-**Initial development phase** — monorepo scaffolding is in place; domain modules, data layer, and client features are under active implementation.
+**Phase 3 — backend implementation** — documentation and specifications are complete (M1, M2). Active work: Prisma, COVID ingest, and internal REST API in `api/`. See [docs/sprints/sprint-02-backend-data-layer.md](./docs/sprints/sprint-02-backend-data-layer.md).
 
-| Component              | State              |
-|------------------------|--------------------|
-| `api/`                 | NestJS scaffold    |
-| `web/`                 | Next.js scaffold   |
-| PostgreSQL             | Not configured     |
-| Prisma ORM             | Not configured     |
-| API Ninjas integration | Not implemented    |
-| Dashboard UI           | Not implemented    |
+| Component              | State |
+|------------------------|-------|
+| `api/`                 | NestJS scaffold — domain modules in progress |
+| `web/`                 | Next.js scaffold |
+| PostgreSQL (local)     | Docker Compose defined; container runnable |
+| Prisma ORM             | Not implemented — schema documented in `DATA_MODEL.md` |
+| API Ninjas integration | Not implemented — key template in `api/.env.example` |
+| Dashboard UI           | Not implemented |
+| Documentation          | Complete through SETUP, DEPLOYMENT, and diagram assets |
 
 ---
 
@@ -66,7 +67,7 @@ global-analytics-dashboard/
 
 - Node.js 20 LTS or later
 - npm
-- Docker and Docker Compose (required once local PostgreSQL is configured)
+- Docker and Docker Compose (local PostgreSQL — see `docs/SETUP.md`)
 
 ---
 

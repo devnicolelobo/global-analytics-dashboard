@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phase 0 (foundation) complete. Phase 1 (governance and documentation) in progress.
+**Current phase.** Phases 0–2 complete (documentation and specifications). Phase 3 (backend and data layer) in progress — [Sprint 02](./sprints/sprint-02-backend-data-layer.md).
 
 ---
 
@@ -130,7 +130,7 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 |------|---------|
 | [Linear](https://linear.app) | Backlog, status, dependencies (`DEV-XX`) |
 | GitHub | Source control, pull requests, CI/CD, releases |
-| Docker Compose | Local PostgreSQL (from Phase 3) |
+| Docker Compose | Local PostgreSQL ([docker-compose.yml](../docker-compose.yml), [SETUP.md](./SETUP.md)) |
 | AI coding agents | Assisted development under governance (Section 15) |
 
 | Artifact | Location |
@@ -148,9 +148,9 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 | Phase | Name | Objective | Status |
 |-------|------|-----------|--------|
 | **0** | Foundation | Repository, process, base documentation | Complete |
-| **1** | Governance & documentation | PM plan, ADRs, requirements, external API analysis | In progress |
-| **2** | Architecture & specifications | Architecture, data model, API spec, diagrams | Planned |
-| **3** | Backend & data layer | Prisma, ingest, internal REST API | Planned |
+| **1** | Governance & documentation | PM plan, ADRs, requirements, external API analysis | Complete |
+| **2** | Architecture & specifications | Architecture, data model, API spec, diagrams, SETUP, DEPLOYMENT | Complete |
+| **3** | Backend & data layer | Prisma, ingest, internal REST API | In progress |
 | **4** | Frontend & dashboard | Maps, KPIs, charts | Planned |
 | **5** | CI/CD & production | Pipelines, staging, production, MVP release | Planned |
 
@@ -169,9 +169,9 @@ Dates are **targets** — revised at each sprint close (Section 18).
 | Phase | Target period | Key deliverables |
 |-------|---------------|------------------|
 | 0 Foundation | Complete | README, LICENSE, CONTRIBUTING, PR template, docs index |
-| 1 Governance | 3–16 Jul 2026 | This document, sprints/, ADR-001–005, REQUIREMENTS, EXTERNAL_APIS |
-| 2 Specifications | 17–23 Jul 2026 | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams |
-| 3 Backend | 24 Jul – 10 Aug 2026 | docker-compose, Prisma, COVID module, tests |
+| 1 Governance | Complete (2026-07-10) | PROJECT_MANAGEMENT, sprints/, ADR-001–005, REQUIREMENTS, EXTERNAL_APIS |
+| 2 Specifications | Complete (2026-07-10) | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams, SETUP, DEPLOYMENT, assets |
+| 3 Backend | 11 Jul – 10 Aug 2026 | `develop` branch, Prisma, COVID module, tests |
 | 4 Frontend | 11–28 Aug 2026 | Dashboard, Leaflet map, charts |
 | 5 Deploy | 29 Aug – 7 Sep 2026 | GitHub Actions, DEPLOYMENT, staging + production, `v0.1.0` |
 
@@ -179,9 +179,9 @@ Dates are **targets** — revised at each sprint close (Section 18).
 
 | ID | Target | Completion criteria |
 |----|--------|---------------------|
-| **M1** | 16 Jul 2026 | PROJECT_MANAGEMENT, ADRs, REQUIREMENTS, EXTERNAL_APIS committed |
-| **M2** | 23 Jul 2026 | ARCHITECTURE, DATA_MODEL, API_SPEC v1 committed |
-| **M3** | 10 Aug 2026 | Ingest + internal API functional with passing tests |
+| **M1** | 16 Jul 2026 | PROJECT_MANAGEMENT, ADRs, REQUIREMENTS, EXTERNAL_APIS committed | **Met** (2026-07-10) |
+| **M2** | 23 Jul 2026 | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams, SETUP, DEPLOYMENT committed | **Met** (2026-07-10) |
+| **M3** | 10 Aug 2026 | Ingest + internal API functional with passing tests | Open |
 | **M4** | 28 Aug 2026 | Dashboard MVP on staging (map, KPIs, minimum chart) |
 | **M5** | 7 Sep 2026 | Production deploy, tag `v0.1.0`, public URLs in README |
 
