@@ -98,6 +98,8 @@ Each deployed environment runs three logical components:
 
 Editable diagram: [diagrams/deployment.drawio](./diagrams/deployment.drawio).
 
+![Deployment topology](./assets/deployment.png)
+
 ### Deployment independence
 
 `api/` and `web/` are **separate deployable units** ([ADR-002](./adr/ADR-002-project-architecture.md)). They may be hosted on different platforms as long as:

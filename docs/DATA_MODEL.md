@@ -32,7 +32,7 @@ This document defines **entities**, **relationships**, **natural keys**, and the
 
 **In scope:** domain entities, relational model, Prisma types, uniqueness constraints, ingest upsert behaviour, country roll-up rules for MVP.
 
-**Out of scope:** HTTP endpoint shapes ([API_SPEC.md](./API_SPEC.md)), NestJS service code, Docker/connection strings ([SETUP.md](./SETUP.md), planned).
+**Out of scope:** HTTP endpoint shapes ([API_SPEC.md](./API_SPEC.md)), NestJS service code, Docker/connection strings ([SETUP.md](./SETUP.md)).
 
 ---
 
@@ -69,6 +69,12 @@ This document defines **entities**, **relationships**, **natural keys**, and the
 | **Country** | Stable catalogue: ISO code ↔ API Ninjas country name |
 | **CovidDailyMetric** | Daily COVID-19 metrics per country/region |
 | **SyncRun** | One record per ingest execution (success/failure, counts) |
+
+Visual references (PNG exports — regenerate via [ARCHITECTURE.md §12](./ARCHITECTURE.md#12-diagrams)):
+
+![ER diagram](./assets/er-diagram.png)
+
+![Domain model](./assets/domain-model.png)
 
 ---
 
@@ -330,8 +336,8 @@ model SyncRun {
 | Downstream | Uses this doc |
 |------------|---------------|
 | [API_SPEC.md](./API_SPEC.md) | Response DTOs derived from entities |
-| `diagrams/er-diagram.drawio` | Visual ER |
-| `diagrams/domain-model.drawio` | Domain view |
+| `diagrams/er-diagram.drawio` | Visual ER — PNG: [assets/er-diagram.png](./assets/er-diagram.png) |
+| `diagrams/domain-model.drawio` | Domain view — PNG: [assets/domain-model.png](./assets/domain-model.png) |
 
 ---
 

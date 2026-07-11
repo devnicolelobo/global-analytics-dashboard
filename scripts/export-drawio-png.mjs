@@ -13,7 +13,7 @@ if (!input || !output) {
 const xml = fs.readFileSync(input, 'utf8');
 const body = new URLSearchParams({ format: 'png', xml }).toString();
 
-const hostname = process.env.DRAWIO_EXPORT_HOST ?? 'viewer.diagrams.net';
+const hostname = process.env.DRAWIO_EXPORT_HOST ?? 'exp-pdf.draw.io';
 
 const req = https.request(
   {

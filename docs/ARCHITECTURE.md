@@ -268,27 +268,52 @@ Host targets and pipelines: [DEPLOYMENT.md](./DEPLOYMENT.md). Git workflow: [CON
 
 ## 12. Diagrams
 
-Source files live in `diagrams/` (editable in Draw.io). A **PNG preview** of the system architecture is kept in `assets/` for GitHub rendering without opening Draw.io.
+Source files live in `diagrams/` (editable in Draw.io). **PNG previews** in `assets/` allow GitHub and Markdown viewers to render diagrams without opening Draw.io.
 
-![MVP system architecture](./assets/architecture.png)
+### PNG index
 
-| Diagram | Source (Draw.io) | Description |
-|---------|------------------|-------------|
-| **System architecture** | [diagrams/architecture.drawio](./diagrams/architecture.drawio) | Layers, components, external systems |
-| Domain model | [diagrams/domain-model.drawio](./diagrams/domain-model.drawio) | Layers, services, entities |
-| ER diagram | [diagrams/er-diagram.drawio](./diagrams/er-diagram.drawio) | See [DATA_MODEL.md](./DATA_MODEL.md) |
-| Sequence | [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | See [API_SPEC.md](./API_SPEC.md) |
-| Deployment | [diagrams/deployment.drawio](./diagrams/deployment.drawio) | Staging/production topology — [DEPLOYMENT.md](./DEPLOYMENT.md) |
+| Preview | Source (Draw.io) | Used in |
+|---------|------------------|---------|
+| ![System architecture](./assets/architecture.png) | [architecture.drawio](./diagrams/architecture.drawio) | This doc, root [README.md](../README.md) |
+| ![Deployment topology](./assets/deployment.png) | [deployment.drawio](./diagrams/deployment.drawio) | [DEPLOYMENT.md](./DEPLOYMENT.md) |
+| ![ER diagram](./assets/er-diagram.png) | [er-diagram.drawio](./diagrams/er-diagram.drawio) | [DATA_MODEL.md](./DATA_MODEL.md) |
+| ![Sequence diagram](./assets/sequence-diagram.png) | [sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | [API_SPEC.md](./API_SPEC.md) |
+| ![Domain model](./assets/domain-model.png) | [domain-model.drawio](./diagrams/domain-model.drawio) | [DATA_MODEL.md](./DATA_MODEL.md) |
 
-**Regenerate PNG** (when `architecture.drawio` changes):
+| Diagram | Description |
+|---------|-------------|
+| **System architecture** | Layers, components, external systems |
+| **Deployment** | Staging/production topology, branch → environment flow |
+| **ER diagram** | Relational entities and keys |
+| **Sequence** | Read and sync HTTP flows |
+| **Domain model** | Domain services and entities |
+
+### Export PNG (Cursor / VS Code Draw.io extension)
+
+1. Open a `.drawio` file under `docs/diagrams/` in Cursor (Draw.io extension must be installed).
+2. **File → Export as → PNG…** (or right-click the diagram tab → Export).
+3. Save to `docs/assets/` using the matching filename from the table above (e.g. `deployment.drawio` → `deployment.png`).
+4. Repeat for each diagram when the source `.drawio` changes.
+
+**Expected result:** five PNG files in `docs/assets/` (`architecture.png`, `deployment.png`, `er-diagram.png`, `sequence-diagram.png`, `domain-model.png`).
+
+### Export PNG (script — optional)
+
+Requires outbound HTTPS to a Draw.io export host (may be blocked on some networks):
 
 ```bash
 node scripts/export-drawio-png.mjs docs/diagrams/architecture.drawio docs/assets/architecture.png
+node scripts/export-drawio-png.mjs docs/diagrams/deployment.drawio docs/assets/deployment.png
+node scripts/export-drawio-png.mjs docs/diagrams/er-diagram.drawio docs/assets/er-diagram.png
+node scripts/export-drawio-png.mjs docs/diagrams/sequence-diagram.drawio docs/assets/sequence-diagram.png
+node scripts/export-drawio-png.mjs docs/diagrams/domain-model.drawio docs/assets/domain-model.png
 ```
 
-Or export manually from Draw.io: *File → Export as → PNG* → save as `docs/assets/architecture.png`.
+Override host if needed: `DRAWIO_EXPORT_HOST=exp-pdf.draw.io` (default in script).
 
-Open `.drawio` files with [draw.io](https://app.diagrams.net/) or the Draw.io integration in VS Code / Cursor.
+### Online editor
+
+Open `.drawio` files with [app.diagrams.net](https://app.diagrams.net/) if you prefer the browser editor.
 
 ---
 

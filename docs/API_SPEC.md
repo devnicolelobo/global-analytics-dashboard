@@ -385,6 +385,10 @@ Global chart when **no country is selected** ([REQ-F-41](./REQUIREMENTS.md)). Ag
 
 ## 7. Sync endpoints
 
+Read and sync HTTP flows (PNG — regenerate via [ARCHITECTURE.md §12](./ARCHITECTURE.md#12-diagrams)):
+
+![Sequence diagram](./assets/sequence-diagram.png)
+
 Operator-only write path ([REQ-F-03](./REQUIREMENTS.md), [REQ-F-04](./REQUIREMENTS.md)).
 
 ### 7.1 Trigger sync
@@ -583,7 +587,7 @@ Coverage expectation: [REQ-NF-04](./REQUIREMENTS.md) — ingest path plus **all 
 | Artifact | Relationship |
 |----------|--------------|
 | [DATA_MODEL.md](./DATA_MODEL.md) | Entity fields → DTO columns |
-| [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | Read and sync flows |
+| [diagrams/sequence-diagram.drawio](./diagrams/sequence-diagram.drawio) | Read and sync flows — PNG: [assets/sequence-diagram.png](./assets/sequence-diagram.png) |
 | `api/src/covid/` | Controllers implement §6 |
 | `api/src/sync/` | Controllers implement §7 |
 | `web/lib/api/` | Typed client for §10 |
