@@ -147,8 +147,9 @@ No shared TypeScript package in MVP; DTO shapes may be duplicated between `api/`
 
 | Variable | Purpose |
 |----------|---------|
-| `DATABASE_URL` | PostgreSQL connection (Phase 3) |
+| `DATABASE_URL` | PostgreSQL connection |
 | `API_NINJAS_KEY` | Upstream authentication |
+| `API_NINJAS_TIMEOUT_MS` | Optional upstream HTTP timeout (default 15000 ms) |
 | `PORT` | HTTP listen port (default 3001 local) |
 
 See `api/.env.example`. Secrets never committed.

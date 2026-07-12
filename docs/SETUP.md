@@ -146,7 +146,8 @@ Edit `api/.env`:
 | `PORT` | Recommended | API listen port. Default `3001` (loaded from `api/.env` via ConfigModule). |
 | `NODE_ENV` | No | `development` for local work |
 | `DATABASE_URL` | **Yes** | PostgreSQL connection string (see [§4](#4-start-postgresql-docker)) |
-| `API_NINJAS_KEY` | When ingest is implemented | API Ninjas key — [EXTERNAL_APIS.md §2](./EXTERNAL_APIS.md#2-security-and-configuration) |
+| `API_NINJAS_KEY` | For upstream calls | API Ninjas key (`X-Api-Key`) — optional at app boot; required when invoking `ApiNinjasClient` — [EXTERNAL_APIS.md §2](./EXTERNAL_APIS.md#2-security-and-configuration) |
+| `API_NINJAS_TIMEOUT_MS` | No | Upstream HTTP timeout (1000–60000 ms). Default `15000` |
 | `APIFY_TOKEN` | No | Contingency provider (future phases) |
 
 Obtain an API Ninjas key at [api-ninjas.com](https://api-ninjas.com/). The same account key can be reused across machines; copy it into `api/.env` on each workstation.
@@ -369,11 +370,12 @@ Reflects the **initial development phase** documented in the root [README.md](..
 
 | Area | State |
 |------|-------|
-| `api/` | NestJS with ConfigModule, Prisma, default `GET /` route |
+| `api/` | NestJS with ConfigModule, Prisma, API Ninjas client, default `GET /` route |
 | `web/` | Next.js scaffold — starter page |
 | PostgreSQL | Docker Compose; required for API startup |
 | Prisma ORM | Configured — `api/prisma/schema.prisma` + initial migration |
-| API Ninjas ingest | Not implemented — key is prepared in `api/.env` for future work |
+| API Ninjas client | Implemented — `api/src/integration/api-ninjas/` |
+| API Ninjas ingest | Not implemented — sync, normalizer, and Prisma upsert (next cards) |
 | Dashboard UI | Not implemented |
 
 Start Docker before running the API (`docker compose up -d` from repo root).

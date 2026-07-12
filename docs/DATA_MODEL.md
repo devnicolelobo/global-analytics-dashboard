@@ -242,7 +242,7 @@ Distinct `Country` rows with latest metric snapshot joined or subqueried.
 
 ## 8. Proposed Prisma schema
 
-Target file: `api/prisma/schema.prisma` (not yet created).
+Target file: `api/prisma/schema.prisma` (implemented — see initial migration `20260711164000_init`).
 
 ```prisma
 generator client {
