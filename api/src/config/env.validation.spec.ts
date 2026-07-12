@@ -13,6 +13,7 @@ describe('validate (environment)', () => {
       PORT: 3001,
       NODE_ENV: 'development',
       API_NINJAS_KEY: undefined,
+      API_NINJAS_TIMEOUT_MS: undefined,
     });
   });
 
@@ -43,5 +44,16 @@ describe('validate (environment)', () => {
     expect(() => validate({ ...validBase, PORT: 'not-a-port' })).toThrow(
       'PORT must be a valid integer',
     );
+  });
+
+  it('accepts explicit API_NINJAS_TIMEOUT_MS', () => {
+    const result = validate({ ...validBase, API_NINJAS_TIMEOUT_MS: '20000' });
+    expect(result.API_NINJAS_TIMEOUT_MS).toBe(20000);
+  });
+
+  it('rejects invalid API_NINJAS_TIMEOUT_MS', () => {
+    expect(() =>
+      validate({ ...validBase, API_NINJAS_TIMEOUT_MS: '500' }),
+    ).toThrow('API_NINJAS_TIMEOUT_MS must be an integer');
   });
 });

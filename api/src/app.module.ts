@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { validate } from './config/env.validation';
+import { ApiNinjasModule } from './integration/api-ninjas/api-ninjas.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -13,6 +14,8 @@ import { PrismaModule } from './prisma/prisma.module';
       validate,
     }),
     PrismaModule,
+    // Upstream HTTP client — consumed by ingest module in later cards.
+    ApiNinjasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

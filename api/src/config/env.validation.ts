@@ -7,6 +7,7 @@ export interface EnvironmentVariables {
   PORT: number;
   NODE_ENV: string;
   API_NINJAS_KEY?: string;
+  API_NINJAS_TIMEOUT_MS?: number;
 }
 
 function parsePort(value: unknown): number {
@@ -62,6 +63,23 @@ function validateApiNinjasKey(value: unknown): string | undefined {
   return value;
 }
 
+const DEFAULT_API_NINJAS_TIMEOUT_MS = 15_000;
+
+function parseApiNinjasTimeoutMs(value: unknown): number | undefined {
+  if (value === undefined || value === '') {
+    return undefined;
+  }
+
+  const timeoutMs = Number(value);
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1_000 || timeoutMs > 60_000) {
+    throw new Error(
+      'API_NINJAS_TIMEOUT_MS must be an integer between 1000 and 60000',
+    );
+  }
+
+  return timeoutMs;
+}
+
 export function validate(
   config: Record<string, unknown>,
 ): EnvironmentVariables {
@@ -70,5 +88,10 @@ export function validate(
     PORT: parsePort(config.PORT),
     NODE_ENV: validateNodeEnv(config.NODE_ENV),
     API_NINJAS_KEY: validateApiNinjasKey(config.API_NINJAS_KEY),
+    API_NINJAS_TIMEOUT_MS: parseApiNinjasTimeoutMs(
+      config.API_NINJAS_TIMEOUT_MS,
+    ),
   };
 }
+
+export { DEFAULT_API_NINJAS_TIMEOUT_MS };
