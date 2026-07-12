@@ -3,7 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
-import { EnvironmentVariables } from '../../config/env.validation';
+import {
+  EnvironmentVariables,
+  DEFAULT_API_NINJAS_TIMEOUT_MS,
+} from '../../config/env.validation';
 import {
   UpstreamBadResponseError,
   UpstreamMissingApiKeyError,
@@ -31,7 +34,6 @@ import {
 
 const BASE_URL = 'https://api.api-ninjas.com';
 const COVID_PATH = '/v1/covid19';
-const DEFAULT_TIMEOUT_MS = 15_000;
 // Up to 3 attempts total (initial + 2 retries) — 5xx/timeout/network only.
 const MAX_RETRIES = 2;
 
@@ -197,17 +199,10 @@ export class ApiNinjasClient implements CovidUpstreamClient {
   }
 
   private getTimeoutMs(): number {
-    const raw = process.env.API_NINJAS_TIMEOUT_MS;
-    if (!raw) {
-      return DEFAULT_TIMEOUT_MS;
-    }
-
-    const parsed = Number(raw);
-    if (!Number.isInteger(parsed) || parsed < 1_000) {
-      return DEFAULT_TIMEOUT_MS;
-    }
-
-    return parsed;
+    return (
+      this.config.get('API_NINJAS_TIMEOUT_MS', { infer: true }) ??
+      DEFAULT_API_NINJAS_TIMEOUT_MS
+    );
   }
 
   private async request(params: Record<string, string>): Promise<unknown> {
