@@ -32,6 +32,7 @@ import {
 const BASE_URL = 'https://api.api-ninjas.com';
 const COVID_PATH = '/v1/covid19';
 const DEFAULT_TIMEOUT_MS = 15_000;
+// Up to 3 attempts total (initial + 2 retries) — 5xx/timeout/network only.
 const MAX_RETRIES = 2;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -132,6 +133,7 @@ function parseDateSnapshotRow(
   return parsed;
 }
 
+// Server-side HTTP client for API Ninjas COVID-19 — stateless, singleton-safe.
 @Injectable()
 export class ApiNinjasClient implements CovidUpstreamClient {
   constructor(
@@ -186,6 +188,7 @@ export class ApiNinjasClient implements CovidUpstreamClient {
   }
 
   private getApiKey(): string {
+    // Fail on invoke, not at boot — key is optional until ingest runs.
     const key = this.config.get('API_NINJAS_KEY', { infer: true });
     if (!key?.trim()) {
       throw new UpstreamMissingApiKeyError();
@@ -220,6 +223,7 @@ export class ApiNinjasClient implements CovidUpstreamClient {
             params,
             headers: { 'X-Api-Key': apiKey },
             timeout: timeoutMs,
+            // Map all status codes in handleHttpStatus — never leak key in errors.
             validateStatus: () => true,
           }),
         );
@@ -292,6 +296,7 @@ export class ApiNinjasClient implements CovidUpstreamClient {
       return false;
     }
 
+    // 4xx (incl. 401/429) are not retried — only transient failures.
     return error.code === 'UNAVAILABLE' || error.code === 'TIMEOUT';
   }
 

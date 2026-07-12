@@ -1,6 +1,7 @@
 import { UpstreamInvalidParamsError } from './api-ninjas.errors';
 import { ApiNinjasMetricType } from './api-ninjas.types';
 
+// Reject invalid inputs before spending an upstream HTTP call.
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 export function assertNonEmptyCountry(country: string): string {
@@ -23,7 +24,11 @@ export function assertIsoDate(date: string): string {
   }
 
   const parsed = new Date(`${trimmed}T00:00:00.000Z`);
-  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== trimmed) {
+  // Regex alone accepts impossible dates (e.g. 2023-02-30).
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== trimmed
+  ) {
     throw new UpstreamInvalidParamsError('date is not a valid calendar day');
   }
 
@@ -44,11 +49,14 @@ export function assertMetricType(
   return type;
 }
 
-export function assertOptionalRegion(region: string | undefined): string | undefined {
+export function assertOptionalRegion(
+  region: string | undefined,
+): string | undefined {
   if (region === undefined) {
     return undefined;
   }
 
   const trimmed = region.trim();
+  // Omit empty region from query — API Ninjas treats blank as national row.
   return trimmed === '' ? undefined : trimmed;
 }
