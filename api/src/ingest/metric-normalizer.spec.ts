@@ -1,4 +1,8 @@
-import { MetricNormalizer, coerceInteger, normalizeRegion } from './metric-normalizer';
+import {
+  MetricNormalizer,
+  coerceInteger,
+  normalizeRegion,
+} from './metric-normalizer';
 
 describe('normalizeRegion', () => {
   it('converts null/undefined/blank to empty string', () => {

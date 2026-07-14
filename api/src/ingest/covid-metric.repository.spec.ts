@@ -3,6 +3,26 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CovidMetricRepository } from './covid-metric.repository';
 import { NormalizedMetricInput } from './normalized-metric.types';
 
+type MetricUpsertCall = {
+  where: {
+    countryCode_region_referenceDate: {
+      countryCode: string;
+      region: string;
+      referenceDate: Date;
+    };
+  };
+  create: Record<string, unknown>;
+  update: Record<string, unknown>;
+};
+
+function firstUpsertCall(mock: jest.Mock): MetricUpsertCall {
+  const args = mock.mock.calls[0] as unknown[] | undefined;
+  if (!args?.[0] || typeof args[0] !== 'object') {
+    throw new Error('Expected metric upsert to be called with an object');
+  }
+  return args[0] as MetricUpsertCall;
+}
+
 describe('CovidMetricRepository', () => {
   let repository: CovidMetricRepository;
   let countryUpsert: jest.Mock;
@@ -17,6 +37,8 @@ describe('CovidMetricRepository', () => {
     referenceDate: '2023-03-09',
     source: 'api-ninjas',
   };
+
+  const referenceDate = new Date('2023-03-09T00:00:00.000Z');
 
   beforeEach(async () => {
     countryUpsert = jest.fn().mockResolvedValue({});
@@ -66,16 +88,18 @@ describe('CovidMetricRepository', () => {
     ]);
 
     expect(result).toEqual({ recordsUpserted: 1, countriesUpserted: 1 });
-    expect(countryUpsert).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: { iso2: 'BR' },
-        create: expect.objectContaining({
-          iso2: 'BR',
-          name: 'Brazil',
-          upstreamName: 'Brazil',
-        }),
-      }),
-    );
+    expect(countryUpsert).toHaveBeenCalledWith({
+      where: { iso2: 'BR' },
+      create: {
+        iso2: 'BR',
+        name: 'Brazil',
+        upstreamName: 'Brazil',
+      },
+      update: {
+        name: 'Brazil',
+        upstreamName: 'Brazil',
+      },
+    });
     expect(metricUpsert).toHaveBeenCalledTimes(1);
   });
 
@@ -103,7 +127,7 @@ describe('CovidMetricRepository', () => {
       },
     ]);
 
-    const createCall = metricUpsert.mock.calls[0][0];
+    const createCall = firstUpsertCall(metricUpsert);
     expect(createCall.create).toMatchObject({
       casesTotal: 100,
       casesNew: 3,
@@ -121,12 +145,12 @@ describe('CovidMetricRepository', () => {
       },
     ]);
 
-    const updateCall = metricUpsert.mock.calls[0][0];
+    const updateCall = firstUpsertCall(metricUpsert);
     expect(updateCall.where).toEqual({
       countryCode_region_referenceDate: {
         countryCode: 'BR',
         region: '',
-        referenceDate: new Date('2023-03-09T00:00:00.000Z'),
+        referenceDate,
       },
     });
     expect(updateCall.update).toMatchObject({
@@ -148,11 +172,12 @@ describe('CovidMetricRepository', () => {
       },
     ]);
 
-    expect(metricUpsert.mock.calls[0][0].where).toEqual({
+    const call = firstUpsertCall(metricUpsert);
+    expect(call.where).toEqual({
       countryCode_region_referenceDate: {
         countryCode: 'BR',
         region: '',
-        referenceDate: new Date('2023-03-09T00:00:00.000Z'),
+        referenceDate,
       },
     });
   });
