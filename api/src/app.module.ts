@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { validate } from './config/env.validation';
+import { IngestModule } from './ingest/ingest.module';
 import { ApiNinjasModule } from './integration/api-ninjas/api-ninjas.module';
 import { PrismaModule } from './prisma/prisma.module';
 
@@ -14,8 +15,10 @@ import { PrismaModule } from './prisma/prisma.module';
       validate,
     }),
     PrismaModule,
-    // Upstream HTTP client — consumed by ingest module in later cards.
+    // Upstream HTTP client for COVID-19 data (used by the ingest pipeline).
     ApiNinjasModule,
+    // Normalization + Prisma persistence for COVID metrics.
+    IngestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

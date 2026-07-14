@@ -190,7 +190,7 @@ export class ApiNinjasClient implements CovidUpstreamClient {
   }
 
   private getApiKey(): string {
-    // Fail on invoke, not at boot — key is optional until ingest runs.
+    // Fail on invoke, not at boot — key may be unset until an upstream call is made.
     const key = this.config.get('API_NINJAS_KEY', { infer: true });
     if (!key?.trim()) {
       throw new UpstreamMissingApiKeyError();

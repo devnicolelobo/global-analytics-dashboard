@@ -51,7 +51,7 @@ function validateNodeEnv(value: unknown): string {
 }
 
 function validateApiNinjasKey(value: unknown): string | undefined {
-  // Optional at boot — required once the ingest module calls API Ninjas.
+  // Optional at boot — required when ApiNinjasClient performs an upstream request.
   if (value === undefined || value === '') {
     return undefined;
   }
