@@ -30,11 +30,12 @@ Full technical view: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) · editable 
 
 | Component              | State |
 |------------------------|-------|
-| `api/`                 | NestJS scaffold — domain modules in progress |
+| `api/`                 | NestJS — Config, Prisma, API Ninjas client, ingest normalizer/upsert |
 | `web/`                 | Next.js scaffold |
 | PostgreSQL (local)     | Docker Compose defined; container runnable |
-| Prisma ORM             | Not implemented — schema documented in `DATA_MODEL.md` |
-| API Ninjas integration | Not implemented — key template in `api/.env.example` |
+| Prisma ORM             | Configured — schema + initial migration in `api/prisma/` |
+| API Ninjas integration | Client implemented — `api/src/integration/api-ninjas/` |
+| Ingest (normalize/upsert) | Implemented — `api/src/ingest/` (sync orchestration next) |
 | Dashboard UI           | Not implemented |
 | Documentation          | Complete through SETUP, DEPLOYMENT, and diagram assets |
 

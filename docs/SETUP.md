@@ -370,12 +370,13 @@ Reflects the **initial development phase** documented in the root [README.md](..
 
 | Area | State |
 |------|-------|
-| `api/` | NestJS with ConfigModule, Prisma, API Ninjas client, default `GET /` route |
+| `api/` | NestJS with ConfigModule, Prisma, API Ninjas client, ingest normalizer/upsert, default `GET /` route |
 | `web/` | Next.js scaffold — starter page |
 | PostgreSQL | Docker Compose; required for API startup |
 | Prisma ORM | Configured — `api/prisma/schema.prisma` + initial migration |
 | API Ninjas client | Implemented — `api/src/integration/api-ninjas/` |
-| API Ninjas ingest | Not implemented — sync, normalizer, and Prisma upsert (next cards) |
+| Metric normalizer & upsert | Implemented — `api/src/ingest/` (`MetricNormalizer`, `CovidMetricRepository`) |
+| API Ninjas sync orchestration | Not implemented — `SyncRun`, `POST /sync`, scheduling (next cards) |
 | Dashboard UI | Not implemented |
 
 Start Docker before running the API (`docker compose up -d` from repo root).

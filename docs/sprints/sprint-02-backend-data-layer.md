@@ -20,7 +20,8 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 | Prisma | `api/prisma/schema.prisma`, initial migration | Done |
 | NestJS config | `ConfigModule`, `.env` loading | Done |
 | Integration | API Ninjas HTTP client (`api/src/integration/api-ninjas/`) | Done |
-| Ingest | Normalizer, upsert, `SyncRun` orchestration | Planned |
+| Ingest | Normalizer + Prisma upsert (`api/src/ingest/`) | Done |
+| Ingest | `SyncRun` orchestration | Planned |
 | REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Planned |
 | Sync | `POST /sync`, `GET /sync/status`, daily job outline | Planned |
 | Tests | Unit + integration for ingest and read paths | In progress |
@@ -41,7 +42,8 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 ### Ingest & API
 
 - [x] API Ninjas integration client ([EXTERNAL_APIS.md](../EXTERNAL_APIS.md))
-- [ ] Upsert on natural key (`country_code`, `region`, `reference_date`)
+- [x] Metric normalizer (country → ISO2, Mode A/B, cases/deaths merge rules)
+- [x] Upsert on natural key (`country_code`, `region`, `reference_date`) via `CovidMetricRepository`
 - [ ] Read endpoints: `/health`, `/covid/summary`, `/covid/countries`, `/covid/countries/:code`, series routes
 - [ ] Sync endpoints: `POST /sync`, `GET /sync/status`
 - [ ] Error envelope per [API_SPEC.md](../API_SPEC.md) §4
@@ -74,11 +76,12 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 
 - Prisma schema, initial migration, `ConfigModule`, `PrismaModule` (DEV-80)
 - API Ninjas HTTP client and `ApiNinjasModule` (DEV-81)
+- Metric normalizer, country ISO map, and Prisma upsert repository (DEV-82)
 
 ### Deferred / next
 
-- Ingest orchestration, normalizer, Prisma upsert
-- Internal REST API and sync endpoints
+- Ingest orchestration (`SyncRun`) and sync endpoints
+- Internal REST API (read paths)
 
 ---
 
