@@ -1,8 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { SyncStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SyncRunDto } from './dto/sync-run.dto';
 import { SyncStatusDto } from './dto/sync-status.dto';
+
+/**
+ * Prisma `@default(cuid())` ids look like `c` + 24 base36 chars.
+ * Malformed ids → 400; well-formed but missing → 404.
+ */
+const SYNC_RUN_ID_PATTERN = /^c[a-z0-9]{24}$/i;
 
 /**
  * Read-side sync queries (API_SPEC §5.1 / §7.2–7.3).
@@ -44,13 +54,25 @@ export class SyncQueryService {
     return dto;
   }
 
-  /**
-   * Single SyncRun for debugging (API_SPEC §7.3).
-   * Implemented in the next step — stub keeps the module wiring stable.
-   */
-  getRunById(id: string): Promise<SyncRunDto> {
-    void id;
-    throw new Error('SyncQueryService.getRunById not implemented yet');
+  /** Single SyncRun for debugging (API_SPEC §7.3). */
+  async getRunById(id: string): Promise<SyncRunDto> {
+    assertSyncRunIdFormat(id);
+
+    const run = await this.prisma.syncRun.findUnique({ where: { id } });
+    if (!run) {
+      throw new NotFoundException(`Sync run '${id}' not found`);
+    }
+
+    return SyncRunDto.fromPrisma(run);
+  }
+}
+
+/** Exported for unit tests. */
+export function assertSyncRunIdFormat(id: string): void {
+  if (!SYNC_RUN_ID_PATTERN.test(id)) {
+    throw new BadRequestException(
+      'Invalid sync run id format: expected a cuid',
+    );
   }
 }
 
