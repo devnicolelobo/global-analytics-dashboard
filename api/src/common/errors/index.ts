@@ -4,3 +4,4 @@ export {
   InvalidCountryCodeException,
   SyncAlreadyRunningException,
 } from './domain.exceptions';
+export { HttpExceptionFilter } from '../filters/http-exception.filter';
