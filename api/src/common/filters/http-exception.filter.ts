@@ -100,14 +100,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     return exception.message || 'Unexpected error';
   }
 
-  private logException(
-    exception: unknown,
-    envelope: ErrorResponseDto,
-  ): void {
-    const stack =
-      exception instanceof Error ? exception.stack : undefined;
+  private logException(exception: unknown, envelope: ErrorResponseDto): void {
+    const stack = exception instanceof Error ? exception.stack : undefined;
 
-    if (envelope.statusCode >= HttpStatus.INTERNAL_SERVER_ERROR) {
+    if (envelope.statusCode >= 500) {
       this.logger.error(
         `${envelope.statusCode} ${envelope.error} ${envelope.path}: ${envelope.message}`,
         stack,

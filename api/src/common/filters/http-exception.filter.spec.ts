@@ -3,6 +3,14 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import { ErrorResponseDto } from '../errors/error-response.dto';
 import { CountryNotFoundException } from '../errors/domain.exceptions';
 
+function firstJsonBody(json: jest.Mock): ErrorResponseDto {
+  const args = json.mock.calls[0] as unknown[] | undefined;
+  if (!args?.[0] || typeof args[0] !== 'object') {
+    throw new Error('Expected filter to call response.json with an object');
+  }
+  return args[0] as ErrorResponseDto;
+}
+
 describe('HttpExceptionFilter', () => {
   const filter = new HttpExceptionFilter();
 
@@ -29,7 +37,7 @@ describe('HttpExceptionFilter', () => {
     filter.catch(new CountryNotFoundException('ZZ'), host);
 
     expect(status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-    const body = json.mock.calls[0][0] as ErrorResponseDto;
+    const body = firstJsonBody(json);
     expect(body).toEqual(
       expect.objectContaining({
         statusCode: 404,
@@ -51,7 +59,7 @@ describe('HttpExceptionFilter', () => {
     filter.catch(exception, host);
 
     expect(status).toHaveBeenCalledWith(400);
-    const body = json.mock.calls[0][0] as ErrorResponseDto;
+    const body = firstJsonBody(json);
     expect(body.message).toBe(
       'field must be a string; field should not be empty',
     );
@@ -64,7 +72,7 @@ describe('HttpExceptionFilter', () => {
     filter.catch(new Error('secret db password leaked'), host);
 
     expect(status).toHaveBeenCalledWith(500);
-    const body = json.mock.calls[0][0] as ErrorResponseDto;
+    const body = firstJsonBody(json);
     expect(body).toEqual(
       expect.objectContaining({
         statusCode: 500,

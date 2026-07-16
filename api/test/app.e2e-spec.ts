@@ -1,4 +1,10 @@
-import { Body, Controller, INestApplication, Module, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  INestApplication,
+  Module,
+  Post,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IsNotEmpty, IsString } from 'class-validator';
 import request from 'supertest';
@@ -63,21 +69,26 @@ describe('API foundation (e2e)', () => {
   });
 
   it('GET /health → 200 with status and timestamp when DB is up', async () => {
-    const response = await request(app.getHttpServer()).get('/health').expect(200);
+    const response = await request(app.getHttpServer())
+      .get('/health')
+      .expect(200);
+    const body = response.body as { status: string; timestamp: string };
 
-    expect(response.body).toEqual(
+    expect(body).toEqual(
       expect.objectContaining({
         status: 'ok',
       }),
     );
-    expect(response.body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
-    expect(JSON.stringify(response.body)).not.toContain('localhost');
+    expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(JSON.stringify(body)).not.toContain('localhost');
   });
 
   it('GET /health → 503 envelope when DB is unreachable', async () => {
     prismaMock.$queryRaw.mockRejectedValue(new Error('ECONNREFUSED'));
 
-    const response = await request(app.getHttpServer()).get('/health').expect(503);
+    const response = await request(app.getHttpServer())
+      .get('/health')
+      .expect(503);
     const body = response.body as ErrorResponseDto;
 
     expect(body).toEqual(

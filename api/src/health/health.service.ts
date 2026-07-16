@@ -1,4 +1,8 @@
-import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 export interface HealthOkResponse {
@@ -29,7 +33,11 @@ export class HealthService {
         this.prisma.$queryRaw`SELECT 1`,
         new Promise<never>((_, reject) => {
           timeoutId = setTimeout(() => {
-            reject(new Error(`Database ping timed out after ${DB_PING_TIMEOUT_MS}ms`));
+            reject(
+              new Error(
+                `Database ping timed out after ${DB_PING_TIMEOUT_MS}ms`,
+              ),
+            );
           }, DB_PING_TIMEOUT_MS);
         }),
       ]);

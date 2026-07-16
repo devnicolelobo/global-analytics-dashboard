@@ -25,7 +25,9 @@ describe('HealthService', () => {
   });
 
   it('throws 503 when the database ping fails', async () => {
-    (prisma.$queryRaw as jest.Mock).mockRejectedValue(new Error('ECONNREFUSED'));
+    (prisma.$queryRaw as jest.Mock).mockRejectedValue(
+      new Error('ECONNREFUSED'),
+    );
 
     await expect(service.check()).rejects.toBeInstanceOf(
       ServiceUnavailableException,
