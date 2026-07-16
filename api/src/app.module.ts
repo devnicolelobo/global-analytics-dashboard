@@ -5,6 +5,7 @@ import { HealthModule } from './health/health.module';
 import { IngestModule } from './ingest/ingest.module';
 import { ApiNinjasModule } from './integration/api-ninjas/api-ninjas.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SyncModule } from './sync/sync.module';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { PrismaModule } from './prisma/prisma.module';
     ApiNinjasModule,
     // Normalization + Prisma persistence for COVID metrics.
     IngestModule,
+    // Operator sync HTTP endpoints (API_SPEC §7).
+    SyncModule,
   ],
 })
 export class AppModule {}
