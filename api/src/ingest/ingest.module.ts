@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ApiNinjasModule } from '../integration/api-ninjas/api-ninjas.module';
 import { CovidMetricRepository } from './covid-metric.repository';
+import { IngestService } from './ingest.service';
 import { MetricNormalizer } from './metric-normalizer';
 
 /**
- * Groups COVID metric normalization and Prisma persistence for the ingest pipeline.
- * PrismaService is provided by the global PrismaModule.
- * Downstream ingest orchestration should import this module and inject the exported providers.
+ * COVID ingest pipeline: normalize + upsert + SyncRun orchestration.
+ * PrismaService comes from the global PrismaModule.
+ * SyncModule (HTTP) imports this module and injects IngestService.
  */
 @Module({
-  providers: [MetricNormalizer, CovidMetricRepository],
-  exports: [MetricNormalizer, CovidMetricRepository],
+  imports: [ApiNinjasModule],
+  providers: [MetricNormalizer, CovidMetricRepository, IngestService],
+  exports: [MetricNormalizer, CovidMetricRepository, IngestService],
 })
 export class IngestModule {}
