@@ -80,6 +80,60 @@ describe('Sync endpoints (e2e)', () => {
     expect(runSync).toHaveBeenCalledWith('snapshot');
   });
 
+  it('POST /sync empty body → 202 defaults mode to full', async () => {
+    runSync.mockResolvedValueOnce({
+      syncRunId: VALID_CUID,
+      status: 'running',
+      startedAt: new Date('2026-07-08T18:30:00.000Z'),
+      mode: 'full',
+    });
+
+    const response = await request(app.getHttpServer())
+      .post('/sync')
+      .send({})
+      .expect(202);
+
+    expect(runSync).toHaveBeenCalledWith('full');
+    expect(response.body).toEqual(
+      expect.objectContaining({ mode: 'full', status: 'running' }),
+    );
+  });
+
+  it('POST /sync non-whitelisted field → 400 envelope', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/sync')
+      .send({ mode: 'snapshot', unexpected: true })
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+    expect(runSync).not.toHaveBeenCalled();
+  });
+
+  it('GET /sync/runs/:id does not leak secrets in errorMessage', async () => {
+    findUnique.mockResolvedValue({
+      id: VALID_CUID,
+      startedAt: new Date('2026-07-08T18:30:00.000Z'),
+      completedAt: new Date('2026-07-08T18:31:00.000Z'),
+      status: SyncStatus.failed,
+      source: 'api-ninjas',
+      mode: 'snapshot',
+      recordsUpserted: 0,
+      errorMessage: 'boom postgresql://gad:secret@db/x',
+      metadata: null,
+    });
+
+    const response = await request(app.getHttpServer())
+      .get(`/sync/runs/${VALID_CUID}`)
+      .expect(200);
+    const body = response.body as {
+      errorMessage: string | null;
+    };
+
+    expect(JSON.stringify(body)).not.toContain('secret');
+    expect(body.errorMessage).toContain('postgresql://***');
+  });
+
   it('POST /sync concurrent → 409 envelope', async () => {
     runSync.mockRejectedValueOnce(new SyncAlreadyRunningException());
 

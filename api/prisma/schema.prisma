@@ -60,5 +60,6 @@ model SyncRun {
   metadata        Json?
 
   @@index([startedAt])
+  @@index([status])
   @@map("sync_runs")
 }

@@ -6,6 +6,7 @@ import { CovidMetricRepository } from './covid-metric.repository';
 import {
   DEFAULT_SNAPSHOT_DATE,
   IngestService,
+  redactSensitiveText,
   sanitizeIngestErrorMessage,
 } from './ingest.service';
 import { MetricNormalizer } from './metric-normalizer';
@@ -202,5 +203,15 @@ describe('sanitizeIngestErrorMessage', () => {
     expect(message).not.toContain('abc123');
     expect(message).toContain('postgresql://***');
     expect(message).toContain('API_NINJAS_KEY=***');
+  });
+});
+
+describe('redactSensitiveText', () => {
+  it('redacts secrets from stored SyncRun error strings', () => {
+    const message = redactSensitiveText(
+      'upstream fail postgresql://gad:secret@db/x',
+    );
+    expect(message).not.toContain('secret');
+    expect(message).toContain('postgresql://***');
   });
 });

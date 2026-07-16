@@ -11,6 +11,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CovidMetricRepository } from './covid-metric.repository';
 import { MetricNormalizer } from './metric-normalizer';
 import { NormalizedMetricInput } from './normalized-metric.types';
+import { redactSensitiveText } from '../common/security/redact-sensitive';
 
 /** Sync modes accepted by POST /sync (API_SPEC §7.1). */
 export type SyncMode = 'snapshot' | 'country-series' | 'full';
@@ -97,6 +98,8 @@ export class IngestService {
   }
 
   private async createRunningSync(mode: SyncMode): Promise<SyncAcceptedResult> {
+    // App-level lock (MVP): check-then-insert. Multi-instance races are accepted;
+    // harden later with a partial unique index or advisory lock if needed.
     const running = await this.prisma.syncRun.findFirst({
       where: { status: SyncStatus.running },
       select: { id: true },
@@ -249,23 +252,14 @@ export class IngestService {
 
 /** Exported for tests — strip secrets from SyncRun.errorMessage (REQ-F-13). */
 export function sanitizeIngestErrorMessage(error: unknown): string {
-  let message =
+  const message =
     error instanceof UpstreamError || error instanceof Error
       ? error.message
       : 'Unknown ingest error';
-
-  message = message
-    .replace(/Bearer\s+\S+/gi, 'Bearer ***')
-    .replace(/postgresql:\/\/[^\s]+/gi, 'postgresql://***')
-    .replace(/api[_-]?ninjas[_-]?key[=:\s]+\S+/gi, 'API_NINJAS_KEY=***')
-    .replace(/api[_-]?key[=:\s]+\S+/gi, 'api_key=***');
-
-  const maxLen = 500;
-  if (message.length > maxLen) {
-    return `${message.slice(0, maxLen)}…`;
-  }
-  return message;
+  return redactSensitiveText(message);
 }
+
+export { redactSensitiveText } from '../common/security/redact-sensitive';
 
 function mergeSnapshotRows(
   casesRows: ApiNinjasDateSnapshotRow[],

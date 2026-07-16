@@ -32,8 +32,8 @@ export class SyncController {
    */
   @Post()
   @HttpCode(HttpStatus.ACCEPTED)
-  async trigger(@Body() body: SyncTriggerDto): Promise<SyncAcceptedDto> {
-    const mode = body.mode ?? 'full';
+  async trigger(@Body() body?: SyncTriggerDto): Promise<SyncAcceptedDto> {
+    const mode = body?.mode ?? 'full';
     const accepted = await this.ingestService.runSync(mode);
     return SyncAcceptedDto.from(accepted);
   }
