@@ -81,10 +81,13 @@ describe('API foundation (e2e)', () => {
     );
     expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     expect(JSON.stringify(body)).not.toContain('localhost');
+    expect(JSON.stringify(body)).not.toContain('DATABASE');
   });
 
   it('GET /health → 503 envelope when DB is unreachable', async () => {
-    prismaMock.$queryRaw.mockRejectedValue(new Error('ECONNREFUSED'));
+    prismaMock.$queryRaw.mockRejectedValue(
+      new Error('ECONNREFUSED postgresql://gad:secret@localhost:5432/db'),
+    );
 
     const response = await request(app.getHttpServer())
       .get('/health')
@@ -100,9 +103,12 @@ describe('API foundation (e2e)', () => {
       }),
     );
     expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(JSON.stringify(body)).not.toContain('secret');
+    expect(JSON.stringify(body)).not.toContain('postgresql');
+    expect(body).not.toHaveProperty('stack');
   });
 
-  it('GET /unknown → 404 envelope fields present', async () => {
+  it('GET /unknown → full 404 envelope without stack', async () => {
     const response = await request(app.getHttpServer())
       .get('/nonexistent')
       .expect(404);
@@ -120,7 +126,7 @@ describe('API foundation (e2e)', () => {
     expect(body).not.toHaveProperty('stack');
   });
 
-  it('validation error → 400 envelope shape', async () => {
+  it('non-whitelisted field → 400 envelope (forbidNonWhitelisted)', async () => {
     const response = await request(app.getHttpServer())
       .post('/__validation_probe')
       .send({ unexpected: true })
@@ -137,5 +143,41 @@ describe('API foundation (e2e)', () => {
     expect(typeof body.message).toBe('string');
     expect(body.message.length).toBeGreaterThan(0);
     expect(body).not.toHaveProperty('stack');
+  });
+
+  it('empty body / missing name → 400 envelope', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/__validation_probe')
+      .send({})
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+    expect(body.error).toBe('Bad Request');
+    expect(typeof body.message).toBe('string');
+    expect(body).not.toHaveProperty('stack');
+  });
+
+  it('invalid name (not a string) → 400 envelope', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/__validation_probe')
+      .send({ name: 123 })
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+    expect(body.path).toBe('/__validation_probe');
+    expect(body).not.toHaveProperty('stack');
+  });
+
+  it('valid probe payload → 201/200 without error', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/__validation_probe')
+      .send({ name: 'ok' })
+      .expect((res) => {
+        expect([200, 201]).toContain(res.status);
+      });
+
+    expect(response.body).toEqual({ name: 'ok' });
   });
 });
