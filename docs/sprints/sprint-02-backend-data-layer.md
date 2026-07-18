@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Period** | 2026-07-11 → 2026-07-24 (target) |
-| **Status** | Done (pending DEV-87 PR merge to `develop`) |
+| **Status** | Complete |
 | **Sprint goal** | Implement PostgreSQL persistence, COVID ingest, and internal REST API in `api/` |
 | **Milestone** | [M3](../PROJECT_MANAGEMENT.md#milestones) — **met** (ingest + internal API + automated tests) |
 | **Phase** | 3 |
@@ -123,11 +123,13 @@ Manual smoke (local): `docker compose up -d` → `PORT=3001 npm run start:dev` �
 
 ## Release
 
-Feature work merges to `develop`. Production release remains at milestone M5 (`v0.1.0`).
+Feature work merged to `develop`, then promoted to `main`. Production tagged release remains at milestone M5 (`v0.1.0`).
 
 | Item | Value |
 |------|-------|
 | Integration branch | `develop` |
+| Feature PR | [#9](https://github.com/devnicolelobo/global-analytics-dashboard/pull/9) (`DEV-87` → `develop`) |
+| Promote PR | [#11](https://github.com/devnicolelobo/global-analytics-dashboard/pull/11) (`develop` → `main`) |
 | Release tag | N/A (Sprint 02) |
 | Staging / production deploy | N/A |
 
@@ -136,8 +138,8 @@ Feature work merges to `develop`. Production release remains at milestone M5 (`v
 ## Retrospective
 
 - **Went well:** Clear layering (integration → ingest → sync/read); Prisma natural-key upsert kept sync idempotent; Nest DI overrides made CI-safe upstream mocks straightforward; Option A (real Postgres) caught roll-up / FK issues early.
-- **Improve:** Align required GitHub status check names with Actions job names before enabling protection; sync `main` ↔ `develop` via PR when required checks block direct push; keep e2e fixtures and expected totals next to API_SPEC §11 for faster review.
-- **Schedule / risk changes:** Soft dependency on Docker for integration e2e (soft-skip when down); CI e2e currently runs without a Postgres service container — add service when DEV-87 lands if integration suite must be mandatory green in Actions.
+- **Improve:** Required GitHub status check must match the Actions **job name** (`api`), not `workflow / job`. Keep e2e fixtures and expected totals next to API_SPEC §11 for faster review. Prefer a single feature PR into `develop` — avoid duplicate PRs targeting `main`.
+- **Schedule / risk changes:** Soft dependency on Docker for integration e2e (soft-skip when down); CI e2e still runs without a Postgres service container — add a service container in `ci-api.yml` if integration suites must be mandatory green in Actions. Phase 4 (frontend / M4) is next.
 
 ---
 
