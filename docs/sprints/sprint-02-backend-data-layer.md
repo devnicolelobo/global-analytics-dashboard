@@ -22,9 +22,9 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 | Integration | API Ninjas HTTP client (`api/src/integration/api-ninjas/`) | Done |
 | Ingest | Normalizer + Prisma upsert (`api/src/ingest/`) | Done |
 | Ingest | `SyncRun` orchestration | Planned |
-| REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Planned |
-| Sync | `POST /sync`, `GET /sync/status`, daily job outline | Planned |
-| Tests | Unit + integration for ingest and read paths | In progress |
+| REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Done |
+| Sync | `POST /sync`, `GET /sync/status`, daily job outline | Done (HTTP); daily job deferred |
+| Tests | Unit + integration for ingest and read paths | Done |
 | CI (optional) | `.github/workflows/ci-api.yml` when tests exist | Deferred |
 
 ---
@@ -44,14 +44,14 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 - [x] API Ninjas integration client ([EXTERNAL_APIS.md](../EXTERNAL_APIS.md))
 - [x] Metric normalizer (country → ISO2, Mode A/B, cases/deaths merge rules)
 - [x] Upsert on natural key (`country_code`, `region`, `reference_date`) via `CovidMetricRepository`
-- [ ] Read endpoints: `/health`, `/covid/summary`, `/covid/countries`, `/covid/countries/:code`, series routes
-- [ ] Sync endpoints: `POST /sync`, `GET /sync/status`
-- [ ] Error envelope per [API_SPEC.md](../API_SPEC.md) §4
+- [x] Read endpoints: `/health`, `/covid/summary`, `/covid/countries`, `/covid/countries/:code`, series routes
+- [x] Sync endpoints: `POST /sync`, `GET /sync/status`
+- [x] Error envelope per [API_SPEC.md](../API_SPEC.md) §4
 
 ### Quality
 
 - [x] `npm run lint` and `npm test` pass in `api/`
-- [ ] Integration tests for primary read and sync happy paths
+- [x] Integration / e2e tests for primary read and sync happy paths (+ edge cases)
 - [x] No secrets committed; `API_NINJAS_KEY` server-only
 
 ---
@@ -77,11 +77,14 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 - Prisma schema, initial migration, `ConfigModule`, `PrismaModule` (DEV-80)
 - API Ninjas HTTP client and `ApiNinjasModule` (DEV-81)
 - Metric normalizer, country ISO map, and Prisma upsert repository (DEV-82)
+- Error envelope, health readiness, ValidationPipe (DEV-84)
+- Sync orchestration + `POST /sync` / status / run detail (DEV-85)
+- COVID read endpoints + aggregation + e2e (DEV-86)
 
 ### Deferred / next
 
-- Ingest orchestration (`SyncRun`) and sync endpoints
-- Internal REST API (read paths)
+- Phase 4 frontend (`web/`) against read API
+- Optional caching / rate limits post-MVP
 
 ---
 
