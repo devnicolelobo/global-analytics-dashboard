@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './config/env.validation';
+import { CovidModule } from './covid/covid.module';
 import { HealthModule } from './health/health.module';
 import { IngestModule } from './ingest/ingest.module';
 import { ApiNinjasModule } from './integration/api-ninjas/api-ninjas.module';
@@ -22,6 +23,8 @@ import { SyncModule } from './sync/sync.module';
     IngestModule,
     // Operator sync HTTP endpoints (API_SPEC §7).
     SyncModule,
+    // COVID read HTTP endpoints (API_SPEC §6).
+    CovidModule,
   ],
 })
 export class AppModule {}
