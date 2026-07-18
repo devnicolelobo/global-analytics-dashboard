@@ -73,8 +73,9 @@ Blocked dependencies must be tracked in Linear (`blocks` / `blocked by`). The de
 |------|---------|
 | Force push | Disabled (enforced for admins too) |
 | Branch deletion | Disabled (enforced for admins too) |
+| Required status check | `CI API / api` must pass before merge |
 
-Do not attempt `git push --force` to either branch. Use pull requests for feature work.
+Do not attempt `git push --force` to either branch. Use pull requests for feature work. CI runs on every PR and push to `main` / `develop` (see `.github/workflows/ci-api.yml`).
 
 ---
 

@@ -25,7 +25,7 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 | REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Done |
 | Sync | `POST /sync`, `GET /sync/status`, daily job outline | Done (HTTP); daily job deferred |
 | Tests | Unit + integration for ingest and read paths | Done |
-| CI (optional) | `.github/workflows/ci-api.yml` when tests exist | Deferred |
+| CI (optional) | `.github/workflows/ci-api.yml` when tests exist | Done (`ci-api.yml`) |
 
 ---
 
