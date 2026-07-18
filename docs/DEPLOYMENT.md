@@ -251,20 +251,24 @@ Aligned with [PROJECT_MANAGEMENT.md §11.3](./PROJECT_MANAGEMENT.md#113-producti
 
 ---
 
-## 9. CI/CD pipeline (planned)
+## 9. CI/CD pipeline
 
-Target: **GitHub Actions** workflows in `.github/workflows/` ([PROJECT_MANAGEMENT.md Phase 5](./PROJECT_MANAGEMENT.md#8-schedule-and-milestones)).
+Target: **GitHub Actions** workflows in `.github/workflows/`.
 
-### `ci-api.yml` (on PR and push to `develop` / `main`)
+### `ci-api.yml` (on PR and push to `develop` / `main`) — **active**
 
 | Step | Command |
 |------|---------|
 | Checkout | `actions/checkout` |
 | Setup Node 20 | `actions/setup-node` |
 | Install | `cd api && npm ci` |
+| Prisma | `npx prisma generate` |
 | Lint | `npm run lint` |
 | Test | `npm test` |
+| E2E | `npm run test:e2e` |
 | Build | `npm run build` |
+
+Status check name required for merge: **`CI API / api`**.
 
 ### `ci-web.yml` (on PR and push to `develop` / `main`)
 
@@ -414,7 +418,7 @@ Also update the root [README.md](../README.md) per [REQ-NF-06](./REQUIREMENTS.md
 |------|-------|
 | Staging environment | Not provisioned |
 | Production environment | Not provisioned |
-| GitHub Actions CI | Not configured (`.github/workflows/` pending) |
+| GitHub Actions CI | `ci-api.yml` active (lint / unit / e2e / build); `ci-web.yml` pending Phase 4+ |
 | Automated deploy | Not configured |
 | `develop` branch | Scheduled for Phase 3 ([PROJECT_MANAGEMENT.md §11.4](./PROJECT_MANAGEMENT.md#114-exceptions)) |
 | Prisma / ingest / dashboard | In development — deploy targets M4 (staging) and M5 (production) |

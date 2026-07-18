@@ -65,6 +65,18 @@ Blocked dependencies must be tracked in Linear (`blocks` / `blocked by`). The de
 - Promote to production only via release pull request (`develop` → `main`)
 - Force-push to `main` or `develop` is prohibited
 
+### Branch protection (GitHub)
+
+`main` and `develop` are protected on GitHub:
+
+| Rule | Setting |
+|------|---------|
+| Force push | Disabled (enforced for admins too) |
+| Branch deletion | Disabled (enforced for admins too) |
+| Required status check | `CI API / api` must pass before merge |
+
+Do not attempt `git push --force` to either branch. Use pull requests for feature work. CI runs on every PR and push to `main` / `develop` (see `.github/workflows/ci-api.yml`).
+
 ---
 
 ## Branch Naming
