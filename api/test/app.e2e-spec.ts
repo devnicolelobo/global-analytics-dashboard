@@ -1,18 +1,16 @@
 import {
   Body,
   Controller,
+  Get,
   INestApplication,
+  InternalServerErrorException,
   Module,
   Post,
 } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
 import { IsNotEmpty, IsString } from 'class-validator';
 import request from 'supertest';
-import { App } from 'supertest/types';
 import { ErrorResponseDto } from './../src/common/errors/error-response.dto';
-import { configureApp } from './../src/configure-app';
-import { AppModule } from './../src/app.module';
-import { PrismaService } from './../src/prisma/prisma.service';
+import { createPrismaMock, createTestApp } from './helpers';
 
 /** Test-only DTO — exercises global ValidationPipe without a production route. */
 class ProbeDto {
@@ -29,39 +27,33 @@ class ValidationProbeController {
   }
 }
 
+@Controller('__boom_probe')
+class BoomProbeController {
+  @Get()
+  boom(): never {
+    throw new InternalServerErrorException(
+      'postgresql://gad:secret@localhost:5432/global_analytics API_NINJAS_KEY=leak',
+    );
+  }
+}
+
 @Module({
-  controllers: [ValidationProbeController],
+  controllers: [ValidationProbeController, BoomProbeController],
 })
-class ValidationProbeModule {}
+class ProbeModule {}
 
 describe('API foundation (e2e)', () => {
-  let app: INestApplication<App>;
-  let prismaMock: {
-    onModuleInit: jest.Mock;
-    onModuleDestroy: jest.Mock;
-    $queryRaw: jest.Mock;
-  };
+  let app: INestApplication;
+  let prismaMock: ReturnType<typeof createPrismaMock>;
 
   beforeEach(async () => {
-    process.env.DATABASE_URL =
-      'postgresql://gad:gad@localhost:5432/global_analytics';
+    prismaMock = createPrismaMock();
 
-    prismaMock = {
-      onModuleInit: jest.fn(),
-      onModuleDestroy: jest.fn(),
-      $queryRaw: jest.fn().mockResolvedValue([{ '?column?': 1 }]),
-    };
-
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, ValidationProbeModule],
-    })
-      .overrideProvider(PrismaService)
-      .useValue(prismaMock)
-      .compile();
-
-    app = moduleFixture.createNestApplication();
-    configureApp(app);
-    await app.init();
+    const boot = await createTestApp({
+      imports: [ProbeModule],
+      prisma: prismaMock,
+    });
+    app = boot.app;
   });
 
   afterEach(async () => {
@@ -179,5 +171,44 @@ describe('API foundation (e2e)', () => {
       });
 
     expect(response.body).toEqual({ name: 'ok' });
+  });
+});
+
+describe('API foundation — production error envelope (REQ-F-13)', () => {
+  let app: INestApplication;
+
+  beforeEach(async () => {
+    const boot = await createTestApp({
+      imports: [ProbeModule],
+      prisma: createPrismaMock(),
+      nodeEnv: 'production',
+    });
+    app = boot.app;
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('500 body has no stack, DATABASE_URL, or API key (NODE_ENV=production)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/__boom_probe')
+      .expect(500);
+    const body = response.body as ErrorResponseDto;
+    const raw = JSON.stringify(body);
+
+    expect(body).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        error: 'Internal Server Error',
+        message: 'Internal server error',
+        path: '/__boom_probe',
+      }),
+    );
+    expect(body).not.toHaveProperty('stack');
+    expect(raw).not.toContain('secret');
+    expect(raw).not.toContain('postgresql');
+    expect(raw).not.toContain('API_NINJAS_KEY');
+    expect(raw).not.toContain('leak');
   });
 });
