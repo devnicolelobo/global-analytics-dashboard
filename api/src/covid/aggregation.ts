@@ -1,7 +1,13 @@
 /**
- * Pure aggregation helpers for COVID read models (API_SPEC §8).
- * Prefer national row (`region === ""`); otherwise sum regional rows.
- * Never expose subnational rows in API responses.
+ * Pure aggregation helpers for COVID read models (API_SPEC §8, DATA_MODEL §7).
+ *
+ * Rules:
+ * - Prefer national row (`region === ""`); otherwise sum regional rows.
+ * - Global = per-country roll-up, then sum countries.
+ * - Null handling: null as 0 for sums unless all values are null → null.
+ * - Never expose subnational rows in API responses (MVP).
+ *
+ * Kept pure (no I/O) so unit tests can cover medical correctness edge cases.
  */
 
 export interface MetricFields {

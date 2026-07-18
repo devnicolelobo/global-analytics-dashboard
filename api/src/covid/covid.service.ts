@@ -22,12 +22,18 @@ import {
   SummaryResponseDto,
 } from './dto';
 
+/** Upstream attribution for dashboard freshness / provenance (API_SPEC §6.2). */
 const DATA_SOURCE = 'api-ninjas';
 
 /**
  * COVID read orchestration (API_SPEC §6 + §8).
- * Uses CovidQueryService for Prisma I/O and pure helpers for roll-up.
- * Never exposes subnational rows in responses.
+ *
+ * Responsibilities:
+ * - Compose Prisma rows from CovidQueryService into stable DTOs.
+ * - Apply country / global / series roll-up (never expose region rows).
+ * - Degrade gracefully on empty DB (200 + null / [] — never 500).
+ *
+ * Security: no writes; country existence checked after ISO2 format validation.
  */
 @Injectable()
 export class CovidService {

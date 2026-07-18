@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { SyncStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { parseIsoDateOnly } from './iso-date';
 
-/** Metric row shape returned by Prisma selects used for roll-up. */
+/**
+ * Metric row shape returned by Prisma selects used for roll-up.
+ * Intentionally omits internal ids / timestamps — never leak ingest metadata.
+ */
 export interface MetricQueryRow {
   countryCode: string;
   region: string;
@@ -13,6 +17,7 @@ export interface MetricQueryRow {
   deathsNew: number | null;
 }
 
+/** Projection used on every metric read — keeps payloads small and stable. */
 const METRIC_SELECT = {
   countryCode: true,
   region: true,
@@ -25,7 +30,15 @@ const METRIC_SELECT = {
 
 /**
  * Prisma-only COVID read queries (no HTTP / no aggregation).
- * Aggregation rules live in `aggregation.ts` and are applied by CovidService.
+ *
+ * Security notes:
+ * - All filters go through Prisma parameterized queries (no string SQL concat).
+ * - Callers must pass already-validated ISO2 / ISO dates from the HTTP layer.
+ * - Never return raw subnational rows to HTTP — roll-up happens in CovidService.
+ *
+ * Performance notes:
+ * - Prefer aggregate / groupBy / indexed filters (`countryCode`, `referenceDate`).
+ * - Series filters apply date bounds in PostgreSQL before Node aggregation.
  */
 @Injectable()
 export class CovidQueryService {
@@ -69,7 +82,7 @@ export class CovidQueryService {
 
   /**
    * All metric rows for a single referenceDate (all countries / regions).
-   * Caller applies country + global roll-up — never return raw regions in HTTP.
+   * Uses @@index([referenceDate]) — still bounded to one calendar day.
    */
   async findMetricsForDate(referenceDate: Date): Promise<MetricQueryRow[]> {
     return this.prisma.covidDailyMetric.findMany({
@@ -91,6 +104,7 @@ export class CovidQueryService {
 
   /**
    * Latest referenceDate that has any row for the given country, or null.
+   * Uses @@index([countryCode, referenceDate]).
    */
   async findLatestReferenceDateForCountry(
     countryCode: string,
@@ -103,14 +117,14 @@ export class CovidQueryService {
   }
 
   /**
-   * True when the country has more than one distinct region value stored
+   * True when more than one distinct `region` value exists for the country
    * (API_SPEC §6.4 `meta.hasRegionalBreakdown`).
+   * Uses groupBy so we never load full metric payloads for this flag.
    */
   async hasRegionalBreakdown(countryCode: string): Promise<boolean> {
-    const regions = await this.prisma.covidDailyMetric.findMany({
+    const regions = await this.prisma.covidDailyMetric.groupBy({
+      by: ['region'],
       where: { countryCode },
-      distinct: ['region'],
-      select: { region: true },
     });
     return regions.length > 1;
   }
@@ -118,6 +132,8 @@ export class CovidQueryService {
   /**
    * Time-series rows filtered in DB by optional date range, ordered ASC.
    * When `countryCode` is omitted → global series input (all countries).
+   *
+   * Dates must already be validated calendar YYYY-MM-DD strings.
    */
   async findSeriesRows(options: {
     countryCode?: string;
@@ -130,10 +146,10 @@ export class CovidQueryService {
     } = {};
 
     if (options.from) {
-      referenceDateFilter.gte = new Date(`${options.from}T00:00:00.000Z`);
+      referenceDateFilter.gte = parseIsoDateOnly(options.from);
     }
     if (options.to) {
-      referenceDateFilter.lte = new Date(`${options.to}T00:00:00.000Z`);
+      referenceDateFilter.lte = parseIsoDateOnly(options.to);
     }
 
     return this.prisma.covidDailyMetric.findMany({
@@ -144,7 +160,7 @@ export class CovidQueryService {
           : {}),
       },
       select: METRIC_SELECT,
-      orderBy: { referenceDate: 'asc' },
+      orderBy: [{ referenceDate: 'asc' }, { countryCode: 'asc' }],
     });
   }
 }

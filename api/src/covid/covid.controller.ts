@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { InvalidCountryCodeException } from '../common/errors';
 import { CovidService } from './covid.service';
 import {
   CountriesQueryDto,
@@ -11,13 +10,17 @@ import {
   SeriesQueryDto,
   SummaryResponseDto,
 } from './dto';
-
-/** Uppercase ISO 3166-1 alpha-2 only — lowercase → 400 (API_SPEC §4.3). */
-const ISO2_UPPERCASE = /^[A-Z]{2}$/;
+import { ParseIso2CountryCodePipe } from './parse-iso2-country-code.pipe';
 
 /**
  * COVID read HTTP surface (API_SPEC §6.2–6.6).
- * Routing + DTO validation only; business rules live in CovidService.
+ *
+ * Layering:
+ * - Controller: routing + DTO / pipe validation only (no Prisma, no roll-up).
+ * - CovidService: aggregation business rules.
+ * - CovidQueryService: parameterized Prisma queries (injection-safe).
+ *
+ * Read-only — no write side effects. Auth is out of scope for MVP.
  */
 @Controller('covid')
 export class CovidController {
@@ -37,7 +40,11 @@ export class CovidController {
     return this.covidService.getCountries(query.metric ?? DEFAULT_METRIC);
   }
 
-  /** Global time series (must be registered before :countryCode routes). */
+  /**
+   * Global time series.
+   * Registered before `countries/:countryCode` so `/covid/series` is not captured
+   * as a country code path segment.
+   */
   @Get('series')
   getGlobalSeries(
     @Query() query: SeriesQueryDto,
@@ -49,33 +56,25 @@ export class CovidController {
     );
   }
 
-  /** Single-country latest snapshot. */
+  /** Single-country latest snapshot (404 if ISO2 unknown in `countries`). */
   @Get('countries/:countryCode')
   getCountryDetail(
-    @Param('countryCode') countryCode: string,
+    @Param('countryCode', ParseIso2CountryCodePipe) countryCode: string,
   ): Promise<CountryDetailResponseDto> {
-    assertUppercaseIso2(countryCode);
     return this.covidService.getCountryDetail(countryCode);
   }
 
-  /** Country-scoped time series. */
+  /** Country-scoped time series (empty history → 200 + points: []). */
   @Get('countries/:countryCode/series')
   getCountrySeries(
-    @Param('countryCode') countryCode: string,
+    @Param('countryCode', ParseIso2CountryCodePipe) countryCode: string,
     @Query() query: SeriesQueryDto,
   ): Promise<CountrySeriesResponseDto> {
-    assertUppercaseIso2(countryCode);
     return this.covidService.getCountrySeries(
       countryCode,
       query.metric ?? DEFAULT_METRIC,
       query.from,
       query.to,
     );
-  }
-}
-
-function assertUppercaseIso2(countryCode: string): void {
-  if (!ISO2_UPPERCASE.test(countryCode)) {
-    throw new InvalidCountryCodeException(countryCode);
   }
 }

@@ -6,6 +6,7 @@ import { CovidService } from './covid.service';
 /**
  * COVID read feature module (API_SPEC §6).
  * Prisma is global — no local import needed.
+ * Controllers are read-only; write path lives in SyncModule / IngestModule.
  */
 @Module({
   controllers: [CovidController],
