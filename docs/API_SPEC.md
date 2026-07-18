@@ -143,6 +143,9 @@ All error responses use a **stable envelope** ([REQ-F-13](./REQUIREMENTS.md)). P
 | `GET /covid/countries/zz` | `400` — country codes must be uppercase ISO2 |
 | `GET /covid/countries/ZZ` | `404` — not in `countries` table |
 | `GET /covid/series?metric=invalid` | `400` — unknown metric enum |
+| `GET /covid/series?from=2020-02-30` | `400` — impossible calendar date |
+| `GET /covid/series?from=2021-01-01&to=2020-01-01` | `400` — `from` after `to` |
+| `GET /covid/series?from=2000-01-01&to=2020-01-01` | `400` — span exceeds 4000 days |
 
 ---
 
@@ -321,8 +324,10 @@ Ordered time-series points for the country-scoped chart ([REQ-F-11](./REQUIREMEN
 | Param | Type | Default | Description |
 |-------|------|---------|-------------|
 | `metric` | `string` | `casesTotal` | `casesTotal`, `deathsTotal`, `casesNew`, `deathsNew` |
-| `from` | `date` | — | Inclusive start date (`YYYY-MM-DD`) |
-| `to` | `date` | — | Inclusive end date (`YYYY-MM-DD`) |
+| `from` | `date` | — | Inclusive start date (`YYYY-MM-DD`, real calendar date) |
+| `to` | `date` | — | Inclusive end date (`YYYY-MM-DD`, real calendar date) |
+
+**Validation:** `from` ≤ `to`; both must be valid calendar dates (not merely regex-shaped, e.g. `2020-02-30` → `400`); when both are set, inclusive span must be ≤ **4000** days (protects unbounded series reads).
 
 **Response `200`:**
 

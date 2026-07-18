@@ -40,7 +40,7 @@ The monorepo contains two Node.js applications and a local database:
 | Web | `web/` | `http://localhost:3000` | Next.js frontend |
 | PostgreSQL | Docker (`gad-postgres`) | `localhost:5432` | Local relational database |
 
-At the current project phase, the API and web scaffolds run independently. PostgreSQL is provisioned for upcoming Prisma work; the database is **not yet required** to start the API or web client.
+At the current project phase, the API requires PostgreSQL (via Prisma) to start. The web client runs independently.
 
 ---
 
@@ -143,10 +143,11 @@ Edit `api/.env`:
 
 | Variable | Required now | Description |
 |----------|--------------|-------------|
-| `PORT` | Recommended | API listen port. Use `3001` to avoid clashing with the web dev server. |
+| `PORT` | Recommended | API listen port. Default `3001` (loaded from `api/.env` via ConfigModule). |
 | `NODE_ENV` | No | `development` for local work |
-| `DATABASE_URL` | When Prisma is added | PostgreSQL connection string (see [§4](#4-start-postgresql-docker)) |
-| `API_NINJAS_KEY` | When ingest is implemented | API Ninjas key — [EXTERNAL_APIS.md §2](./EXTERNAL_APIS.md#2-security-and-configuration) |
+| `DATABASE_URL` | **Yes** | PostgreSQL connection string (see [§4](#4-start-postgresql-docker)) |
+| `API_NINJAS_KEY` | For upstream calls | API Ninjas key (`X-Api-Key`) — optional at app boot; required when invoking `ApiNinjasClient` — [EXTERNAL_APIS.md §2](./EXTERNAL_APIS.md#2-security-and-configuration) |
+| `API_NINJAS_TIMEOUT_MS` | No | Upstream HTTP timeout (1000–60000 ms). Default `15000` |
 | `APIFY_TOKEN` | No | Contingency provider (future phases) |
 
 Obtain an API Ninjas key at [api-ninjas.com](https://api-ninjas.com/). The same account key can be reused across machines; copy it into `api/.env` on each workstation.
@@ -168,7 +169,7 @@ cp web/.env.example web/.env
 | Package | `.env` auto-loaded? |
 |---------|---------------------|
 | `web/` | Yes — Next.js reads `.env` on `npm run dev` |
-| `api/` | **Not yet** — NestJS does not load `api/.env` until `ConfigModule` (or equivalent) is added. Set `PORT` via the shell when starting the API (see [§7](#7-run-the-applications)). `DATABASE_URL` and `API_NINJAS_KEY` will take effect once the data layer and ingest modules are wired. |
+| `api/` | Yes — `ConfigModule` loads `api/.env` on startup |
 
 ---
 
@@ -183,6 +184,21 @@ cd ../web && npm install
 
 Lockfiles (`package-lock.json`) are committed — use `npm install`, not `npm update`, unless intentionally upgrading dependencies.
 
+### Database migrations (API)
+
+From the repo root, ensure PostgreSQL is running (`docker compose up -d`), then:
+
+```bash
+cd api
+cp .env.example .env   # if not done yet
+npm run prisma:generate
+npx prisma migrate deploy
+```
+
+**Expected:** `All migrations have been successfully applied.`
+
+For schema changes during development, use `npm run prisma:migrate` (creates and applies a new migration locally).
+
 ---
 
 ## 7. Run the applications
@@ -195,15 +211,17 @@ Use **two terminals** — one for the API, one for the web client.
 
 ```bash
 cd api
-PORT=3001 npm run start:dev
+npm run start:dev
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 cd api
-$env:PORT=3001; npm run start:dev
+npm run start:dev
 ```
+
+`PORT` is read from `api/.env` (default `3001`). Override in the shell only if needed: `PORT=3002 npm run start:dev`.
 
 **Expected output (abbreviated):**
 
@@ -249,7 +267,9 @@ Default URL: **http://localhost:3000**
 | Database up | `docker ps` | `gad-postgres` status `Up` |
 | API lint | `cd api && npm run lint` | No errors |
 | Web lint | `cd web && npm run lint` | No errors |
-| API tests | `cd api && npm test` | Tests pass (scaffold defaults) |
+| API tests | `cd api && npm test` | Tests pass |
+| Prisma client | `cd api && npm run prisma:generate` | Client generated |
+| Migrations | `cd api && npx prisma migrate deploy` | Migrations applied |
 
 ---
 
@@ -259,14 +279,15 @@ Default URL: **http://localhost:3000**
 |------|---------------------------------------|
 | Start database | `docker compose up -d` |
 | Stop database | `docker compose down` |
-| API dev (watch) | `PORT=3001 npm run start:dev` in `api/` |
+| API dev (watch) | `npm run start:dev` in `api/` |
+| Prisma generate | `npm run prisma:generate` in `api/` |
+| Prisma migrate (dev) | `npm run prisma:migrate` in `api/` |
+| Apply migrations | `npx prisma migrate deploy` in `api/` |
 | Web dev | `npm run dev` in `web/` |
 | API unit tests | `npm test` in `api/` |
 | API e2e tests | `npm run test:e2e` in `api/` |
 | Lint API | `npm run lint` in `api/` |
 | Lint web | `npm run lint` in `web/` |
-
-When Prisma is introduced, database migrations will be documented here (e.g. `npx prisma migrate dev` in `api/`).
 
 ---
 
@@ -323,9 +344,9 @@ Detected additional lockfiles: ...
 
 ### API listens on port `3000` instead of `3001`
 
-**Cause:** `PORT` was not set in the shell and NestJS falls back to `3000` (`api/src/main.ts`).
+**Cause:** `PORT` is missing from `api/.env` and the shell override was not set.
 
-**Fix:** Always pass `PORT=3001` when starting the API until `ConfigModule` loads `api/.env` automatically.
+**Fix:** Ensure `api/.env` contains `PORT=3001`, then restart the API.
 
 ### Web cannot reach the API
 
@@ -349,14 +370,16 @@ Reflects the **initial development phase** documented in the root [README.md](..
 
 | Area | State |
 |------|-------|
-| `api/` | NestJS scaffold — default `GET /` route |
+| `api/` | NestJS with ConfigModule, Prisma, API Ninjas client, ingest normalizer/upsert, default `GET /` route |
 | `web/` | Next.js scaffold — starter page |
-| PostgreSQL | Docker Compose defined; container can run locally |
-| Prisma ORM | Not configured — no `api/prisma/` yet |
-| API Ninjas ingest | Not implemented — key is prepared in `api/.env` for future work |
+| PostgreSQL | Docker Compose; required for API startup |
+| Prisma ORM | Configured — `api/prisma/schema.prisma` + initial migration |
+| API Ninjas client | Implemented — `api/src/integration/api-ninjas/` |
+| Metric normalizer & upsert | Implemented — `api/src/ingest/` (`MetricNormalizer`, `CovidMetricRepository`) |
+| API Ninjas sync orchestration | Not implemented — `SyncRun`, `POST /sync`, scheduling (next cards) |
 | Dashboard UI | Not implemented |
 
-You can develop and run the scaffolds without PostgreSQL. Start Docker when working on database-related tasks.
+Start Docker before running the API (`docker compose up -d` from repo root).
 
 ---
 

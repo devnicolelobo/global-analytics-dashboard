@@ -98,9 +98,9 @@ This document **consolidates** accepted decisions from [docs/adr/](./adr/) into 
 |-------|----------------|----------------|
 | **Presentation** | Map, KPIs, chart, country selection | `web/` — Next.js App Router, React, Tailwind, React Leaflet |
 | **Application (API)** | REST resources, validation, aggregation | `api/` — NestJS controllers and services |
-| **Domain / ingest** | Sync orchestration, normalization, country roll-up | `api/` — ingest module (planned) |
+| **Domain / ingest** | Normalization, upsert; sync orchestration next | `api/src/ingest/` (normalizer + repository); SyncRun planned |
 | **Persistence** | Storage, migrations, queries | `api/` — Prisma → PostgreSQL ([ADR-003](./adr/ADR-003-database-choice.md)) |
-| **Integration** | HTTP clients to upstream providers | `api/` — integration adapters ([EXTERNAL_APIS.md](./EXTERNAL_APIS.md)) |
+| **Integration** | HTTP clients to upstream providers | `api/src/integration/api-ninjas/` ([EXTERNAL_APIS.md](./EXTERNAL_APIS.md)) |
 
 **Dependency rule:** Presentation → Application API → Persistence. Integration is invoked only from ingest/domain services, never from `web/`.
 
@@ -124,16 +124,16 @@ No shared TypeScript package in MVP; DTO shapes may be duplicated between `api/`
 
 ## 6. Backend (`api/`)
 
-### 6.1 Planned module map (NestJS)
+### 6.1 Module map (NestJS)
 
-| Module | Responsibility | Phase |
-|--------|----------------|-------|
-| **App** | Bootstrap, config, health | 3 |
-| **Prisma** | Database client, connection lifecycle | 3 |
-| **Integration** | API Ninjas HTTP client; optional Apify adapter | 3 |
-| **Ingest** | Sync jobs, normalizer, country aggregation, upsert | 3 |
-| **Covid** (or **Metrics**) | Read models: countries, summary, time series | 3 |
-| **Sync** (optional) | Manual trigger endpoint / CLI entry for operator | 3 |
+| Module | Responsibility | Status (Phase 3) |
+|--------|----------------|------------------|
+| **App** | Bootstrap, config | Done |
+| **Prisma** | Database client, connection lifecycle | Done |
+| **Integration** | API Ninjas HTTP client; optional Apify adapter later | Done (API Ninjas) |
+| **Ingest** | Normalizer, country ISO map, Prisma upsert | Done; SyncRun orchestration planned |
+| **Covid** (or **Metrics**) | Read models: countries, summary, time series | Planned |
+| **Sync** (optional) | Manual trigger endpoint / CLI entry for operator | Planned |
 
 ### 6.2 Internal responsibilities
 
@@ -147,8 +147,9 @@ No shared TypeScript package in MVP; DTO shapes may be duplicated between `api/`
 
 | Variable | Purpose |
 |----------|---------|
-| `DATABASE_URL` | PostgreSQL connection (Phase 3) |
+| `DATABASE_URL` | PostgreSQL connection |
 | `API_NINJAS_KEY` | Upstream authentication |
+| `API_NINJAS_TIMEOUT_MS` | Optional upstream HTTP timeout (default 15000 ms) |
 | `PORT` | HTTP listen port (default 3001 local) |
 
 See `api/.env.example`. Secrets never committed.
@@ -199,11 +200,20 @@ Operator / cron
 ```
 Viewer browser
     → web/ (Next.js)
-        → GET /api/... (internal REST)
-            → CovidService (query Prisma)
-                → PostgreSQL
+        → GET /covid/... (internal REST, API_SPEC §6)
+            → CovidController (DTO + ISO2 pipe validation)
+            → CovidService (country / global / series roll-up §8)
+            → CovidQueryService (Prisma parameterized queries)
+                → PostgreSQL (indexes on countryCode+referenceDate, referenceDate)
     → Render map + KPIs + chart
 ```
+
+| Concern | Approach |
+|---------|----------|
+| Subnational rows | Never returned in JSON — national row preferred, else sum regions |
+| Empty DB | `200` with `null` metrics / empty arrays (not `500`) |
+| Input safety | Uppercase ISO2 only; calendar `YYYY-MM-DD`; series span capped |
+| Auth | Out of scope for MVP — read-only public internal API |
 
 Country selection in UI filters client state and subsequent API calls (country-scoped endpoints per [API_SPEC.md](./API_SPEC.md)).
 

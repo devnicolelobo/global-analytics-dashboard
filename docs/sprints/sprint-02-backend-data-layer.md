@@ -16,13 +16,15 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 
 | Area | Focus | Status |
 |------|-------|--------|
-| Branch setup | Create `develop` from `main` | Planned |
-| Prisma | `api/prisma/schema.prisma`, initial migration | Planned |
-| NestJS config | `ConfigModule`, `.env` loading | Planned |
-| COVID module | Ingest service, normalizer, API Ninjas client | Planned |
-| REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Planned |
-| Sync | `POST /sync`, `GET /sync/status`, daily job outline | Planned |
-| Tests | Unit + integration for ingest and read paths | Planned |
+| Branch setup | Create `develop` from `main` | Done |
+| Prisma | `api/prisma/schema.prisma`, initial migration | Done |
+| NestJS config | `ConfigModule`, `.env` loading | Done |
+| Integration | API Ninjas HTTP client (`api/src/integration/api-ninjas/`) | Done |
+| Ingest | Normalizer + Prisma upsert (`api/src/ingest/`) | Done |
+| Ingest | `SyncRun` orchestration | Planned |
+| REST API | Endpoints per [API_SPEC.md](../API_SPEC.md) §6–7 | Done |
+| Sync | `POST /sync`, `GET /sync/status`, daily job outline | Done (HTTP); daily job deferred |
+| Tests | Unit + integration for ingest and read paths | Done |
 | CI (optional) | `.github/workflows/ci-api.yml` when tests exist | Deferred |
 
 ---
@@ -31,25 +33,26 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 
 ### Infrastructure & persistence
 
-- [ ] `develop` branch created and set as integration target for feature PRs
-- [ ] Prisma installed and configured in `api/`
-- [ ] Schema aligned with [DATA_MODEL.md](../DATA_MODEL.md)
-- [ ] `npx prisma migrate dev` — initial migration committed
-- [ ] `DATABASE_URL` consumed via NestJS `ConfigModule`
+- [x] `develop` branch created and set as integration target for feature PRs
+- [x] Prisma installed and configured in `api/`
+- [x] Schema aligned with [DATA_MODEL.md](../DATA_MODEL.md)
+- [x] `npx prisma migrate dev` — initial migration committed
+- [x] `DATABASE_URL` consumed via NestJS `ConfigModule`
 
 ### Ingest & API
 
-- [ ] API Ninjas integration client ([EXTERNAL_APIS.md](../EXTERNAL_APIS.md))
-- [ ] Upsert on natural key (`country_code`, `region`, `reference_date`)
-- [ ] Read endpoints: `/health`, `/covid/summary`, `/covid/countries`, `/covid/countries/:code`, series routes
-- [ ] Sync endpoints: `POST /sync`, `GET /sync/status`
-- [ ] Error envelope per [API_SPEC.md](../API_SPEC.md) §4
+- [x] API Ninjas integration client ([EXTERNAL_APIS.md](../EXTERNAL_APIS.md))
+- [x] Metric normalizer (country → ISO2, Mode A/B, cases/deaths merge rules)
+- [x] Upsert on natural key (`country_code`, `region`, `reference_date`) via `CovidMetricRepository`
+- [x] Read endpoints: `/health`, `/covid/summary`, `/covid/countries`, `/covid/countries/:code`, series routes
+- [x] Sync endpoints: `POST /sync`, `GET /sync/status`
+- [x] Error envelope per [API_SPEC.md](../API_SPEC.md) §4
 
 ### Quality
 
-- [ ] `npm run lint` and `npm test` pass in `api/`
-- [ ] Integration tests for primary read and sync happy paths
-- [ ] No secrets committed; `API_NINJAS_KEY` server-only
+- [x] `npm run lint` and `npm test` pass in `api/`
+- [x] Integration / e2e tests for primary read and sync happy paths (+ edge cases)
+- [x] No secrets committed; `API_NINJAS_KEY` server-only
 
 ---
 
@@ -71,11 +74,17 @@ Work is tracked in **Linear** (`DEV-XX`). This sprint starts **code delivery** o
 
 ### Shipped
 
-- …
+- Prisma schema, initial migration, `ConfigModule`, `PrismaModule` (DEV-80)
+- API Ninjas HTTP client and `ApiNinjasModule` (DEV-81)
+- Metric normalizer, country ISO map, and Prisma upsert repository (DEV-82)
+- Error envelope, health readiness, ValidationPipe (DEV-84)
+- Sync orchestration + `POST /sync` / status / run detail (DEV-85)
+- COVID read endpoints + aggregation + e2e (DEV-86)
 
 ### Deferred / next
 
-- …
+- Phase 4 frontend (`web/`) against read API
+- Optional caching / rate limits post-MVP
 
 ---
 
