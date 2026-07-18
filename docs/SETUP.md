@@ -291,7 +291,7 @@ Default URL: **http://localhost:3000**
 
 ### Integration / e2e against PostgreSQL (DEV-87)
 
-Strategy: **Option A** — real Postgres (Docker) for integration confidence; mock upstream HTTP so CI never calls API Ninjas. SQLite is forbidden ([ADR-003](./adr/)).
+Strategy: **Option A** — real Postgres (Docker) for integration confidence; mock upstream HTTP so CI never calls API Ninjas. SQLite is forbidden ([ADR-003](./adr/ADR-003-database-choice.md)).
 
 1. `docker compose up -d` from repo root  
 2. Optional: `cp api/.env.test.example api/.env.test`  
