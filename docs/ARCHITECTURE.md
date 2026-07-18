@@ -200,11 +200,20 @@ Operator / cron
 ```
 Viewer browser
     → web/ (Next.js)
-        → GET /api/... (internal REST)
-            → CovidService (query Prisma)
-                → PostgreSQL
+        → GET /covid/... (internal REST, API_SPEC §6)
+            → CovidController (DTO + ISO2 pipe validation)
+            → CovidService (country / global / series roll-up §8)
+            → CovidQueryService (Prisma parameterized queries)
+                → PostgreSQL (indexes on countryCode+referenceDate, referenceDate)
     → Render map + KPIs + chart
 ```
+
+| Concern | Approach |
+|---------|----------|
+| Subnational rows | Never returned in JSON — national row preferred, else sum regions |
+| Empty DB | `200` with `null` metrics / empty arrays (not `500`) |
+| Input safety | Uppercase ISO2 only; calendar `YYYY-MM-DD`; series span capped |
+| Auth | Out of scope for MVP — read-only public internal API |
 
 Country selection in UI filters client state and subsequent API calls (country-scoped endpoints per [API_SPEC.md](./API_SPEC.md)).
 
