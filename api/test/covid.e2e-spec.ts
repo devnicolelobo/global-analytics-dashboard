@@ -32,6 +32,7 @@ describe('COVID read endpoints (e2e)', () => {
     covidDailyMetric: {
       aggregate: jest.Mock;
       findMany: jest.Mock;
+      groupBy: jest.Mock;
     };
     syncRun: {
       findFirst: jest.Mock;
@@ -70,26 +71,25 @@ describe('COVID read endpoints (e2e)', () => {
         aggregate: jest.fn().mockResolvedValue({
           _max: { referenceDate: REF_DATE },
         }),
+        groupBy: jest
+          .fn()
+          .mockImplementation((args: { where?: { countryCode?: string } }) => {
+            if (args.where?.countryCode === 'CA') {
+              return Promise.resolve([
+                { region: 'Ontario' },
+                { region: 'Quebec' },
+              ]);
+            }
+            return Promise.resolve([{ region: '' }]);
+          }),
         findMany: jest.fn().mockImplementation(
           (args: {
             where?: {
               countryCode?: string;
               referenceDate?: Date | { gte?: Date; lte?: Date };
             };
-            distinct?: string[];
             orderBy?: unknown;
           }) => {
-            // hasRegionalBreakdown distinct regions
-            if (args.distinct?.includes('region')) {
-              if (args.where?.countryCode === 'CA') {
-                return Promise.resolve([
-                  { region: 'Ontario' },
-                  { region: 'Quebec' },
-                ]);
-              }
-              return Promise.resolve([{ region: '' }]);
-            }
-
             const ref = args.where?.referenceDate;
             const isExactDate = ref instanceof Date;
 
@@ -412,6 +412,57 @@ describe('COVID read endpoints (e2e)', () => {
     const body = response.body as ErrorResponseDto;
 
     expect(body.statusCode).toBe(400);
+  });
+
+  it('GET /covid/series impossible calendar date → 400', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/covid/series')
+      .query({ from: '2020-02-30' })
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+  });
+
+  it('GET /covid/series from > to → 400', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/covid/series')
+      .query({ from: '2021-01-01', to: '2020-01-01' })
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+  });
+
+  it('GET /covid/series span beyond max → 400 (DoS guard)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/covid/series')
+      .query({ from: '2000-01-01', to: '2020-01-01' })
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+  });
+
+  it('GET /covid/countries/Br → 400 mixed-case ISO2', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/covid/countries/Br')
+      .expect(400);
+    const body = response.body as ErrorResponseDto;
+
+    expect(body.statusCode).toBe(400);
+  });
+
+  it('GET /covid/countries/BR/series empty history → 200 + []', async () => {
+    prismaMock.covidDailyMetric.findMany.mockResolvedValue([]);
+
+    const response = await request(app.getHttpServer())
+      .get('/covid/countries/BR/series')
+      .expect(200);
+    const body = response.body as CountrySeriesResponseDto;
+
+    expect(body.points).toEqual([]);
+    expect(body.meta.pointCount).toBe(0);
   });
 
   it('empty DB → 200 with null metrics / empty series', async () => {

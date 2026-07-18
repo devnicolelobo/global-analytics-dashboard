@@ -101,6 +101,25 @@ describe('rollupCountryMetrics', () => {
     });
   });
 
+  it('sums a single regional row unchanged', () => {
+    expect(
+      rollupCountryMetrics([
+        {
+          region: 'Ontario',
+          casesTotal: 7,
+          deathsTotal: null,
+          casesNew: null,
+          deathsNew: null,
+        },
+      ]),
+    ).toEqual({
+      casesTotal: 7,
+      deathsTotal: null,
+      casesNew: null,
+      deathsNew: null,
+    });
+  });
+
   it('returns null for empty input', () => {
     expect(rollupCountryMetrics([])).toBeNull();
   });
