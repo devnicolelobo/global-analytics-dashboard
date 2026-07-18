@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CountryNotFoundException } from '../common/errors';
 import {
-  MetricFields,
   pickMetricValue,
   rollupCountryMetrics,
   rollupGlobalMetrics,
@@ -211,9 +210,7 @@ export class CovidService {
   }
 }
 
-function groupByCountry(
-  rows: MetricQueryRow[],
-): Map<string, MetricQueryRow[]> {
+function groupByCountry(rows: MetricQueryRow[]): Map<string, MetricQueryRow[]> {
   const map = new Map<string, MetricQueryRow[]>();
   for (const row of rows) {
     const list = map.get(row.countryCode) ?? [];
@@ -263,7 +260,7 @@ function metricValue(
   if (!snapshot) {
     return null;
   }
-  return pickMetricValue(snapshot as MetricFields, metric);
+  return pickMetricValue(snapshot, metric);
 }
 
 function toIsoOrNull(value: Date | null): string | null {

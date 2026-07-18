@@ -79,7 +79,9 @@ export function rollupCountryMetrics(
  * Global roll-up: per-country roll-up first, then sum countries (API_SPEC §8.1).
  */
 export function rollupGlobalMetrics(
-  rows: Array<CountryDateMetricRow | (RegionMetricRow & { countryCode: string })>,
+  rows: Array<
+    CountryDateMetricRow | (RegionMetricRow & { countryCode: string })
+  >,
 ): MetricFields | null {
   if (rows.length === 0) {
     return null;

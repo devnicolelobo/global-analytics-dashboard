@@ -138,9 +138,7 @@ export class CovidQueryService {
 
     return this.prisma.covidDailyMetric.findMany({
       where: {
-        ...(options.countryCode
-          ? { countryCode: options.countryCode }
-          : {}),
+        ...(options.countryCode ? { countryCode: options.countryCode } : {}),
         ...(Object.keys(referenceDateFilter).length > 0
           ? { referenceDate: referenceDateFilter }
           : {}),

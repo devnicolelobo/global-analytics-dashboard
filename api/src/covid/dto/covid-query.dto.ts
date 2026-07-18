@@ -7,11 +7,7 @@ import {
   ValidatorConstraintInterface,
   ValidationArguments,
 } from 'class-validator';
-import {
-  DEFAULT_METRIC,
-  METRIC_TYPES,
-  MetricType,
-} from './metric-type';
+import { DEFAULT_METRIC, METRIC_TYPES, MetricType } from './metric-type';
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
