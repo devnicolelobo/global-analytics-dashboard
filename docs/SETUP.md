@@ -289,6 +289,17 @@ Default URL: **http://localhost:3000**
 | Lint API | `npm run lint` in `api/` |
 | Lint web | `npm run lint` in `web/` |
 
+### Integration / e2e against PostgreSQL (DEV-87)
+
+Strategy: **Option A** — real Postgres (Docker) for integration confidence; mock upstream HTTP so CI never calls API Ninjas. SQLite is forbidden ([ADR-003](./adr/)).
+
+1. `docker compose up -d` from repo root  
+2. Optional: `cp api/.env.test.example api/.env.test`  
+3. `cd api && npx prisma migrate deploy`  
+4. `npm run test:e2e`
+
+Shared helpers live in `api/test/helpers/` (`createTestApp`, `truncateAllTables`, `seedCovidFixtures`). Truncate isolates suites; fixtures use deterministic roll-up totals for API_SPEC §11.
+
 ---
 
 ## 10. Troubleshooting
