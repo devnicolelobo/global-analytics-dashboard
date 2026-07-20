@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phases 0–3 complete. Phase 4 (frontend & dashboard) is next — Sprint 03 record not yet opened. Sprint 02 closed: [sprint-02-backend-data-layer.md](./sprints/sprint-02-backend-data-layer.md).
+**Current phase.** Phase 4 (frontend & dashboard) **in progress** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) (M4). Phases 0–3 complete; Sprint 02 closed: [sprint-02-backend-data-layer.md](./sprints/sprint-02-backend-data-layer.md).
 
 ---
 
@@ -151,7 +151,7 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 | **1** | Governance & documentation | PM plan, ADRs, requirements, external API analysis | Complete |
 | **2** | Architecture & specifications | Architecture, data model, API spec, diagrams, SETUP, DEPLOYMENT | Complete |
 | **3** | Backend & data layer | Prisma, ingest, internal REST API | Complete (Sprint 02 / M3) |
-| **4** | Frontend & dashboard | Maps, KPIs, charts | Next |
+| **4** | Frontend & dashboard | Maps, KPIs, charts | In progress (Sprint 03 / M4) |
 | **5** | CI/CD & production | Pipelines, staging, production, MVP release | Planned |
 
 Phases are sequential in intent but allow overlap where discovery (docs/specs) runs ahead of delivery (code).
