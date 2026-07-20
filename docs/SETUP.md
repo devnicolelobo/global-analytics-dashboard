@@ -377,18 +377,18 @@ Detected additional lockfiles: ...
 
 ## 11. Current limitations
 
-Reflects the **initial development phase** documented in the root [README.md](../README.md):
+Reflects the **current development phase** documented in the root [README.md](../README.md):
 
 | Area | State |
 |------|-------|
-| `api/` | NestJS with ConfigModule, Prisma, API Ninjas client, ingest normalizer/upsert, default `GET /` route |
-| `web/` | Next.js scaffold — starter page |
+| `api/` | Complete (Sprint 02) — ConfigModule, Prisma, API Ninjas client, ingest, sync orchestration, COVID read API |
+| `web/` | Dashboard shell + typed API client (`web/lib/api/`); map, KPIs, chart, and selection context in progress (Sprint 03) |
 | PostgreSQL | Docker Compose; required for API startup |
 | Prisma ORM | Configured — `api/prisma/schema.prisma` + initial migration |
 | API Ninjas client | Implemented — `api/src/integration/api-ninjas/` |
-| Metric normalizer & upsert | Implemented — `api/src/ingest/` (`MetricNormalizer`, `CovidMetricRepository`) |
-| API Ninjas sync orchestration | Not implemented — `SyncRun`, `POST /sync`, scheduling (next cards) |
-| Dashboard UI | Not implemented |
+| Metric normalizer & upsert | Implemented — `api/src/ingest/` |
+| Sync orchestration | Implemented — `POST /sync`, status endpoints — `api/src/sync/` |
+| Dashboard UI | Shell + placeholders; interactive map/KPIs/chart pending (DEV-90+) |
 
 Start Docker before running the API (`docker compose up -d` from repo root).
 

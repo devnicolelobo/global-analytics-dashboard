@@ -26,17 +26,17 @@ Full technical view: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) · editable 
 
 ## Project status
 
-**Phase 3 — backend implementation** — documentation and specifications are complete (M1, M2). Active work: Prisma, COVID ingest, and internal REST API in `api/`. See [docs/sprints/sprint-02-backend-data-layer.md](./docs/sprints/sprint-02-backend-data-layer.md).
+**Phase 4 — frontend & dashboard** · **Sprint 03 in progress** (target M4, Jul–Aug 2026). Phases 0–3 and Sprint 02 are complete (**M3** met). Active work: dashboard features in `web/` — selection context, KPIs, map, and chart. See [docs/sprints/sprint-03-frontend-dashboard.md](./docs/sprints/sprint-03-frontend-dashboard.md).
 
 | Component              | State |
 |------------------------|-------|
-| `api/`                 | NestJS — Config, Prisma, API Ninjas client, ingest normalizer/upsert |
-| `web/`                 | Next.js scaffold |
-| PostgreSQL (local)     | Docker Compose defined; container runnable |
-| Prisma ORM             | Configured — schema + initial migration in `api/prisma/` |
-| API Ninjas integration | Client implemented — `api/src/integration/api-ninjas/` |
-| Ingest (normalize/upsert) | Implemented — `api/src/ingest/` (sync orchestration next) |
-| Dashboard UI           | Not implemented |
+| `api/`                 | Complete (Sprint 02) — Prisma, ingest, sync, COVID read API, `ci-api.yml` |
+| `web/`                 | Dashboard shell + typed API client (`web/lib/api/`); map/KPIs/chart next |
+| PostgreSQL (local)     | Docker Compose defined; required for API |
+| Prisma ORM             | Schema + initial migration in `api/prisma/` |
+| API Ninjas integration | Client + sync orchestration — `api/src/integration/`, `api/src/sync/` |
+| Ingest (normalize/upsert) | Complete — `api/src/ingest/` |
+| Dashboard UI           | In progress (shell + placeholders; DEV-90+ pending) |
 | Documentation          | Complete through SETUP, DEPLOYMENT, and diagram assets |
 
 ---

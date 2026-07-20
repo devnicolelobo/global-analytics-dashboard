@@ -126,14 +126,14 @@ No shared TypeScript package in MVP; DTO shapes may be duplicated between `api/`
 
 ### 6.1 Module map (NestJS)
 
-| Module | Responsibility | Status (Phase 3) |
-|--------|----------------|------------------|
+| Module | Responsibility | Status |
+|--------|----------------|--------|
 | **App** | Bootstrap, config | Done |
 | **Prisma** | Database client, connection lifecycle | Done |
 | **Integration** | API Ninjas HTTP client; optional Apify adapter later | Done (API Ninjas) |
-| **Ingest** | Normalizer, country ISO map, Prisma upsert | Done; SyncRun orchestration planned |
-| **Covid** (or **Metrics**) | Read models: countries, summary, time series | Planned |
-| **Sync** (optional) | Manual trigger endpoint / CLI entry for operator | Planned |
+| **Ingest** | Normalizer, country ISO map, Prisma upsert | Done |
+| **Covid** | Read models: countries, summary, time series | Done (Sprint 02) |
+| **Sync** | Manual trigger endpoint, SyncRun lifecycle | Done (Sprint 02) |
 
 ### 6.2 Internal responsibilities
 
@@ -158,15 +158,16 @@ See `api/.env.example`. Secrets never committed.
 
 ## 7. Frontend (`web/`)
 
-### 7.1 Planned structure (Next.js App Router)
+### 7.1 Structure (Next.js App Router)
 
-| Area | Responsibility |
-|------|----------------|
-| `app/` | Routes, layout, page shell |
-| `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) |
-| `components/kpis/` | KPI cards bound to summary API |
-| `components/charts/` | Time-series chart (confirmed cases) |
-| `lib/api/` | Typed client for internal REST base URL |
+| Area | Responsibility | Status (Sprint 03) |
+|------|----------------|---------------------|
+| `app/` | Routes, layout, page shell | Done — dashboard page replaces starter |
+| `components/dashboard/` | Header, footer, shell, placeholder panels | Done (DEV-88) |
+| `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) | Planned (DEV-92) |
+| `components/kpis/` | KPI cards bound to summary API | Planned (DEV-91) |
+| `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
+| `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 
 ### 7.2 Client constraints
 
@@ -340,8 +341,8 @@ Open `.drawio` files with [app.diagrams.net](https://app.diagrams.net/) if you p
 | Phase | Deliverable |
 |-------|-------------|
 | 2 | DATA_MODEL, API_SPEC, diagrams, SETUP, DEPLOYMENT — **complete** |
-| 3 (current) | Module implementation in `api/` — Prisma, ingest, REST |
-| 4 | Dashboard components in `web/` |
+| 3 | Module implementation in `api/` — Prisma, ingest, REST — **complete** (Sprint 02 / M3) |
+| 4 (current) | Dashboard components in `web/` — **in progress** (Sprint 03 / M4) |
 
 ---
 

@@ -418,10 +418,11 @@ Also update the root [README.md](../README.md) per [REQ-NF-06](./REQUIREMENTS.md
 |------|-------|
 | Staging environment | Not provisioned |
 | Production environment | Not provisioned |
-| GitHub Actions CI | `ci-api.yml` active (lint / unit / e2e / build); `ci-web.yml` pending Phase 4+ |
+| GitHub Actions CI | `ci-api.yml` active (lint / unit / e2e / build); `ci-web.yml` pending Sprint 03 close (DEV-95) |
 | Automated deploy | Not configured |
-| `develop` branch | Scheduled for Phase 3 ([PROJECT_MANAGEMENT.md §11.4](./PROJECT_MANAGEMENT.md#114-exceptions)) |
-| Prisma / ingest / dashboard | In development — deploy targets M4 (staging) and M5 (production) |
+| `develop` branch | Active integration branch (created Phase 3; Sprint 02 backend + Sprint 03 frontend) |
+| Prisma / ingest / read API | Complete on `develop` / `main` (Sprint 02 / M3) |
+| Dashboard (`web/`) | In progress — shell + API client shipped; staging deploy at M4 |
 
 Local development is documented in [SETUP.md](./SETUP.md). This document defines the **target** operational model; implementation lands in Phase 5.
 
