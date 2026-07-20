@@ -268,7 +268,7 @@ Target: **GitHub Actions** workflows in `.github/workflows/`.
 | E2E | `npm run test:e2e` |
 | Build | `npm run build` |
 
-Status check name required for merge: **`CI API / api`**.
+Status check name required for merge: **`api`** (Actions job name in `ci-api.yml`).
 
 ### `ci-web.yml` (on PR and push to `develop` / `main`)
 
