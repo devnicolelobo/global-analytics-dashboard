@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phases 0–2 complete (documentation and specifications). Phase 3 (backend and data layer) in progress — [Sprint 02](./sprints/sprint-02-backend-data-layer.md).
+**Current phase.** Phases 0–3 complete. Phase 4 (frontend & dashboard) is next — Sprint 03 record not yet opened. Sprint 02 closed: [sprint-02-backend-data-layer.md](./sprints/sprint-02-backend-data-layer.md).
 
 ---
 
@@ -150,8 +150,8 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 | **0** | Foundation | Repository, process, base documentation | Complete |
 | **1** | Governance & documentation | PM plan, ADRs, requirements, external API analysis | Complete |
 | **2** | Architecture & specifications | Architecture, data model, API spec, diagrams, SETUP, DEPLOYMENT | Complete |
-| **3** | Backend & data layer | Prisma, ingest, internal REST API | In progress |
-| **4** | Frontend & dashboard | Maps, KPIs, charts | Planned |
+| **3** | Backend & data layer | Prisma, ingest, internal REST API | Complete (Sprint 02 / M3) |
+| **4** | Frontend & dashboard | Maps, KPIs, charts | Next |
 | **5** | CI/CD & production | Pipelines, staging, production, MVP release | Planned |
 
 Phases are sequential in intent but allow overlap where discovery (docs/specs) runs ahead of delivery (code).
@@ -171,7 +171,7 @@ Dates are **targets** — revised at each sprint close (Section 18).
 | 0 Foundation | Complete | README, LICENSE, CONTRIBUTING, PR template, docs index |
 | 1 Governance | Complete (2026-07-10) | PROJECT_MANAGEMENT, sprints/, ADR-001–005, REQUIREMENTS, EXTERNAL_APIS |
 | 2 Specifications | Complete (2026-07-10) | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams, SETUP, DEPLOYMENT, assets |
-| 3 Backend | 11 Jul – 10 Aug 2026 | `develop` branch, Prisma, COVID module, tests |
+| 3 Backend | Complete (2026-07-18) | `develop` branch, Prisma, COVID module, tests |
 | 4 Frontend | 11–28 Aug 2026 | Dashboard, Leaflet map, charts |
 | 5 Deploy | 29 Aug – 7 Sep 2026 | GitHub Actions, DEPLOYMENT, staging + production, `v0.1.0` |
 
@@ -181,7 +181,7 @@ Dates are **targets** — revised at each sprint close (Section 18).
 |----|--------|---------------------|
 | **M1** | 16 Jul 2026 | PROJECT_MANAGEMENT, ADRs, REQUIREMENTS, EXTERNAL_APIS committed | **Met** (2026-07-10) |
 | **M2** | 23 Jul 2026 | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams, SETUP, DEPLOYMENT committed | **Met** (2026-07-10) |
-| **M3** | 10 Aug 2026 | Ingest + internal API functional with passing tests | Open |
+| **M3** | 10 Aug 2026 | Ingest + internal API functional with passing tests | **Met** (2026-07-18) |
 | **M4** | 28 Aug 2026 | Dashboard MVP on staging (map, KPIs, minimum chart) |
 | **M5** | 7 Sep 2026 | Production deploy, tag `v0.1.0`, public URLs in README |
 

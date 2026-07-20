@@ -1,5 +1,5 @@
 # API continuous integration — lint, unit, e2e, build (DEPLOYMENT.md §9).
-# Required status check on main/develop: "CI API / api"
+# Required status check on main/develop: "api" (job name below)
 name: CI API
 
 on:
