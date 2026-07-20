@@ -17,7 +17,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 | Card | Title | Status |
 |------|-------|--------|
 | DEV-88 | Open Sprint 03 record and dashboard shell | In progress |
-| DEV-89 | Typed internal API client for web | Planned |
+| DEV-89 | Typed internal API client for web | In review |
 | DEV-90 | Dashboard selection state and global context | Planned |
 | DEV-91 | KPI panel (global and country) | Planned |
 | DEV-92 | Interactive world map with React Leaflet | Planned |
@@ -39,7 +39,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 ### Dashboard features (later cards)
 
-- [ ] Typed client `web/lib/api/` (API_SPEC §10)
+- [x] Typed client `web/lib/api/` (API_SPEC §10) — branch `DEV-89-web-api-client` (mark Done when merged to `develop`)
 - [ ] Country selection drives KPIs and chart (REQ-F-22, REQ-F-24)
 - [ ] KPI panel — confirmed cases, deaths, third KPI (REQ-F-30–33)
 - [ ] React Leaflet map — choropleth or markers (REQ-F-20–23, ADR-005)
