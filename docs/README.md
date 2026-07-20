@@ -11,7 +11,8 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | Document | Description | Status |
 |----------|-------------|--------|
 | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) | Methodology, Linear workflow, GitFlow, releases, definition of done | Available |
-| [sprints/](./sprints/) | Sprint records — Sprint 01–02 complete; Sprint 03 (frontend) next | Available |
+| [PROMPT_WORK_STYLE.md](./PROMPT_WORK_STYLE.md) | AI mentorship + pair programming — file-by-file cycle | Available |
+| [sprints/](./sprints/) | Sprint records — Sprint 01–02 complete; Sprint 03 (frontend) in progress | Available |
 
 ---
 
@@ -58,6 +59,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | I need to… | Read |
 |------------|------|
 | Understand how we work (branches, commits, PRs) | [CONTRIBUTING.md](../CONTRIBUTING.md) |
+| Work with AI as mentorship (one file at a time) | [PROMPT_WORK_STYLE.md](./PROMPT_WORK_STYLE.md) |
 | See project methodology and sprints | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) · [sprints/](./sprints/) |
 | Know what the system must do | [REQUIREMENTS.md](./REQUIREMENTS.md) |
 | Understand system design | [ARCHITECTURE.md](./ARCHITECTURE.md) · [adr/](./adr/) |
@@ -75,6 +77,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 docs/
 ├── README.md                 # This index
 ├── PROJECT_MANAGEMENT.md
+├── PROMPT_WORK_STYLE.md      # AI mentorship / pair programming style
 ├── REQUIREMENTS.md
 ├── ARCHITECTURE.md
 ├── DATA_MODEL.md
