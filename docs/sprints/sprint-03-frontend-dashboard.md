@@ -16,9 +16,9 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 | Card | Title | Status |
 |------|-------|--------|
-| DEV-88 | Open Sprint 03 record and dashboard shell | In progress |
-| DEV-89 | Typed internal API client for web | In review |
-| DEV-90 | Dashboard selection state and global context | Planned |
+| DEV-88 | Open Sprint 03 record and dashboard shell | Done |
+| DEV-89 | Typed internal API client for web | Done |
+| DEV-90 | Dashboard selection state and global context | In progress |
 | DEV-91 | KPI panel (global and country) | Planned |
 | DEV-92 | Interactive world map with React Leaflet | Planned |
 | DEV-93 | Confirmed cases time-series chart | Planned |
@@ -31,15 +31,15 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 ### Documentation & shell
 
-- [ ] Sprint 03 record and index updated ([docs/sprints/README.md](./README.md))
-- [ ] Dashboard page shell replaces Next.js starter in `web/` ([ARCHITECTURE.md](../ARCHITECTURE.md) §7.1)
-- [ ] Reserved regions for map, KPIs, and chart (placeholders until cards 4–6)
-- [ ] English UI copy; responsive layout baseline (REQ-F-50, REQ-F-53)
-- [ ] `NEXT_PUBLIC_API_URL` documented in `web/.env.example`
+- [x] Sprint 03 record and index updated ([docs/sprints/README.md](./README.md))
+- [x] Dashboard page shell replaces Next.js starter in `web/` ([ARCHITECTURE.md](../ARCHITECTURE.md) §7.1)
+- [x] Reserved regions for map, KPIs, and chart (placeholders until cards 4–6)
+- [x] English UI copy; responsive layout baseline (REQ-F-50, REQ-F-53)
+- [x] `NEXT_PUBLIC_API_URL` documented in `web/.env.example`
 
 ### Dashboard features (later cards)
 
-- [x] Typed client `web/lib/api/` (API_SPEC §10) — branch `DEV-89-web-api-client` (mark Done when merged to `develop`)
+- [x] Typed client `web/lib/api/` (API_SPEC §10) — merged to `develop` (DEV-89)
 - [ ] Country selection drives KPIs and chart (REQ-F-22, REQ-F-24)
 - [ ] KPI panel — confirmed cases, deaths, third KPI (REQ-F-30–33)
 - [ ] React Leaflet map — choropleth or markers (REQ-F-20–23, ADR-005)
@@ -57,7 +57,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 | [ARCHITECTURE.md](../ARCHITECTURE.md) §7–8 | Available |
 | [REQUIREMENTS.md](../REQUIREMENTS.md) Phase 4 (REQ-F-20–53) | Available |
 | [SETUP.md](../SETUP.md) — `web/` ports and env | Available |
-| `web/` Next.js scaffold | Available |
+| `web/` dashboard shell + `web/lib/api/` | Available |
 
 ---
 
@@ -67,7 +67,8 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 ### Shipped
 
-- …
+- Dashboard shell (`web/components/dashboard/`, `web/app/page.tsx`) — DEV-88
+- Typed internal API client (`web/lib/api/`) + Vitest unit tests — DEV-89
 
 ### Deferred / next
 
