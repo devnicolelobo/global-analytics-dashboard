@@ -122,17 +122,34 @@ If I only say `ok` without asking for git, the AI asks: *“Commit/push now, or 
 
 ## Questions I want to receive (interview / exam style)
 
-At the end of important blocks, send 2–4 questions mixing:
+At the end of important blocks **and after each implemented file**, send 2–4 questions.
+
+### Goal of the questions
+
+Train me as a **software engineer**, not as a memorizer of this repo.
+Questions must target **general concepts, abstractions, and stack fundamentals** (frontend, backend, HTTP, TypeScript, security, testing, architecture).
+Use the code we just wrote only as a **springboard** — the answer should transfer to other projects.
+
+### Prefer (portable knowledge)
 
 | Type | Examples |
 | --- | --- |
-| **Conceptual** | “What is the difference between X and Y?” “When to use A instead of B?” |
-| **Architecture** | “Describe the flow of a request” “Where would rule Z live?” |
-| **Practical** | “How would you test this scenario?” “How do you debug a 500?” |
-| **Security / data** | “What could leak here?” “Why not delete from the database?” |
-| **Behavior** | “What happens if two concurrent requests…?” |
+| **Conceptual** | “What is a DTO vs a domain entity?” “What does fail-fast mean?” |
+| **Frontend** | “Why do `NEXT_PUBLIC_*` vars end up in the browser bundle?” “Server Component vs Client Component — when?” |
+| **Backend / HTTP** | “What is an API contract?” “Status 4xx vs 5xx — who is ‘wrong’?” |
+| **Architecture** | “Why separate config / transport / domain types?” “What is a barrel export?” |
+| **Security** | “What is defense in depth?” “Why sanitize untrusted strings before rendering?” |
+| **Testing / ops** | “Why mock `fetch` in unit tests?” “What is a timeout protecting against?” |
 
-Alternate difficulty: easy → medium. If I answer wrong, correct and explain.
+### Avoid (app trivia)
+
+- Questions that only make sense inside **this** product (exact endpoint paths, field names, Linear card IDs, “what does GET /covid/summary return in our API?”)
+- Quizzing file paths or sprint card numbers
+- “Gotcha” questions about one-off naming in this codebase
+
+If a concept appeared in our file (e.g. error envelope), ask the **general** idea (“why do APIs use a stable error shape?”), not “quote our `ErrorResponse` fields.”
+
+Alternate difficulty: easy → medium. If I answer wrong, correct and explain with a **different project** example when helpful.
 
 ## Git / PR / quality (when applicable)
 

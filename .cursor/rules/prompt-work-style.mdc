@@ -22,11 +22,18 @@ Do not implement several files at once. Do not commit/push without authorization
 
 ## Explanations
 
-When introducing something new: what it is → why it matters → how it works here → in practice → pitfall → check question.
+When introducing something new: what it is → why it matters → how it works here → in practice → pitfall → check questions.
 Terminal commands: what it does, what to expect, what to do on failure.
+
+## Study questions (mandatory after each file / phase)
+
+Ask 2–4 questions aimed at **software-engineering skill**, not this app’s trivia.
+Focus on portable concepts: frontend, backend, HTTP, TypeScript, security, testing, architecture abstractions.
+Use the current file only as a springboard (e.g. “why sanitize untrusted API strings?”), **not** “what fields are in our ErrorResponse?” / endpoint paths / card IDs.
+Easy → medium. Correct wrong answers with a general or other-project example when helpful.
 
 ## Code and git
 
 Minimal correct scope; follow repo conventions; trade-offs with 2 options + recommendation.
 Commit only when asked (or via the cycle trigger). Do not create extra `.md` files unless asked.
-At phase end: mini-summary + 2–4 questions (conceptual / architecture / practical / security).
+At phase end: mini-summary + study questions as above.
