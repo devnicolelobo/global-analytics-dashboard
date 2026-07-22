@@ -18,8 +18,8 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 |------|-------|--------|
 | DEV-88 | Open Sprint 03 record and dashboard shell | Done |
 | DEV-89 | Typed internal API client for web | Done |
-| DEV-90 | Dashboard selection state and global context | In progress |
-| DEV-91 | KPI panel (global and country) | Planned |
+| DEV-90 | Dashboard selection state and global context | Done |
+| DEV-91 | KPI panel (global and country) | In progress |
 | DEV-92 | Interactive world map with React Leaflet | Planned |
 | DEV-93 | Confirmed cases time-series chart | Planned |
 | DEV-94 | Freshness footer, loading and error states | Planned |
@@ -40,6 +40,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 ### Dashboard features (later cards)
 
 - [x] Typed client `web/lib/api/` (API_SPEC §10) — merged to `develop` (DEV-89)
+- [x] Selection context — global vs country ISO2, `selectCountry` / `clearSelection` (DEV-90)
 - [ ] Country selection drives KPIs and chart (REQ-F-22, REQ-F-24)
 - [ ] KPI panel — confirmed cases, deaths, third KPI (REQ-F-30–33)
 - [ ] React Leaflet map — choropleth or markers (REQ-F-20–23, ADR-005)
@@ -69,6 +70,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 - Dashboard shell (`web/components/dashboard/`, `web/app/page.tsx`) — DEV-88
 - Typed internal API client (`web/lib/api/`) + Vitest unit tests — DEV-89
+- Dashboard selection context (`web/lib/dashboard/selection.ts`, `DashboardSelectionProvider`, `SelectionChrome`) — DEV-90
 
 ### Deferred / next
 
