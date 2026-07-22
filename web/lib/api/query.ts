@@ -1,7 +1,6 @@
 import type { CountriesQueryParams, Metric, SeriesQueryParams } from './types';
 
-/** ISO 3166-1 alpha-2 uppercase (e.g. BR, US). Client-side UX guard — server remains source of truth. */
-const ISO2_UPPER = /^[A-Z]{2}$/;
+export { assertCountryCode } from '../country-code';
 
 const METRICS: ReadonlySet<Metric> = new Set([
   'casesTotal',
@@ -9,20 +8,6 @@ const METRICS: ReadonlySet<Metric> = new Set([
   'casesNew',
   'deathsNew',
 ]);
-
-/**
- * Assert country code shape before building a request URL.
- * Throws a plain Error (not ApiError) — this is a client programming/UX guard, not an HTTP failure.
- */
-export function assertCountryCode(code: string): string {
-  const trimmed = code.trim();
-  if (!ISO2_UPPER.test(trimmed)) {
-    throw new Error(
-      `Invalid countryCode: expected uppercase ISO 3166-1 alpha-2 (got "${code}")`,
-    );
-  }
-  return trimmed;
-}
 
 export function isMetric(value: string): value is Metric {
   return METRICS.has(value as Metric);
