@@ -163,13 +163,18 @@ See `api/.env.example`. Secrets never committed.
 | Area | Responsibility | Status (Sprint 03) |
 |------|----------------|---------------------|
 | `app/` | Routes, layout, page shell | Done — dashboard page replaces starter |
-| `components/dashboard/` | Header, footer, shell, placeholder panels | Done (DEV-88) |
+| `components/dashboard/` | Header, footer, shell, selection provider, placeholder panels | Done (DEV-88, DEV-90) |
 | `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) | Planned (DEV-92) |
 | `components/kpis/` | KPI cards bound to summary API | Planned (DEV-91) |
 | `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
+| `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
 
-### 7.2 Client constraints
+### 7.2 Dashboard selection state (DEV-90)
+
+Country selection is **client-only React Context** (`DashboardSelectionProvider` + `useDashboardSelection`) wrapping the dashboard shell. `selectedCountry === null` means global view (default); a non-null uppercase ISO2 code scopes KPI/chart/map consumers (REQ-F-22, REQ-F-24). Invalid codes are ignored at the boundary; selection is memory-only for MVP (no URL or `localStorage` sync). Map click wiring lands in DEV-92; KPI/chart fetches in DEV-91/DEV-93.
+
+### 7.3 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.
