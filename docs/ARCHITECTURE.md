@@ -169,10 +169,21 @@ See `api/.env.example`. Secrets never committed.
 | `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
+| `lib/country-code.ts` | Shared ISO2 validation for API + selection | Done (DEV-90) |
 
 ### 7.2 Dashboard selection state (DEV-90)
 
 Country selection is **client-only React Context** (`DashboardSelectionProvider` + `useDashboardSelection`) wrapping the dashboard shell. `selectedCountry === null` means global view (default); a non-null uppercase ISO2 code scopes KPI/chart/map consumers (REQ-F-22, REQ-F-24). Invalid codes are ignored at the boundary; selection is memory-only for MVP (no URL or `localStorage` sync). Map click wiring lands in DEV-92; KPI/chart fetches in DEV-91/DEV-93.
+
+| Concern | Approach |
+|---------|----------|
+| Validation | Shared `web/lib/country-code.ts` — shape-only ISO2 uppercase; used by API client and selection |
+| Untrusted input | `selectCountry(unknown)` → normalize; reject non-string, oversized, malformed |
+| UI display | React text nodes only; no `dangerouslySetInnerHTML` |
+| QA select | Whitelist in `lib/dashboard/qa-countries.ts` before `selectCountry` |
+| Persistence | Session memory only (MVP) |
+
+Maintenance notes: `web/lib/dashboard/README.md`.
 
 ### 7.3 Client constraints
 
