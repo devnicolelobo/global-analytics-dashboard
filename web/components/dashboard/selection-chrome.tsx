@@ -1,29 +1,30 @@
 'use client';
 
-import { useDashboardSelection } from './dashboard-selection-provider';
+import {
+  QA_COUNTRY_OPTIONS,
+  isQaCountryCode,
+} from '@/lib/dashboard/qa-countries';
 
-/** Minimal ISO2 samples for manual QA until DEV-92 map click wiring. */
-const QA_COUNTRY_OPTIONS = [
-  { code: 'BR', label: 'Brazil' },
-  { code: 'US', label: 'United States' },
-  { code: 'GB', label: 'United Kingdom' },
-  { code: 'DE', label: 'Germany' },
-  { code: 'JP', label: 'Japan' },
-] as const;
+import { useDashboardSelection } from './dashboard-selection-provider';
 
 /**
  * Lightweight selection chrome — shows global vs country context and clear control (REQ-F-24).
  * Includes an accessible country picker for QA; map will call selectCountry in DEV-92.
+ *
+ * Security: status text uses React text nodes (auto-escaped). The select only applies
+ * whitelisted QA codes before calling selectCountry (defense in depth).
  */
 export function SelectionChrome() {
-  const { selectedCountry, selectCountry, clearSelection } =
+  const { selectedCountry, isGlobal, selectCountry, clearSelection } =
     useDashboardSelection();
-
-  const isGlobal = selectedCountry === null;
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-      <span aria-live="polite" className="font-medium text-zinc-700 dark:text-zinc-300">
+      <span
+        aria-live="polite"
+        aria-atomic="true"
+        className="font-medium text-zinc-700 dark:text-zinc-300"
+      >
         {isGlobal ? 'Global view' : `Country: ${selectedCountry}`}
       </span>
 
@@ -47,7 +48,9 @@ export function SelectionChrome() {
               clearSelection();
               return;
             }
-            selectCountry(value);
+            if (isQaCountryCode(value)) {
+              selectCountry(value);
+            }
           }}
           className="rounded border border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-800 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
         >

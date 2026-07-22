@@ -7,6 +7,9 @@
  * without prop drilling. This boundary is required because map/chart panels (DEV-92+)
  * are Client Components (Leaflet, dynamic chart libs); the root layout stays a Server
  * Component while only the dashboard subtree opts into client state.
+ *
+ * Security: selection holds only a validated ISO2 code or null — never secrets, URLs,
+ * or raw map payloads. Untrusted input is normalized in lib/dashboard/selection.ts.
  */
 import {
   createContext,
@@ -20,6 +23,7 @@ import {
 import {
   applyClearSelection,
   applySelectCountry,
+  toSelectionState,
   type DashboardSelectionContextValue,
   type SelectedCountry,
 } from '@/lib/dashboard/selection';
@@ -36,7 +40,7 @@ export function DashboardSelectionProvider({
 }: DashboardSelectionProviderProps) {
   const [selectedCountry, setSelectedCountry] = useState<SelectedCountry>(null);
 
-  const selectCountry = useCallback((code: string) => {
+  const selectCountry = useCallback((code: unknown) => {
     setSelectedCountry((current) => applySelectCountry(current, code));
   }, []);
 
@@ -44,14 +48,14 @@ export function DashboardSelectionProvider({
     setSelectedCountry(applyClearSelection());
   }, []);
 
-  const value = useMemo<DashboardSelectionContextValue>(
-    () => ({
-      selectedCountry,
+  const value = useMemo<DashboardSelectionContextValue>(() => {
+    const state = toSelectionState(selectedCountry);
+    return {
+      ...state,
       selectCountry,
       clearSelection,
-    }),
-    [selectedCountry, selectCountry, clearSelection],
-  );
+    };
+  }, [selectedCountry, selectCountry, clearSelection]);
 
   return (
     <DashboardSelectionContext.Provider value={value}>
