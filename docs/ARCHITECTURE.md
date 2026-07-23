@@ -165,7 +165,8 @@ See `api/.env.example`. Secrets never committed.
 | `app/` | Routes, layout, page shell | Done — dashboard page replaces starter |
 | `components/dashboard/` | Header, footer, shell, selection provider, placeholder panels | Done (DEV-88, DEV-90) |
 | `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) | Planned (DEV-92) |
-| `components/kpis/` | KPI cards bound to summary API | Planned (DEV-91) |
+| `components/kpis/` | KPI cards bound to summary / country API | Done (DEV-91) |
+| `lib/kpis/` | KPI formatters and DTO → view-model mappers | Done (DEV-91) |
 | `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
@@ -185,7 +186,20 @@ Country selection is **client-only React Context** (`DashboardSelectionProvider`
 
 Maintenance notes: `web/lib/dashboard/README.md`.
 
-### 7.3 Client constraints
+### 7.3 KPI panel (DEV-91)
+
+`KpiPanel` (Client Component) reads DEV-90 selection and fetches via DEV-89: `getSummary()` when global, `getCountry(code)` when a country is selected. Data loading lives in `useKpiPanelData`; pure mappers in `lib/kpis/` format numbers and map DTOs to card view models. Third KPI uses `casesNew` labeled **New cases (daily)** — EXTERNAL_APIS G-01 fallback (active cases unavailable). In-flight requests abort on selection change/unmount to prevent stale data races.
+
+| Concern | Approach |
+|---------|----------|
+| Fetch | `useKpiPanelData` hook — typed client only; abort + stale guard on selection change |
+| Display strings | `sanitizeDisplayText` on country names; ISO date validation for reference dates |
+| Errors | Sanitized `ApiError.message` in panel — no stack traces |
+| Empty DB | Dedicated empty state when all metrics null; partial nulls render em dash per card |
+
+Maintenance notes: `web/lib/kpis/README.md`.
+
+### 7.4 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.
