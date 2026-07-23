@@ -186,11 +186,20 @@ Country selection is **client-only React Context** (`DashboardSelectionProvider`
 
 Maintenance notes: `web/lib/dashboard/README.md`.
 
-### 7.4 KPI panel (DEV-91)
+### 7.3 KPI panel (DEV-91)
 
-`KpiPanel` (Client Component) reads DEV-90 selection and fetches via DEV-89: `getSummary()` when global, `getCountry(code)` when a country is selected. Pure mappers in `lib/kpis/` format numbers and map DTOs to card view models. Third KPI uses `casesNew` labeled **New cases (daily)** — EXTERNAL_APIS G-01 fallback (active cases unavailable). In-flight requests abort on selection change/unmount to prevent stale data races.
+`KpiPanel` (Client Component) reads DEV-90 selection and fetches via DEV-89: `getSummary()` when global, `getCountry(code)` when a country is selected. Data loading lives in `useKpiPanelData`; pure mappers in `lib/kpis/` format numbers and map DTOs to card view models. Third KPI uses `casesNew` labeled **New cases (daily)** — EXTERNAL_APIS G-01 fallback (active cases unavailable). In-flight requests abort on selection change/unmount to prevent stale data races.
 
-### 7.3 Client constraints
+| Concern | Approach |
+|---------|----------|
+| Fetch | `useKpiPanelData` hook — typed client only; abort + stale guard on selection change |
+| Display strings | `sanitizeDisplayText` on country names; ISO date validation for reference dates |
+| Errors | Sanitized `ApiError.message` in panel — no stack traces |
+| Empty DB | Dedicated empty state when all metrics null; partial nulls render em dash per card |
+
+Maintenance notes: `web/lib/kpis/README.md`.
+
+### 7.4 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.
