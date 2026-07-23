@@ -210,8 +210,8 @@ Maintenance notes: `web/lib/kpis/README.md`.
 | SSR | `WorldMapDynamic` + Client Components; Leaflet CSS in `app/globals.css` |
 | Fetch | `useMapCountriesData` — abort on unmount; GeoJSON fetched once per mount |
 | Visualization | Choropleth primary; null metrics → distinct no-data fill + legend swatch |
-| Interaction | Click ISO2 → `selectCountry` / same code → `clearSelection`; hover tooltip plain text |
-| Security | Sanitized tooltip strings; GeoJSON parsed as data only (no HTML/eval) |
+| Interaction | Click ISO2 → `selectCountry` / same code → `clearSelection`; hover tooltip via DOM `textContent` (Leaflet strings use `innerHTML`) |
+| Security | Tooltip `HTMLElement` + `textContent`; GeoJSON size/shape validation; ISO2 guards; parse as data only |
 
 Pure helpers and tests: `web/lib/map/` (`choropleth-scale`, `join-metrics`, Vitest).
 
