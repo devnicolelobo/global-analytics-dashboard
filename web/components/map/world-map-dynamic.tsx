@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * SSR-safe entry for the Leaflet map (ADR-005 / risk R3).
  *
