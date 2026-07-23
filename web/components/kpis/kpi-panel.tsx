@@ -1,84 +1,27 @@
 'use client';
 
 /**
- * KPI panel — Client Component fetch boundary (DEV-91).
- *
- * Reads selection from DEV-90 context and fetches via DEV-89 typed client.
- * Server layout stays server-rendered; only this subtree holds fetch state.
- * AbortController cancels in-flight requests on selection change/unmount (race safety).
+ * KPI panel container (DEV-91).
+ * Data loading lives in useKpiPanelData; this component renders loading, error,
+ * empty, and success states with accessible English copy (REQ-F-51, REQ-F-53).
  */
-import { useEffect, useState } from 'react';
-
-import { getCountry, getSummary } from '@/lib/api/client';
-import { ApiError } from '@/lib/api/errors';
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
-import {
-  mapCountryDetailToKpiPanel,
-  mapSummaryToKpiPanel,
-  toKpiPanelErrorMessage,
-  type KpiPanelViewModel,
-} from '@/lib/kpis/map-kpi-view-model';
+import { useKpiPanelData } from '@/lib/kpis/use-kpi-panel-data';
 
 import { KpiCard } from './kpi-card';
 
-type LoadState = 'idle' | 'loading' | 'success' | 'error';
-
 export function KpiPanel() {
-  const { selectedCountry, isGlobal } = useDashboardSelection();
-  const [loadState, setLoadState] = useState<LoadState>('idle');
-  const [viewModel, setViewModel] = useState<KpiPanelViewModel | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { isGlobal, selectedCountry } = useDashboardSelection();
+  const { loadState, viewModel, errorMessage } = useKpiPanelData(
+    isGlobal,
+    selectedCountry,
+  );
 
-  useEffect(() => {
-    const controller = new AbortController();
-    let ignoreResult = false;
-
-    async function loadKpis() {
-      setLoadState('loading');
-      setErrorMessage(null);
-
-      try {
-        if (isGlobal) {
-          const data = await getSummary({ signal: controller.signal });
-          if (ignoreResult) {
-            return;
-          }
-          setViewModel(mapSummaryToKpiPanel(data));
-        } else {
-          const data = await getCountry(selectedCountry!, {
-            signal: controller.signal,
-          });
-          if (ignoreResult) {
-            return;
-          }
-          setViewModel(mapCountryDetailToKpiPanel(data));
-        }
-        setLoadState('success');
-      } catch (error) {
-        if (ignoreResult) {
-          return;
-        }
-
-        if (error instanceof ApiError && error.kind === 'abort') {
-          return;
-        }
-
-        setViewModel(null);
-        setErrorMessage(toKpiPanelErrorMessage(error));
-        setLoadState('error');
-      }
-    }
-
-    void loadKpis();
-
-    return () => {
-      ignoreResult = true;
-      controller.abort();
-    };
-  }, [isGlobal, selectedCountry]);
+  const showCards =
+    loadState === 'success' && viewModel !== null && !viewModel.isEmpty;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" aria-busy={loadState === 'loading'}>
       {loadState === 'loading' ? (
         <p
           role="status"
@@ -99,13 +42,16 @@ export function KpiPanel() {
       ) : null}
 
       {loadState === 'success' && viewModel?.isEmpty ? (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p
+          role="status"
+          className="rounded-md border border-dashed border-zinc-300 bg-zinc-50 px-3 py-4 text-sm text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400"
+        >
           No KPI data available yet for {viewModel.scopeLabel}. Run a sync on the
           API or try again later.
         </p>
       ) : null}
 
-      {loadState === 'success' && viewModel ? (
+      {showCards ? (
         <>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Showing metrics for {viewModel.scopeLabel}
