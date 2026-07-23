@@ -10,9 +10,16 @@ export interface UpsertMetricsResult {
   countriesUpserted: number;
 }
 
+/** Metric rows per transaction — avoids Prisma interactive tx timeout on full sync. */
+const METRIC_CHUNK_SIZE = 200;
+
+const COUNTRY_TRANSACTION_TIMEOUT_MS = 60_000;
+const METRIC_TRANSACTION_TIMEOUT_MS = 120_000;
+
 /**
  * Prisma persistence for normalized COVID metrics.
- * Batch upserts run inside a single transaction (all-or-nothing for the batch).
+ * Countries upsert first, then metrics in chunked transactions (all-or-nothing per chunk).
+ * Ingest orders snapshot rows before series so map/KPI data commits before chart backfill.
  * @see docs/DATA_MODEL.md §5.1–5.2
  */
 @Injectable()
@@ -33,31 +40,44 @@ export class CovidMetricRepository {
 
     const countries = this.uniqueCountries(metrics);
 
-    const recordsUpserted = await this.prisma.$transaction(async (tx) => {
-      for (const country of countries) {
-        await tx.country.upsert({
-          where: { iso2: country.iso2 },
-          create: {
-            iso2: country.iso2,
-            name: country.name,
-            upstreamName: country.upstreamName,
-          },
-          // Keep catalogue labels fresh if mapping changes later.
-          update: {
-            name: country.name,
-            upstreamName: country.upstreamName,
-          },
-        });
-      }
+    await this.prisma.$transaction(
+      async (tx) => {
+        for (const country of countries) {
+          await tx.country.upsert({
+            where: { iso2: country.iso2 },
+            create: {
+              iso2: country.iso2,
+              name: country.name,
+              upstreamName: country.upstreamName,
+            },
+            // Keep catalogue labels fresh if mapping changes later.
+            update: {
+              name: country.name,
+              upstreamName: country.upstreamName,
+            },
+          });
+        }
+      },
+      { timeout: COUNTRY_TRANSACTION_TIMEOUT_MS },
+    );
 
-      let count = 0;
-      for (const metric of metrics) {
-        await this.upsertMetric(tx, metric);
-        count += 1;
-      }
+    let recordsUpserted = 0;
 
-      return count;
-    });
+    for (let offset = 0; offset < metrics.length; offset += METRIC_CHUNK_SIZE) {
+      const chunk = metrics.slice(offset, offset + METRIC_CHUNK_SIZE);
+      const chunkCount = await this.prisma.$transaction(
+        async (tx) => {
+          let count = 0;
+          for (const metric of chunk) {
+            await this.upsertMetric(tx, metric);
+            count += 1;
+          }
+          return count;
+        },
+        { timeout: METRIC_TRANSACTION_TIMEOUT_MS },
+      );
+      recordsUpserted += chunkCount;
+    }
 
     return {
       recordsUpserted,

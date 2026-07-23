@@ -85,6 +85,43 @@ describe('ApiNinjasClient', () => {
     );
   });
 
+  it('coerces null or omitted region to empty string (national rows)', async () => {
+    httpGet.mockReturnValue(
+      of({
+        data: [
+          {
+            country: 'Brazil',
+            region: null,
+            cases: { '2023-03-09': { total: 100, new: 1 } },
+          },
+          {
+            country: 'Canada',
+            cases: { '2023-03-09': { total: 50, new: 0 } },
+          },
+        ],
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: axiosConfig,
+      }),
+    );
+
+    const result = await client.fetchByCountry('Brazil');
+
+    expect(result).toEqual([
+      {
+        country: 'Brazil',
+        region: '',
+        cases: { '2023-03-09': { total: 100, new: 1 } },
+      },
+      {
+        country: 'Canada',
+        region: '',
+        cases: { '2023-03-09': { total: 50, new: 0 } },
+      },
+    ]);
+  });
+
   it('fetchByDate returns typed snapshot rows on success', async () => {
     httpGet.mockReturnValue(
       of({
@@ -117,6 +154,28 @@ describe('ApiNinjasClient', () => {
         params: { date: '2023-03-09' },
       }),
     );
+  });
+
+  it('fetchByDate coerces null region on snapshot rows', async () => {
+    httpGet.mockReturnValue(
+      of({
+        data: [
+          {
+            country: 'Brazil',
+            region: null,
+            cases: { total: 1, new: 0 },
+          },
+        ],
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: axiosConfig,
+      }),
+    );
+
+    const result = await client.fetchByDate('2023-03-09');
+
+    expect(result[0]?.region).toBe('');
   });
 
   it('accepts an empty array response', async () => {

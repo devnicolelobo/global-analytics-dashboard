@@ -67,6 +67,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 | Integrate with the backend API | [API_SPEC.md](./API_SPEC.md) |
 | Understand external data sources | [EXTERNAL_APIS.md](./EXTERNAL_APIS.md) |
 | Run the project locally | [SETUP.md](./SETUP.md) |
+| Maintain KPI / map client modules | [web/lib/kpis/README.md](../web/lib/kpis/README.md) · [web/lib/map/README.md](../web/lib/map/README.md) |
 | Deploy to staging or production | [DEPLOYMENT.md](./DEPLOYMENT.md) |
 
 ---

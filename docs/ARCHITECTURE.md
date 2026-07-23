@@ -164,9 +164,11 @@ See `api/.env.example`. Secrets never committed.
 |------|----------------|---------------------|
 | `app/` | Routes, layout, page shell | Done — dashboard page replaces starter |
 | `components/dashboard/` | Header, footer, shell, selection provider, placeholder panels | Done (DEV-88, DEV-90) |
-| `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) | Planned (DEV-92) |
+| `components/map/` | React Leaflet choropleth ([ADR-005](./adr/ADR-005-map-library.md)) | Done (DEV-92) |
 | `components/kpis/` | KPI cards bound to summary / country API | Done (DEV-91) |
 | `lib/kpis/` | KPI formatters and DTO → view-model mappers | Done (DEV-91) |
+| `lib/map/` | Choropleth scale, ISO2 join, tooltip formatters, map fetch hook | Done (DEV-92) |
+| `public/geo/` | Static simplified world countries GeoJSON (Natural Earth 110m) | Done (DEV-92) |
 | `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
@@ -174,7 +176,7 @@ See `api/.env.example`. Secrets never committed.
 
 ### 7.2 Dashboard selection state (DEV-90)
 
-Country selection is **client-only React Context** (`DashboardSelectionProvider` + `useDashboardSelection`) wrapping the dashboard shell. `selectedCountry === null` means global view (default); a non-null uppercase ISO2 code scopes KPI/chart/map consumers (REQ-F-22, REQ-F-24). Invalid codes are ignored at the boundary; selection is memory-only for MVP (no URL or `localStorage` sync). Map click wiring lands in DEV-92; KPI/chart fetches in DEV-91/DEV-93.
+Country selection is **client-only React Context** (`DashboardSelectionProvider` + `useDashboardSelection`) wrapping the dashboard shell. `selectedCountry === null` means global view (default); a non-null uppercase ISO2 code scopes KPI/chart/map consumers (REQ-F-22, REQ-F-24). Invalid codes are ignored at the boundary; selection is memory-only for MVP (no URL or `localStorage` sync). Map country click toggles selection (same ISO2 clears); KPI/chart fetches in DEV-91/DEV-93.
 
 | Concern | Approach |
 |---------|----------|
@@ -199,7 +201,23 @@ Maintenance notes: `web/lib/dashboard/README.md`.
 
 Maintenance notes: `web/lib/kpis/README.md`.
 
-### 7.4 Client constraints
+### 7.4 World map (DEV-92)
+
+`WorldMapDynamic` loads `WorldMapPanel` via `next/dynamic` with `ssr: false` (Leaflet DOM APIs — risk R3). Choropleth MVP: **fill polygons by `casesTotal`** from `GET /covid/countries`; join GeoJSON `ISO_A2` ↔ API `CountryListItem.code` ([DATA_MODEL.md](./DATA_MODEL.md) §7.4). Static geometry: `web/public/geo/countries-110m.geojson` (Natural Earth 110m, public domain). Tooltips use list-row metrics only (no per-hover `getCountry` — avoids N+1).
+
+| Concern | Approach |
+|---------|----------|
+| SSR | `WorldMapDynamic` + Client Components; Leaflet CSS in `app/globals.css` |
+| Fetch | `useMapCountriesData` — abort on unmount; GeoJSON fetched once per mount |
+| Visualization | Choropleth primary; null metrics → distinct no-data fill + legend swatch |
+| Interaction | Click ISO2 → `selectCountry` / same code → `clearSelection`; hover tooltip via DOM `textContent` (Leaflet strings use `innerHTML`) |
+| Security | Tooltip `HTMLElement` + `textContent`; GeoJSON size/shape validation; ISO2 guards; parse as data only |
+
+Pure helpers and tests: `web/lib/map/` (`choropleth-scale`, `join-metrics`, Vitest).
+
+Maintenance notes: `web/lib/map/README.md`.
+
+### 7.5 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.

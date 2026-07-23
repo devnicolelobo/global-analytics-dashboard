@@ -26,17 +26,17 @@ Full technical view: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) · editable 
 
 ## Project status
 
-**Phase 4 — frontend & dashboard** · **Sprint 03 in progress** (target M4, Jul–Aug 2026). Phases 0–3 and Sprint 02 are complete (**M3** met). Active work: dashboard features in `web/` — selection context, KPIs, map, and chart. See [docs/sprints/sprint-03-frontend-dashboard.md](./docs/sprints/sprint-03-frontend-dashboard.md).
+**Phase 4 — frontend & dashboard** · **Sprint 03 in progress** (target M4, Jul–Aug 2026). Phases 0–3 and Sprint 02 are complete (**M3** met). Active work: time-series chart and dashboard polish in `web/` (DEV-93–95). Selection context, KPI panel, and interactive map are shipped on feature branches. See [docs/sprints/sprint-03-frontend-dashboard.md](./docs/sprints/sprint-03-frontend-dashboard.md).
 
 | Component              | State |
 |------------------------|-------|
 | `api/`                 | Complete (Sprint 02) — Prisma, ingest, sync, COVID read API, `ci-api.yml` |
-| `web/`                 | Dashboard shell + typed API client (`web/lib/api/`); map/KPIs/chart next |
+| `web/`                 | Dashboard shell, typed API client, selection context, KPI panel, React Leaflet choropleth map; chart pending (DEV-93) |
 | PostgreSQL (local)     | Docker Compose defined; required for API |
 | Prisma ORM             | Schema + initial migration in `api/prisma/` |
 | API Ninjas integration | Client + sync orchestration — `api/src/integration/`, `api/src/sync/` |
 | Ingest (normalize/upsert) | Complete — `api/src/ingest/` |
-| Dashboard UI           | In progress (shell + placeholders; DEV-90+ pending) |
+| Dashboard UI           | KPIs + world map live; chart placeholder (DEV-93) |
 | Documentation          | Complete through SETUP, DEPLOYMENT, and diagram assets |
 
 ---

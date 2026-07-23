@@ -4,6 +4,7 @@ import { DashboardSelectionProvider } from "./dashboard-selection-provider";
 import { PlaceholderPanel } from "./placeholder-panel";
 import { SelectionChrome } from "./selection-chrome";
 import { KpiPanel } from "../kpis/kpi-panel";
+import { WorldMapDynamic } from "../map/world-map-dynamic";
 
 export function DashboardShell() {
   return (
@@ -22,11 +23,7 @@ export function DashboardShell() {
             <KpiPanel />
           </section>
 
-          <PlaceholderPanel
-            title="World map"
-            description="Interactive choropleth or markers — React Leaflet (ADR-005). Data from GET /covid/countries."
-            minHeightClass="min-h-[280px] sm:min-h-[360px]"
-          />
+          <WorldMapDynamic />
 
           <PlaceholderPanel
             title="Confirmed cases over time"
