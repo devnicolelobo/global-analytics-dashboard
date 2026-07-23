@@ -3,12 +3,7 @@ import { DashboardHeader } from "./dashboard-header";
 import { DashboardSelectionProvider } from "./dashboard-selection-provider";
 import { PlaceholderPanel } from "./placeholder-panel";
 import { SelectionChrome } from "./selection-chrome";
-
-const KPI_SLOTS = [
-  "Confirmed cases",
-  "Deaths",
-  "New cases (daily)",
-] as const;
+import { KpiPanel } from "../kpis/kpi-panel";
 
 export function DashboardShell() {
   return (
@@ -24,16 +19,7 @@ export function DashboardShell() {
               </h2>
               <SelectionChrome />
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {KPI_SLOTS.map((label) => (
-                <PlaceholderPanel
-                  key={label}
-                  title={label}
-                  description="Metric value will load from GET /covid/summary or country detail."
-                  minHeightClass="min-h-28"
-                />
-              ))}
-            </div>
+            <KpiPanel />
           </section>
 
           <PlaceholderPanel
