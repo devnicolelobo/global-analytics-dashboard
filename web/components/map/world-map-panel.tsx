@@ -11,12 +11,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
 import { KPI_METRIC_DEFINITIONS } from '@/lib/kpis/map-kpi-view-model';
 import { buildChoroplethLegendStops } from '@/lib/map/choropleth-scale';
+import { formatMapReferenceDateSuffix } from '@/lib/map/format-map-subtitle';
 import {
   COUNTRIES_GEOJSON_PATH,
   DEFAULT_MAP_METRIC,
   type CountryFeatureCollection,
 } from '@/lib/map/types';
 import { useMapCountriesData } from '@/lib/map/use-map-countries-data';
+import {
+  isGeoJsonPayloadWithinSizeLimit,
+  parseCountryFeatureCollection,
+} from '@/lib/map/validate-geojson';
 
 import { WorldMapView } from './world-map-view';
 
@@ -50,7 +55,17 @@ export function WorldMapPanel() {
           throw new Error('Map geometry request failed.');
         }
 
-        const data = (await fetchResponse.json()) as CountryFeatureCollection;
+        const rawText = await fetchResponse.text();
+        if (!isGeoJsonPayloadWithinSizeLimit(rawText)) {
+          throw new Error('Map geometry payload too large.');
+        }
+
+        const parsedBody: unknown = JSON.parse(rawText);
+        const data = parseCountryFeatureCollection(parsedBody);
+        if (data === null) {
+          throw new Error('Invalid map geometry format.');
+        }
+
         if (ignoreResult) {
           return;
         }
@@ -148,9 +163,7 @@ export function WorldMapPanel() {
         <>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Choropleth by {metricLabel.toLowerCase()}
-            {response.referenceDate
-              ? ` · Reference date: ${response.referenceDate}`
-              : ''}
+            {formatMapReferenceDateSuffix(response.referenceDate)}
             {' · '}
             Click a country to filter KPIs and chart
           </p>

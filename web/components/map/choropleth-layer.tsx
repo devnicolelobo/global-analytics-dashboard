@@ -3,7 +3,7 @@
 /**
  * GeoJSON choropleth layer — fill by metric, tooltip on hover, click → selection (REQ-F-21–23).
  *
- * Client-only (react-leaflet). Tooltips use list-row metrics; bindTooltip receives plain text only.
+ * Client-only (react-leaflet). Tooltips bind HTMLElement + textContent — Leaflet treats strings as HTML.
  */
 import type { Layer, PathOptions } from 'leaflet';
 import { useCallback } from 'react';
@@ -13,7 +13,7 @@ import {
   getChoroplethColor,
   type MetricExtent,
 } from '@/lib/map/choropleth-scale';
-import { formatCountryTooltipText } from '@/lib/map/format-tooltip';
+import { createCountryTooltipElement } from '@/lib/map/format-tooltip';
 import {
   getMapMetricValue,
   joinFeatureToCountry,
@@ -74,7 +74,7 @@ export function ChoroplethLayer({
       const iso2 = parseGeoJsonIso2(countryFeature.properties);
 
       if (country !== null) {
-        layer.bindTooltip(formatCountryTooltipText(country), {
+        layer.bindTooltip(createCountryTooltipElement(country), {
           sticky: false,
           direction: 'auto',
         });

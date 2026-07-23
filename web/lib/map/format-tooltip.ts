@@ -2,7 +2,9 @@
  * Plain-text map tooltip formatting (REQ-F-23).
  *
  * Uses list-row metrics from GET /covid/countries — no per-hover getCountry calls.
- * Output is safe for Leaflet bindTooltip text nodes (no HTML).
+ *
+ * Security: Leaflet assigns string tooltips via innerHTML. Always bind an HTMLElement
+ * with textContent (see createCountryTooltipElement) — never pass raw API strings.
  */
 import type { CountryListItem } from '@/lib/api/types';
 import { KPI_METRIC_DEFINITIONS } from '@/lib/kpis/map-kpi-view-model';
@@ -35,4 +37,17 @@ export function formatCountryTooltipText(country: CountryListItem): string {
   }
 
   return lines.join('\n');
+}
+
+/**
+ * Build a Leaflet-safe tooltip node (textContent only — no HTML interpretation).
+ * Call from Client Components after country row join succeeds.
+ */
+export function createCountryTooltipElement(
+  country: CountryListItem,
+): HTMLDivElement {
+  const node = document.createElement('div');
+  node.style.whiteSpace = 'pre-line';
+  node.textContent = formatCountryTooltipText(country);
+  return node;
 }
