@@ -19,8 +19,8 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 | DEV-88 | Open Sprint 03 record and dashboard shell | Done |
 | DEV-89 | Typed internal API client for web | Done |
 | DEV-90 | Dashboard selection state and global context | Done |
-| DEV-91 | KPI panel (global and country) | In progress |
-| DEV-92 | Interactive world map with React Leaflet | Planned |
+| DEV-91 | KPI panel (global and country) | Done |
+| DEV-92 | Interactive world map with React Leaflet | In progress |
 | DEV-93 | Confirmed cases time-series chart | Planned |
 | DEV-94 | Freshness footer, loading and error states | Planned |
 | DEV-95 | Frontend acceptance, ci-web, and Sprint 03 close | Planned |
@@ -41,8 +41,8 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 - [x] Typed client `web/lib/api/` (API_SPEC §10) — merged to `develop` (DEV-89)
 - [x] Selection context — global vs country ISO2, `selectCountry` / `clearSelection` (DEV-90)
-- [ ] Country selection drives KPIs and chart (REQ-F-22, REQ-F-24)
-- [ ] KPI panel — confirmed cases, deaths, third KPI (REQ-F-30–33)
+- [x] KPI panel — confirmed cases, deaths, new cases daily (REQ-F-30–33; G-01 fallback) (DEV-91)
+- [ ] Country selection drives chart (REQ-F-22 partial — KPIs wired; map/chart DEV-92–93)
 - [ ] React Leaflet map — choropleth or markers (REQ-F-20–23, ADR-005)
 - [ ] Time-series chart — confirmed cases (REQ-F-40–43)
 - [ ] Loading, error states, sync freshness footer (REQ-F-51–52)
@@ -71,6 +71,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 - Dashboard shell (`web/components/dashboard/`, `web/app/page.tsx`) — DEV-88
 - Typed internal API client (`web/lib/api/`) + Vitest unit tests — DEV-89
 - Dashboard selection context (`web/lib/dashboard/selection.ts`, `DashboardSelectionProvider`, `SelectionChrome`) — DEV-90
+- KPI panel (`web/components/kpis/`, `web/lib/kpis/`) — global/country fetch, loading/error, abort on selection change — DEV-91
 
 ### Deferred / next
 
