@@ -20,7 +20,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 | DEV-89 | Typed internal API client for web | Done |
 | DEV-90 | Dashboard selection state and global context | Done |
 | DEV-91 | KPI panel (global and country) | Done |
-| DEV-92 | Interactive world map with React Leaflet | In progress |
+| DEV-92 | Interactive world map with React Leaflet | Done |
 | DEV-93 | Confirmed cases time-series chart | Planned |
 | DEV-94 | Freshness footer, loading and error states | Planned |
 | DEV-95 | Frontend acceptance, ci-web, and Sprint 03 close | Planned |
@@ -33,7 +33,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 - [x] Sprint 03 record and index updated ([docs/sprints/README.md](./README.md))
 - [x] Dashboard page shell replaces Next.js starter in `web/` ([ARCHITECTURE.md](../ARCHITECTURE.md) §7.1)
-- [x] Reserved regions for map, KPIs, and chart (placeholders until cards 4–6)
+- [x] Reserved regions for map, KPIs, and chart (chart placeholder until DEV-93)
 - [x] English UI copy; responsive layout baseline (REQ-F-50, REQ-F-53)
 - [x] `NEXT_PUBLIC_API_URL` documented in `web/.env.example`
 
@@ -42,8 +42,8 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 - [x] Typed client `web/lib/api/` (API_SPEC §10) — merged to `develop` (DEV-89)
 - [x] Selection context — global vs country ISO2, `selectCountry` / `clearSelection` (DEV-90)
 - [x] KPI panel — confirmed cases, deaths, new cases daily (REQ-F-30–33; G-01 fallback) (DEV-91)
-- [ ] Country selection drives chart (REQ-F-22 partial — KPIs wired; map/chart DEV-92–93)
-- [ ] React Leaflet map — choropleth or markers (REQ-F-20–23, ADR-005)
+- [x] Country selection drives KPIs and map (REQ-F-22 partial — chart in DEV-93)
+- [x] React Leaflet map — **choropleth** by `casesTotal` (REQ-F-20–23, ADR-005); circle markers not needed for MVP
 - [ ] Time-series chart — confirmed cases (REQ-F-40–43)
 - [ ] Loading, error states, sync freshness footer (REQ-F-51–52)
 - [ ] `ci-web.yml` and M4 acceptance gate (REQ-NF-05)
@@ -72,6 +72,7 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 - Typed internal API client (`web/lib/api/`) + Vitest unit tests — DEV-89
 - Dashboard selection context (`web/lib/dashboard/selection.ts`, `DashboardSelectionProvider`, `SelectionChrome`) — DEV-90
 - KPI panel (`web/components/kpis/`, `web/lib/kpis/`) — global/country fetch, loading/error, abort on selection change — DEV-91
+- World map (`web/components/map/`, `web/lib/map/`, `public/geo/countries-110m.geojson`) — choropleth, pan/zoom, tooltips, click → selection, `dynamic` SSR off — DEV-92
 
 ### Deferred / next
 
