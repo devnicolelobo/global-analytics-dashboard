@@ -184,6 +184,8 @@ cd ../web && npm install
 
 Lockfiles (`package-lock.json`) are committed — use `npm install`, not `npm update`, unless intentionally upgrading dependencies.
 
+**Web map (DEV-92):** `web/package.json` includes `leaflet`, `react-leaflet`, and `@types/leaflet`. Leaflet CSS is imported in `web/app/globals.css`. Static country geometry: `web/public/geo/countries-110m.geojson` (Natural Earth 110m). Maintenance: [web/lib/map/README.md](../web/lib/map/README.md).
+
 ### Database migrations (API)
 
 From the repo root, ensure PostgreSQL is running (`docker compose up -d`), then:
@@ -262,11 +264,13 @@ Default URL: **http://localhost:3000**
 
 | Check | Command / action | Expected |
 |-------|------------------|----------|
-| API responds | Open http://localhost:3001 | NestJS default greeting on `GET /` |
-| Web loads | Open http://localhost:3000 | Next.js starter page |
+| API responds | Open http://localhost:3001/health | JSON health payload |
+| Web loads | Open http://localhost:3000 | COVID-19 dashboard with KPI panel and world map (API must be running for data) |
+| Map data | Click a country on the map | KPI panel updates to country scope (requires synced COVID data) |
 | Database up | `docker ps` | `gad-postgres` status `Up` |
 | API lint | `cd api && npm run lint` | No errors |
 | Web lint | `cd web && npm run lint` | No errors |
+| Web tests | `cd web && npm test` | Vitest passes (`lib/` unit tests) |
 | API tests | `cd api && npm test` | Tests pass |
 | Prisma client | `cd api && npm run prisma:generate` | Client generated |
 | Migrations | `cd api && npx prisma migrate deploy` | Migrations applied |
@@ -288,6 +292,8 @@ Default URL: **http://localhost:3000**
 | API e2e tests | `npm run test:e2e` in `api/` |
 | Lint API | `npm run lint` in `api/` |
 | Lint web | `npm run lint` in `web/` |
+| Web unit tests | `npm test` in `web/` |
+| Web production build | `npm run build` in `web/` |
 
 ### Integration / e2e against PostgreSQL (DEV-87)
 
@@ -382,13 +388,13 @@ Reflects the **current development phase** documented in the root [README.md](..
 | Area | State |
 |------|-------|
 | `api/` | Complete (Sprint 02) — ConfigModule, Prisma, API Ninjas client, ingest, sync orchestration, COVID read API |
-| `web/` | Dashboard shell + typed API client (`web/lib/api/`); map, KPIs, chart, and selection context in progress (Sprint 03) |
+| `web/` | Dashboard shell, typed API client, selection context, KPI panel, React Leaflet choropleth map; chart pending (DEV-93) |
 | PostgreSQL | Docker Compose; required for API startup |
 | Prisma ORM | Configured — `api/prisma/schema.prisma` + initial migration |
 | API Ninjas client | Implemented — `api/src/integration/api-ninjas/` |
 | Metric normalizer & upsert | Implemented — `api/src/ingest/` |
 | Sync orchestration | Implemented — `POST /sync`, status endpoints — `api/src/sync/` |
-| Dashboard UI | Shell + placeholders; interactive map/KPIs/chart pending (DEV-90+) |
+| Dashboard UI | KPIs + interactive world map (choropleth); chart placeholder (DEV-93) |
 
 Start Docker before running the API (`docker compose up -d` from repo root).
 
