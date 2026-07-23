@@ -4,6 +4,7 @@ import type {
   CountryDetailResponse,
   SummaryResponse,
 } from '@/lib/api/types';
+import { ApiError } from '@/lib/api/errors';
 
 import {
   KPI_METRIC_DEFINITIONS,
@@ -108,6 +109,45 @@ describe('mapCountryDetailToKpiPanel', () => {
 
     expect(mapCountryDetailToKpiPanel(response).scopeLabel).toBe('US');
   });
+
+  it('sanitizes malicious country names from API responses', () => {
+    const response: CountryDetailResponse = {
+      scope: 'country',
+      country: { code: 'BR', name: 'Brazil<script>alert(1)</script>' },
+      referenceDate: '2024-06-10',
+      metrics: {
+        casesTotal: 1,
+        deathsTotal: 0,
+        casesNew: 0,
+      },
+      meta: {
+        hasRegionalBreakdown: false,
+        lastSuccessfulSyncAt: null,
+      },
+    };
+
+    expect(mapCountryDetailToKpiPanel(response).scopeLabel).toBe('Brazilalert(1)');
+  });
+
+  it('treats partial null metrics as non-empty panel data', () => {
+    const response: SummaryResponse = {
+      scope: 'global',
+      referenceDate: '2024-06-15',
+      metrics: {
+        casesTotal: 100,
+        deathsTotal: null,
+        casesNew: null,
+      },
+      meta: {
+        lastSuccessfulSyncAt: null,
+        dataSource: 'api-ninjas',
+      },
+    };
+
+    const viewModel = mapSummaryToKpiPanel(response);
+    expect(viewModel.isEmpty).toBe(false);
+    expect(viewModel.cards[1].value).toBe('—');
+  });
 });
 
 describe('KPI_METRIC_DEFINITIONS', () => {
@@ -120,10 +160,12 @@ describe('KPI_METRIC_DEFINITIONS', () => {
 });
 
 describe('toKpiPanelErrorMessage', () => {
-  it('returns Error message when present', () => {
-    expect(toKpiPanelErrorMessage(new Error('Service unavailable'))).toBe(
-      'Service unavailable',
-    );
+  it('returns ApiError message when present', () => {
+    expect(
+      toKpiPanelErrorMessage(
+        new ApiError('Service unavailable', { kind: 'http', statusCode: 503 }),
+      ),
+    ).toBe('Service unavailable');
   });
 
   it('returns generic fallback for unknown errors', () => {

@@ -1,9 +1,11 @@
 import type { CountryDetailResponse, SummaryResponse } from '@/lib/api/types';
+import { ApiError, sanitizeErrorMessage } from '@/lib/api/errors';
 
 import {
   formatMetricValue,
   formatReferenceDateSubtitle,
 } from './format-metric';
+import { isIsoDateString, sanitizeDisplayText } from './sanitize-display';
 
 /** Single KPI card view data — safe strings for React text nodes only. */
 export type KpiCardViewModel = {
@@ -62,14 +64,34 @@ function metricsAreEmpty(metrics: MetricsLike): boolean {
   );
 }
 
+function normalizeReferenceDate(
+  referenceDate: string | null | undefined,
+): string | null {
+  if (typeof referenceDate !== 'string') {
+    return null;
+  }
+  const trimmed = referenceDate.trim();
+  return isIsoDateString(trimmed) ? trimmed : null;
+}
+
+function resolveCountryScopeLabel(country: CountryDetailResponse['country']): string {
+  const sanitizedName = sanitizeDisplayText(country.name);
+  if (sanitizedName.length > 0) {
+    return sanitizedName;
+  }
+  return sanitizeDisplayText(country.code) || 'Unknown country';
+}
+
 /** Map GET /covid/summary to KPI panel view model (global scope). */
 export function mapSummaryToKpiPanel(
   response: SummaryResponse,
 ): KpiPanelViewModel {
+  const referenceDate = normalizeReferenceDate(response.referenceDate);
+
   return {
     scopeLabel: 'Global',
-    referenceDate: response.referenceDate ?? null,
-    cards: buildCards(response.metrics, response.referenceDate),
+    referenceDate,
+    cards: buildCards(response.metrics, referenceDate),
     isEmpty: metricsAreEmpty(response.metrics),
   };
 }
@@ -78,23 +100,23 @@ export function mapSummaryToKpiPanel(
 export function mapCountryDetailToKpiPanel(
   response: CountryDetailResponse,
 ): KpiPanelViewModel {
-  const countryName =
-    typeof response.country.name === 'string' && response.country.name.trim()
-      ? response.country.name.trim()
-      : response.country.code;
+  const referenceDate = normalizeReferenceDate(response.referenceDate);
 
   return {
-    scopeLabel: countryName,
-    referenceDate: response.referenceDate ?? null,
-    cards: buildCards(response.metrics, response.referenceDate),
+    scopeLabel: resolveCountryScopeLabel(response.country),
+    referenceDate,
+    cards: buildCards(response.metrics, referenceDate),
     isEmpty: metricsAreEmpty(response.metrics),
   };
 }
 
-/** User-facing error text from ApiError — plain text only, no stack traces. */
+/** User-facing error text — sanitized plain text, no stack traces or HTML. */
 export function toKpiPanelErrorMessage(error: unknown): string {
-  if (error instanceof Error && error.message.trim().length > 0) {
+  if (error instanceof ApiError) {
     return error.message;
+  }
+  if (error instanceof Error) {
+    return sanitizeErrorMessage(error.message);
   }
   return 'Unable to load KPI data. Please try again later.';
 }
