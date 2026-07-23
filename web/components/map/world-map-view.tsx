@@ -3,11 +3,9 @@
 /**
  * Leaflet map shell (DEV-92) — OSM tiles + choropleth layer + legend overlay.
  *
- * Client-only: imports Leaflet CSS and MapContainer (ADR-005 / risk R3).
+ * Client-only MapContainer (ADR-005 / risk R3). Leaflet CSS loads globally via globals.css.
  * Parent loads GeoJSON and API data; this component renders the interactive map only.
  */
-import 'leaflet/dist/leaflet.css';
-
 import { MapContainer, TileLayer } from 'react-leaflet';
 
 import type {
