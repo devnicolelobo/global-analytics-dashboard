@@ -88,6 +88,7 @@ describe('CovidMetricRepository', () => {
     ]);
 
     expect(result).toEqual({ recordsUpserted: 1, countriesUpserted: 1 });
+    expect(transaction).toHaveBeenCalledTimes(2);
     expect(countryUpsert).toHaveBeenCalledWith({
       where: { iso2: 'BR' },
       create: {
@@ -116,6 +117,7 @@ describe('CovidMetricRepository', () => {
 
     expect(countryUpsert).toHaveBeenCalledTimes(1);
     expect(metricUpsert).toHaveBeenCalledTimes(2);
+    expect(transaction).toHaveBeenCalledTimes(2);
   });
 
   it('merges deaths into update without sending cases fields (DATA_MODEL §5.2)', async () => {

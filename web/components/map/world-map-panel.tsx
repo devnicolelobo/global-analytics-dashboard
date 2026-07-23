@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
 import { KPI_METRIC_DEFINITIONS } from '@/lib/kpis/map-kpi-view-model';
 import { buildChoroplethLegendStops } from '@/lib/map/choropleth-scale';
-import { formatMapReferenceDateSuffix } from '@/lib/map/format-map-subtitle';
+import { formatMapDataCoverageSuffix, formatMapReferenceDateSuffix } from '@/lib/map/format-map-subtitle';
 import {
   COUNTRIES_GEOJSON_PATH,
   DEFAULT_MAP_METRIC,
@@ -164,6 +164,9 @@ export function WorldMapPanel() {
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Choropleth by {metricLabel.toLowerCase()}
             {formatMapReferenceDateSuffix(response.referenceDate)}
+            {formatMapDataCoverageSuffix(response.countries.length)}
+            {' · '}
+            Gray = no persisted data (not zero)
             {' · '}
             Click a country to filter KPIs and chart
           </p>

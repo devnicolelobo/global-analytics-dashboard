@@ -1,8 +1,14 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
-/** Default local Next.js origin — Phase 4 web/ integration (DEPLOYMENT.md). */
-const DEFAULT_CORS_ORIGINS = ['http://localhost:3000'];
+/**
+ * Default local Next.js dev origins — Phase 4 web/ integration (DEPLOYMENT.md).
+ * Include both hostname spellings; browsers treat localhost and 127.0.0.1 as different origins.
+ */
+const DEFAULT_CORS_ORIGINS = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+];
 
 /**
  * Shared Nest bootstrap wiring.

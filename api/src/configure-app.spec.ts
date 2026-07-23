@@ -11,9 +11,12 @@ describe('resolveCorsOrigins', () => {
     }
   });
 
-  it('defaults to local Next.js origin', () => {
+  it('defaults to local Next.js dev origins', () => {
     delete process.env.CORS_ORIGIN;
-    expect(resolveCorsOrigins()).toEqual(['http://localhost:3000']);
+    expect(resolveCorsOrigins()).toEqual([
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ]);
   });
 
   it('parses comma-separated CORS_ORIGIN', () => {

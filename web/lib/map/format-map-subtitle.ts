@@ -18,3 +18,21 @@ export function formatMapReferenceDateSuffix(
 
   return ` · Reference date: ${trimmed}`;
 }
+
+/** Coverage hint — only countries with persisted metrics are colored (not zero-filled). */
+export function formatMapDataCoverageSuffix(
+  countriesWithData: number | null | undefined,
+): string {
+  if (
+    countriesWithData === null ||
+    countriesWithData === undefined ||
+    !Number.isFinite(countriesWithData) ||
+    countriesWithData < 0
+  ) {
+    return '';
+  }
+
+  const count = Math.trunc(countriesWithData);
+  const label = count === 1 ? 'country' : 'countries';
+  return ` · ${count} ${label} with data`;
+}

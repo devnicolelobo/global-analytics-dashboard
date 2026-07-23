@@ -56,6 +56,22 @@ function parseDailyMetric(value: unknown, label: string): ApiNinjasDailyMetric {
   return { total, new: dailyNew };
 }
 
+/**
+ * National rows often omit `region` or send null — normalize to '' for ingest keys.
+ * @see docs/EXTERNAL_APIS.md §3.2 (country-level rows use empty region)
+ */
+function coerceUpstreamRegion(value: unknown): string {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  throw new UpstreamBadResponseError(
+    'each upstream row region must be a string, null, or omitted',
+  );
+}
+
 function parseTimeSeries(value: unknown, label: string): ApiNinjasTimeSeries {
   if (!isRecord(value)) {
     throw new UpstreamBadResponseError(`${label} must be an object`);
@@ -78,13 +94,16 @@ function parseCountrySeriesRow(
   }
 
   const { country, region, cases, deaths } = row;
-  if (typeof country !== 'string' || typeof region !== 'string') {
+  if (typeof country !== 'string' || !country.trim()) {
     throw new UpstreamBadResponseError(
-      'each series row must include string country and region',
+      'each series row must include a non-empty string country',
     );
   }
 
-  const parsed: ApiNinjasCountrySeriesRow = { country, region };
+  const parsed: ApiNinjasCountrySeriesRow = {
+    country,
+    region: coerceUpstreamRegion(region),
+  };
   if (cases !== undefined) {
     parsed.cases = parseTimeSeries(cases, 'cases');
   }
@@ -111,13 +130,16 @@ function parseDateSnapshotRow(
   }
 
   const { country, region, cases, deaths } = row;
-  if (typeof country !== 'string' || typeof region !== 'string') {
+  if (typeof country !== 'string' || !country.trim()) {
     throw new UpstreamBadResponseError(
-      'each snapshot row must include string country and region',
+      'each snapshot row must include a non-empty string country',
     );
   }
 
-  const parsed: ApiNinjasDateSnapshotRow = { country, region };
+  const parsed: ApiNinjasDateSnapshotRow = {
+    country,
+    region: coerceUpstreamRegion(region),
+  };
   if (cases !== undefined) {
     parsed.cases = parseDailyMetric(cases, 'cases');
   }
