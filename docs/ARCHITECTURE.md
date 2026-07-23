@@ -215,6 +215,8 @@ Maintenance notes: `web/lib/kpis/README.md`.
 
 Pure helpers and tests: `web/lib/map/` (`choropleth-scale`, `join-metrics`, Vitest).
 
+Maintenance notes: `web/lib/map/README.md`.
+
 ### 7.5 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
