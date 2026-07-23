@@ -35,4 +35,10 @@ describe('formatReferenceDateSubtitle', () => {
     expect(formatReferenceDateSubtitle('')).toBeUndefined();
     expect(formatReferenceDateSubtitle('   ')).toBeUndefined();
   });
+
+  it('rejects malformed date strings from API', () => {
+    expect(formatReferenceDateSubtitle('2024-6-15')).toBeUndefined();
+    expect(formatReferenceDateSubtitle('not-a-date')).toBeUndefined();
+    expect(formatReferenceDateSubtitle('2024-06-15<script>')).toBeUndefined();
+  });
 });

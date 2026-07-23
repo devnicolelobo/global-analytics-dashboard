@@ -3,6 +3,8 @@
  * Pure helpers — no React, no fetch — safe for unit tests and Server/Client reuse.
  */
 
+import { isIsoDateString } from './sanitize-display';
+
 const METRIC_NUMBER_FORMAT = new Intl.NumberFormat('en-US');
 
 /** English placeholder when API returns null/undefined for a metric field. */
@@ -20,7 +22,7 @@ export function formatMetricValue(value: number | null | undefined): string {
 
 /**
  * Format reference date subtitle when API returns YYYY-MM-DD.
- * Returns undefined when missing so cards can omit the subtitle.
+ * Rejects malformed dates so arbitrary API strings are not shown verbatim.
  */
 export function formatReferenceDateSubtitle(
   referenceDate: string | null | undefined,
@@ -29,7 +31,7 @@ export function formatReferenceDateSubtitle(
     return undefined;
   }
   const trimmed = referenceDate.trim();
-  if (trimmed.length === 0) {
+  if (!isIsoDateString(trimmed)) {
     return undefined;
   }
   return `Reference date: ${trimmed}`;
