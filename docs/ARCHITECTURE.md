@@ -165,7 +165,8 @@ See `api/.env.example`. Secrets never committed.
 | `app/` | Routes, layout, page shell | Done — dashboard page replaces starter |
 | `components/dashboard/` | Header, footer, shell, selection provider, placeholder panels | Done (DEV-88, DEV-90) |
 | `components/map/` | React Leaflet choropleth / markers ([ADR-005](./adr/ADR-005-map-library.md)) | Planned (DEV-92) |
-| `components/kpis/` | KPI cards bound to summary API | Planned (DEV-91) |
+| `components/kpis/` | KPI cards bound to summary / country API | Done (DEV-91) |
+| `lib/kpis/` | KPI formatters and DTO → view-model mappers | Done (DEV-91) |
 | `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
@@ -184,6 +185,10 @@ Country selection is **client-only React Context** (`DashboardSelectionProvider`
 | Persistence | Session memory only (MVP) |
 
 Maintenance notes: `web/lib/dashboard/README.md`.
+
+### 7.4 KPI panel (DEV-91)
+
+`KpiPanel` (Client Component) reads DEV-90 selection and fetches via DEV-89: `getSummary()` when global, `getCountry(code)` when a country is selected. Pure mappers in `lib/kpis/` format numbers and map DTOs to card view models. Third KPI uses `casesNew` labeled **New cases (daily)** — EXTERNAL_APIS G-01 fallback (active cases unavailable). In-flight requests abort on selection change/unmount to prevent stale data races.
 
 ### 7.3 Client constraints
 
