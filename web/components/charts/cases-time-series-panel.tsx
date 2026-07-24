@@ -22,13 +22,14 @@ export function CasesTimeSeriesPanel() {
   );
 
   const showChart =
-    loadState === 'success' &&
-    viewModel !== null &&
-    !viewModel.isEmpty &&
-    viewModel.points.length > 0;
+    loadState === 'success' && viewModel !== null && !viewModel.isEmpty;
 
   return (
-    <section aria-label={CHART_TITLE} className="space-y-3">
+    <section
+      aria-label={CHART_TITLE}
+      aria-busy={loadState === 'loading'}
+      className="space-y-3"
+    >
       <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-300">
         {CHART_TITLE}
       </h2>
@@ -73,10 +74,6 @@ export function CasesTimeSeriesPanel() {
             <CasesTimeSeriesChart points={viewModel.points} />
           </div>
         </>
-      ) : null}
-
-      {loadState === 'idle' ? (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">Preparing chart…</p>
       ) : null}
     </section>
   );

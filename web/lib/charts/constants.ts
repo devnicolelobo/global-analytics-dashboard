@@ -12,6 +12,6 @@ export const CHART_TITLE = 'Confirmed cases over time';
 /** Legend / series label identifying the metric (REQ-F-43). */
 export const CHART_SERIES_LABEL = 'Confirmed cases';
 
-/** Empty history copy when API returns points: [] (REQ-F-42). */
+/** Empty history copy when API returns no chartable points (REQ-F-42). */
 export const CHART_EMPTY_MESSAGE =
-  'No historical data for this scope. Run a full sync on the API or select another country.';
+  'No historical data for this scope. Try another country or check back after the next data sync.';
