@@ -169,7 +169,8 @@ See `api/.env.example`. Secrets never committed.
 | `lib/kpis/` | KPI formatters and DTO → view-model mappers | Done (DEV-91) |
 | `lib/map/` | Choropleth scale, ISO2 join, tooltip formatters, map fetch hook | Done (DEV-92) |
 | `public/geo/` | Static simplified world countries GeoJSON (Natural Earth 110m) | Done (DEV-92) |
-| `components/charts/` | Time-series chart (confirmed cases) | Planned (DEV-93) |
+| `components/charts/` | Time-series chart (confirmed cases, Recharts) | Done (DEV-93) |
+| `lib/charts/` | Series mappers, axis formatters, chart fetch hook | Done (DEV-93) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
 | `lib/country-code.ts` | Shared ISO2 validation for API + selection | Done (DEV-90) |
@@ -217,7 +218,20 @@ Pure helpers and tests: `web/lib/map/` (`choropleth-scale`, `join-metrics`, Vite
 
 Maintenance notes: `web/lib/map/README.md`.
 
-### 7.5 Client constraints
+### 7.5 Time-series chart (DEV-93)
+
+`CasesTimeSeriesDynamic` loads `CasesTimeSeriesPanel` via `next/dynamic` with `ssr: false` (Recharts measures DOM). MVP metric fixed to **`casesTotal`** (REQ-F-43). Selection routing: global → `GET /covid/series`; country → `GET /covid/countries/:code/series` (API_SPEC §6.5–6.6). Empty `points: []` → English empty state (REQ-F-42); null values break the line (`connectNulls=false`).
+
+| Concern | Approach |
+|---------|----------|
+| Library | Recharts line chart — SVG, maintained React ecosystem, Client-only |
+| Fetch | `useCasesTimeSeriesData` — abort + stale guard on selection change |
+| Axes | Compact Y-axis (`Intl`); thinned/tilted X ticks for dense daily series |
+| Security | Tooltip plain text via React nodes — no `dangerouslySetInnerHTML` |
+
+Maintenance notes: `web/lib/charts/README.md`.
+
+### 7.6 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.
