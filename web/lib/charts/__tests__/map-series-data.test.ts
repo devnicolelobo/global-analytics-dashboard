@@ -65,6 +65,20 @@ describe('mapGlobalSeriesToChart', () => {
     expect(viewModel.isEmpty).toBe(true);
     expect(isEmptySeries(viewModel.points)).toBe(true);
   });
+
+  it('marks empty series when all values are null', () => {
+    const response: GlobalSeriesResponse = {
+      scope: 'global',
+      metric: 'casesTotal',
+      points: [
+        { date: '2023-03-08', value: null },
+        { date: '2023-03-09', value: null },
+      ],
+      meta: { pointCount: 2, from: '2023-03-08', to: '2023-03-09' },
+    };
+
+    expect(mapGlobalSeriesToChart(response).isEmpty).toBe(true);
+  });
 });
 
 describe('mapCountrySeriesToChart', () => {

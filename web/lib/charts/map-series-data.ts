@@ -63,8 +63,12 @@ export function mapPointsToChartData(
   return sortSeriesPointsByDate(points).map(mapSeriesPoint);
 }
 
-export function isEmptySeries(points: ReadonlyArray<unknown>): boolean {
-  return points.length === 0;
+export function isEmptySeries(points: ReadonlyArray<{ value: number | null }>): boolean {
+  if (points.length === 0) {
+    return true;
+  }
+
+  return points.every((point) => point.value === null);
 }
 
 function resolveCountryScopeLabel(
