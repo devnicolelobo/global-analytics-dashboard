@@ -9,15 +9,9 @@
  */
 import { useEffect, useState } from 'react';
 
-import { getGlobalSeries, getSeries } from '@/lib/api/client';
 import { ApiError, sanitizeErrorMessage } from '@/lib/api/errors';
 
-import { CHART_METRIC } from './constants';
-import {
-  mapCountrySeriesToChart,
-  mapGlobalSeriesToChart,
-  resolveSeriesFetchTarget,
-} from './map-series-data';
+import { loadCasesTimeSeriesViewModel } from './load-cases-time-series';
 import type { ChartSeriesViewModel } from './types';
 
 export type ChartLoadState = 'idle' | 'loading' | 'success' | 'error';
@@ -42,7 +36,7 @@ export function useCasesTimeSeriesData(
   isGlobal: boolean,
   selectedCountry: string | null,
 ): UseCasesTimeSeriesDataResult {
-  const [loadState, setLoadState] = useState<ChartLoadState>('idle');
+  const [loadState, setLoadState] = useState<ChartLoadState>('loading');
   const [viewModel, setViewModel] = useState<ChartSeriesViewModel | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -55,27 +49,12 @@ export function useCasesTimeSeriesData(
       setErrorMessage(null);
       setViewModel(null);
 
-      const target = resolveSeriesFetchTarget(isGlobal, selectedCountry);
-      if (target === null) {
-        setErrorMessage('Invalid country selection.');
-        setLoadState('error');
-        return;
-      }
-
       try {
-        const requestOptions = {
-          metric: CHART_METRIC,
-        } as const;
-        const signal = controller.signal;
-
-        const mapped =
-          target.kind === 'global'
-            ? mapGlobalSeriesToChart(
-                await getGlobalSeries(requestOptions, { signal }),
-              )
-            : mapCountrySeriesToChart(
-                await getSeries(target.countryCode, requestOptions, { signal }),
-              );
+        const mapped = await loadCasesTimeSeriesViewModel(
+          isGlobal,
+          selectedCountry,
+          controller.signal,
+        );
 
         if (ignoreResult) {
           return;
