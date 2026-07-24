@@ -1,7 +1,7 @@
+import { CasesTimeSeriesDynamic } from "../charts/cases-time-series-dynamic";
 import { DashboardFooter } from "./dashboard-footer";
 import { DashboardHeader } from "./dashboard-header";
 import { DashboardSelectionProvider } from "./dashboard-selection-provider";
-import { PlaceholderPanel } from "./placeholder-panel";
 import { SelectionChrome } from "./selection-chrome";
 import { KpiPanel } from "../kpis/kpi-panel";
 import { WorldMapDynamic } from "../map/world-map-dynamic";
@@ -25,11 +25,7 @@ export function DashboardShell() {
 
           <WorldMapDynamic />
 
-          <PlaceholderPanel
-            title="Confirmed cases over time"
-            description="Time-series chart for global or selected country — GET /covid/series or country series."
-            minHeightClass="min-h-[220px] sm:min-h-[280px]"
-          />
+          <CasesTimeSeriesDynamic />
         </main>
 
         <DashboardFooter />
