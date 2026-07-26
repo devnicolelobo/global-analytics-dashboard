@@ -1,11 +1,11 @@
 'use client';
 
 /**
- * Confirmed cases chart section — data loading + states (DEV-93).
- *
- * Wires DEV-90 selection to useCasesTimeSeriesData; chart SVG lives in CasesTimeSeriesChart.
+ * Confirmed cases chart section — data loading + states (DEV-93 / DEV-94).
  */
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
+import { ErrorState } from '@/components/ui/error-state';
+import { LoadingState } from '@/components/ui/loading-state';
 import {
   CHART_EMPTY_MESSAGE,
   CHART_TITLE,
@@ -16,7 +16,7 @@ import { CasesTimeSeriesChart } from './cases-time-series-chart';
 
 export function CasesTimeSeriesPanel() {
   const { isGlobal, selectedCountry } = useDashboardSelection();
-  const { loadState, viewModel, errorMessage } = useCasesTimeSeriesData(
+  const { loadState, viewModel, errorMessage, retry } = useCasesTimeSeriesData(
     isGlobal,
     selectedCountry,
   );
@@ -35,22 +35,11 @@ export function CasesTimeSeriesPanel() {
       </h2>
 
       {loadState === 'loading' ? (
-        <p
-          role="status"
-          aria-live="polite"
-          className="flex min-h-[220px] items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-50/80 text-sm text-zinc-600 sm:min-h-[280px] dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400"
-        >
-          Loading chart data…
-        </p>
+        <LoadingState message="Loading chart data…" variant="panel" />
       ) : null}
 
       {loadState === 'error' && errorMessage ? (
-        <p
-          role="alert"
-          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200"
-        >
-          {errorMessage}
-        </p>
+        <ErrorState message={errorMessage} onRetry={retry} />
       ) : null}
 
       {loadState === 'success' && viewModel?.isEmpty ? (
