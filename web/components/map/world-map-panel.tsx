@@ -157,7 +157,7 @@ export function WorldMapPanel() {
         />
       ) : null}
 
-      {combinedError ? (
+      {combinedError && !isLoading ? (
         <ErrorState message={combinedError} onRetry={handleRetry} />
       ) : null}
 

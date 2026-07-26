@@ -29,7 +29,10 @@ export function DashboardFooter() {
       : null;
 
   return (
-    <footer className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 sm:px-6 dark:border-zinc-800 dark:bg-zinc-900">
+    <footer
+      aria-label="Data freshness"
+      className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 sm:px-6 dark:border-zinc-800 dark:bg-zinc-900"
+    >
       <div className="mx-auto flex max-w-7xl flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-400">
         <div className="space-y-1">
           {loadState === 'loading' ? (
@@ -37,7 +40,11 @@ export function DashboardFooter() {
           ) : null}
 
           {loadState === 'error' && errorMessage ? (
-            <ErrorState message={errorMessage} onRetry={retry} />
+            <ErrorState
+              message={errorMessage}
+              onRetry={retry}
+              variant="compact"
+            />
           ) : null}
 
           {loadState === 'success' && syncStatus ? (

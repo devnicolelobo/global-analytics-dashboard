@@ -49,7 +49,13 @@ describe('formatLastSyncStatus', () => {
     expect(formatLastSyncStatus(null)).toBeNull();
   });
 
-  it('sanitizes status text', () => {
-    expect(formatLastSyncStatus('success')).toBe('success');
+  it('humanizes known sync status values', () => {
+    expect(formatLastSyncStatus('success')).toBe('Success');
+    expect(formatLastSyncStatus('failed')).toBe('Failed');
+    expect(formatLastSyncStatus('running')).toBe('Running');
+  });
+
+  it('returns sanitized unknown status text as-is', () => {
+    expect(formatLastSyncStatus('custom-status')).toBe('custom-status');
   });
 });

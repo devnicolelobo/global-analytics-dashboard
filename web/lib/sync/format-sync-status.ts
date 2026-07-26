@@ -71,6 +71,12 @@ export function formatLatestReferenceDate(
   );
 }
 
+const SYNC_STATUS_LABELS: Readonly<Record<string, string>> = {
+  success: 'Success',
+  failed: 'Failed',
+  running: 'Running',
+};
+
 /** Display last sync run status when present (running | success | failed). */
 export function formatLastSyncStatus(
   lastSyncStatus: string | null,
@@ -84,5 +90,6 @@ export function formatLastSyncStatus(
     return null;
   }
 
-  return sanitized;
+  const normalized = sanitized.toLowerCase();
+  return SYNC_STATUS_LABELS[normalized] ?? sanitized;
 }
