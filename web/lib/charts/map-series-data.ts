@@ -14,6 +14,9 @@ import { sanitizeDisplayText } from '@/lib/kpis/sanitize-display';
 
 import type { ChartSeriesPoint, ChartSeriesViewModel, SeriesFetchTarget } from './types';
 
+/** API span cap is 4000 days — headroom for defensive client-side truncation. */
+export const MAX_SERIES_POINTS = 4_500;
+
 const ISO_DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
 
 function isValidIsoDate(value: string): boolean {
@@ -48,7 +51,8 @@ export function sortSeriesPointsByDate(
 }
 
 export function mapSeriesPoint(point: SeriesPoint): ChartSeriesPoint {
-  const date = typeof point.date === 'string' ? point.date.trim() : '';
+  const rawDate = typeof point.date === 'string' ? point.date.trim() : '';
+  const date = isValidIsoDate(rawDate) ? rawDate : '';
   const value =
     point.value === null || point.value === undefined || Number.isNaN(point.value)
       ? null
@@ -57,10 +61,22 @@ export function mapSeriesPoint(point: SeriesPoint): ChartSeriesPoint {
   return { date, value };
 }
 
+function normalizeMetaDate(raw: unknown): string | null {
+  if (typeof raw !== 'string') {
+    return null;
+  }
+  const trimmed = raw.trim();
+  return isValidIsoDate(trimmed) ? trimmed : null;
+}
+
 export function mapPointsToChartData(
   points: ReadonlyArray<SeriesPoint>,
 ): ChartSeriesPoint[] {
-  return sortSeriesPointsByDate(points).map(mapSeriesPoint);
+  const capped =
+    points.length > MAX_SERIES_POINTS
+      ? points.slice(0, MAX_SERIES_POINTS)
+      : points;
+  return sortSeriesPointsByDate(capped).map(mapSeriesPoint);
 }
 
 export function isEmptySeries(points: ReadonlyArray<{ value: number | null }>): boolean {
@@ -94,8 +110,8 @@ export function mapGlobalSeriesToChart(
     isEmpty: isEmptySeries(points),
     meta: {
       pointCount: response.meta.pointCount,
-      from: response.meta.from,
-      to: response.meta.to,
+      from: normalizeMetaDate(response.meta.from),
+      to: normalizeMetaDate(response.meta.to),
     },
   };
 }
@@ -112,8 +128,8 @@ export function mapCountrySeriesToChart(
     isEmpty: isEmptySeries(points),
     meta: {
       pointCount: response.meta.pointCount,
-      from: response.meta.from,
-      to: response.meta.to,
+      from: normalizeMetaDate(response.meta.from),
+      to: normalizeMetaDate(response.meta.to),
     },
   };
 }

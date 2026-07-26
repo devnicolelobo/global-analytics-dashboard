@@ -41,6 +41,13 @@ describe('buildSeriesQuery', () => {
       }),
     ).toBe('?metric=casesTotal&from=2020-01-01&to=2020-12-31');
   });
+
+  it('rejects malformed from/to dates before building the query', () => {
+    expect(() =>
+      buildSeriesQuery({ from: '2020-13-40' }),
+    ).toThrow(/Invalid from date/);
+    expect(() => buildSeriesQuery({ to: 'not-a-date' })).toThrow(/Invalid to date/);
+  });
 });
 
 describe('buildCountriesQuery', () => {

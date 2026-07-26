@@ -9,8 +9,9 @@ export function DashboardHeader() {
           COVID-19 country overview
         </h1>
         <p className="max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
-          Explore persisted country-level metrics from the internal API. Map,
-          KPIs, and charts will load here in upcoming sprint cards.
+          Explore persisted country-level metrics from the internal API. Use the
+          map or country selector to filter KPIs and the confirmed-cases chart;
+          clear selection to return to the global view.
         </p>
       </div>
     </header>

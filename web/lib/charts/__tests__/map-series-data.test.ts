@@ -79,6 +79,28 @@ describe('mapGlobalSeriesToChart', () => {
 
     expect(mapGlobalSeriesToChart(response).isEmpty).toBe(true);
   });
+
+  it('drops invalid meta dates and truncates oversized point arrays', () => {
+    const response: GlobalSeriesResponse = {
+      scope: 'global',
+      metric: 'casesTotal',
+      points: Array.from({ length: 5_000 }, (_, index) => ({
+        date: `2020-01-${String((index % 28) + 1).padStart(2, '0')}`,
+        value: index,
+      })),
+      meta: {
+        pointCount: 5_000,
+        from: '<script>alert(1)</script>',
+        to: 'not-a-date',
+      },
+    };
+
+    const viewModel = mapGlobalSeriesToChart(response);
+
+    expect(viewModel.points.length).toBeLessThanOrEqual(4_500);
+    expect(viewModel.meta.from).toBeNull();
+    expect(viewModel.meta.to).toBeNull();
+  });
 });
 
 describe('mapCountrySeriesToChart', () => {

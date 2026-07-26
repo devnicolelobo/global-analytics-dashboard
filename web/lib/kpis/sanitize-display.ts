@@ -26,3 +26,15 @@ export const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 export function isIsoDateString(value: string): boolean {
   return ISO_DATE_PATTERN.test(value);
 }
+
+/** Pattern + calendar validity (rejects impossible dates like 2020-13-40). */
+export function isValidIsoDate(value: string): boolean {
+  if (!isIsoDateString(value)) {
+    return false;
+  }
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return (
+    !Number.isNaN(parsed.getTime()) &&
+    parsed.toISOString().slice(0, 10) === value
+  );
+}
