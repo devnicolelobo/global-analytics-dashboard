@@ -45,10 +45,13 @@ function ChartTooltipContent({ active, label, payload }: ChartTooltipProps) {
   }
 
   const value = payload[0]?.value ?? null;
+  const safeLabel = formatChartDateTick(typeof label === 'string' ? label : '');
 
   return (
     <div className="rounded-md border border-zinc-200 bg-white/95 px-3 py-2 text-xs shadow-sm dark:border-zinc-700 dark:bg-zinc-900/95">
-      <p className="font-medium text-zinc-800 dark:text-zinc-100">{label ?? ''}</p>
+      <p className="font-medium text-zinc-800 dark:text-zinc-100">
+        {safeLabel || '—'}
+      </p>
       <p className="tabular-nums text-zinc-600 dark:text-zinc-300">
         {CHART_SERIES_LABEL}: {formatChartTooltipValue(value)}
       </p>

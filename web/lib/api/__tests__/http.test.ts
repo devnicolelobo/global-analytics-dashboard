@@ -97,4 +97,19 @@ describe('getJson', () => {
       kind: 'network',
     });
   });
+
+  it('rejects responses that exceed MAX_RESPONSE_BYTES', async () => {
+    const oversized = 'x'.repeat(2 * 1024 * 1024 + 1);
+    vi.mocked(fetch).mockResolvedValueOnce(
+      new Response(oversized, {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    await expect(getJson('/covid/summary')).rejects.toMatchObject({
+      kind: 'parse',
+      message: 'Response payload too large',
+    });
+  });
 });

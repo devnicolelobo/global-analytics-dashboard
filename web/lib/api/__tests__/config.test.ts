@@ -33,6 +33,16 @@ describe('isValidApiBaseUrl', () => {
     expect(isValidApiBaseUrl('ftp://files.example.com')).toBe(false);
     expect(isValidApiBaseUrl('not a url')).toBe(false);
   });
+
+  it('rejects plain HTTP when requireHttps is set', () => {
+    expect(isValidApiBaseUrl('http://localhost:3001')).toBe(true);
+    expect(
+      isValidApiBaseUrl('http://localhost:3001', { requireHttps: true }),
+    ).toBe(false);
+    expect(
+      isValidApiBaseUrl('https://api.example.com', { requireHttps: true }),
+    ).toBe(true);
+  });
 });
 
 describe('getApiBaseUrl', () => {
@@ -53,5 +63,16 @@ describe('getApiBaseUrl', () => {
   it('throws when the env var is not a valid http(s) URL', () => {
     process.env.NEXT_PUBLIC_API_URL = '/relative';
     expect(() => getApiBaseUrl()).toThrow(/Invalid NEXT_PUBLIC_API_URL/);
+  });
+
+  it('throws when production env uses plain HTTP', () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    process.env.NEXT_PUBLIC_API_URL = 'http://localhost:3001';
+
+    expect(() => getApiBaseUrl()).toThrow(/HTTPS URL/);
+
+    process.env.NODE_ENV = previousNodeEnv;
+    delete process.env.NEXT_PUBLIC_API_URL;
   });
 });

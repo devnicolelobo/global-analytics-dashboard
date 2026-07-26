@@ -270,7 +270,7 @@ Target: **GitHub Actions** workflows in `.github/workflows/`.
 
 Status check name required for merge: **`api`** (Actions job name in `ci-api.yml`).
 
-### `ci-web.yml` (on PR and push to `develop` / `main`)
+### `ci-web.yml` (on PR and push to `develop` / `main`) — **active**
 
 | Step | Command |
 |------|---------|
@@ -278,7 +278,10 @@ Status check name required for merge: **`api`** (Actions job name in `ci-api.yml
 | Setup Node 20 | `actions/setup-node` |
 | Install | `cd web && npm ci` |
 | Lint | `npm run lint` |
+| Test | `npm test` |
 | Build | `npm run build` |
+
+Status check name for optional branch protection: **`web`** (Actions job name in `ci-web.yml`). No `API_NINJAS_KEY` or `DATABASE_URL` required — web unit tests exercise pure logic only.
 
 ### Deploy workflows (Phase 5)
 
@@ -418,11 +421,11 @@ Also update the root [README.md](../README.md) per [REQ-NF-06](./REQUIREMENTS.md
 |------|-------|
 | Staging environment | Not provisioned |
 | Production environment | Not provisioned |
-| GitHub Actions CI | `ci-api.yml` active (lint / unit / e2e / build); `ci-web.yml` pending Sprint 03 close (DEV-95) |
+| GitHub Actions CI | `ci-api.yml` + `ci-web.yml` active (lint / test / build) |
 | Automated deploy | Not configured |
-| `develop` branch | Active integration branch (created Phase 3; Sprint 02 backend + Sprint 03 frontend) |
+| `develop` branch | Active integration branch (Sprint 02 backend + Sprint 03 dashboard MVP) |
 | Prisma / ingest / read API | Complete on `develop` / `main` (Sprint 02 / M3) |
-| Dashboard (`web/`) | In progress — shell + API client shipped; staging deploy at M4 |
+| Dashboard (`web/`) | MVP complete on `develop` (map, KPIs, chart, footer); staging URL at Phase 5 / M4 deploy |
 
 Local development is documented in [SETUP.md](./SETUP.md). This document defines the **target** operational model; implementation lands in Phase 5.
 

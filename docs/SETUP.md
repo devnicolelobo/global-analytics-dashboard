@@ -297,6 +297,36 @@ The dashboard **footer** reads sync freshness from `GET /sync/status` on the API
 | Web unit tests | `npm test` in `web/` |
 | Web production build | `npm run build` in `web/` |
 
+### Dashboard acceptance smoke (DEV-95)
+
+Full-stack manual check after API sync/seed (see [§8 Verify the setup](#8-verify-the-setup)):
+
+```bash
+# From repo root — database + API must be running
+docker compose up -d
+cd api && npx prisma migrate deploy && npm run start:dev   # terminal 1
+cd web && npm run dev                                        # terminal 2 — NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+**UI flow:** open http://localhost:3000 → global KPIs + map + chart → click a country → KPIs/chart update → **Clear selection** → global view restored.
+
+**API curls** (match dashboard fetches; expect `200` with synced data):
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/covid/summary
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/covid/countries
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3001/covid/series?metric=casesTotal"
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/sync/status
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/covid/countries/US
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3001/covid/countries/US/series?metric=casesTotal"
+```
+
+**Web CI (local or Actions):**
+
+```bash
+cd web && npm run lint && npm test && npm run build
+```
+
 ### Integration / e2e against PostgreSQL (DEV-87)
 
 Strategy: **Option A** — real Postgres (Docker) for integration confidence; mock upstream HTTP so CI never calls API Ninjas. SQLite is forbidden ([ADR-003](./adr/ADR-003-database-choice.md)).

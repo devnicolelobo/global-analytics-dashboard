@@ -4,6 +4,9 @@ import { ApiError } from './errors';
 /** Default request timeout — prevents hung UI when the API never responds. */
 export const DEFAULT_TIMEOUT_MS = 12_000;
 
+/** Reject JSON bodies larger than 2 MB before parse (client-side DoS guard). */
+export const MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
+
 export interface GetJsonOptions {
   /** Extra abort signal (e.g. from React / caller). Combined with the timeout signal. */
   signal?: AbortSignal;
@@ -67,9 +70,27 @@ function createCombinedSignal(
   return { signal: controller.signal, cleanup };
 }
 
+function assertBodyWithinLimit(
+  byteLength: number,
+  maxBytes: number = MAX_RESPONSE_BYTES,
+): void {
+  if (byteLength > maxBytes) {
+    throw ApiError.payloadTooLarge(maxBytes);
+  }
+}
+
 async function readBody(response: Response): Promise<unknown> {
+  const contentLength = response.headers.get('content-length');
+  if (contentLength !== null) {
+    const declared = Number.parseInt(contentLength, 10);
+    if (Number.isFinite(declared)) {
+      assertBodyWithinLimit(declared);
+    }
+  }
+
   const contentType = response.headers.get('content-type') ?? '';
   const raw = await response.text();
+  assertBodyWithinLimit(raw.length);
 
   if (raw.length === 0) {
     return null;

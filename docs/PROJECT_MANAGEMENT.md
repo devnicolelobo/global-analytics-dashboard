@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phase 4 (frontend & dashboard) **in progress** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) (M4). Phases 0–3 complete; Sprint 02 closed: [sprint-02-backend-data-layer.md](./sprints/sprint-02-backend-data-layer.md).
+**Current phase.** Phase 4 (frontend & dashboard) **complete** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) closed (M4 product criteria on `develop`; staging deploy in Phase 5). Phase 5 (CI/CD & production) is next.
 
 ---
 
@@ -151,8 +151,8 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 | **1** | Governance & documentation | PM plan, ADRs, requirements, external API analysis | Complete |
 | **2** | Architecture & specifications | Architecture, data model, API spec, diagrams, SETUP, DEPLOYMENT | Complete |
 | **3** | Backend & data layer | Prisma, ingest, internal REST API | Complete (Sprint 02 / M3) |
-| **4** | Frontend & dashboard | Maps, KPIs, charts | In progress (Sprint 03 / M4) |
-| **5** | CI/CD & production | Pipelines, staging, production, MVP release | Planned |
+| **4** | Frontend & dashboard | Maps, KPIs, charts | Complete (Sprint 03 / M4 product on `develop`) |
+| **5** | CI/CD & production | Pipelines, staging, production, MVP release | In progress (next) |
 
 Phases are sequential in intent but allow overlap where discovery (docs/specs) runs ahead of delivery (code).
 
@@ -182,7 +182,7 @@ Dates are **targets** — revised at each sprint close (Section 18).
 | **M1** | 16 Jul 2026 | PROJECT_MANAGEMENT, ADRs, REQUIREMENTS, EXTERNAL_APIS committed | **Met** (2026-07-10) |
 | **M2** | 23 Jul 2026 | ARCHITECTURE, DATA_MODEL, API_SPEC v1, diagrams, SETUP, DEPLOYMENT committed | **Met** (2026-07-10) |
 | **M3** | 10 Aug 2026 | Ingest + internal API functional with passing tests | **Met** (2026-07-18) |
-| **M4** | 28 Aug 2026 | Dashboard MVP on staging (map, KPIs, minimum chart) |
+| **M4** | 28 Aug 2026 | Dashboard MVP on staging (map, KPIs, minimum chart) | **Partially met** (2026-07-26) — MVP on `develop`; staging URL deferred Phase 5 ([Sprint 03](./sprints/sprint-03-frontend-dashboard.md)) |
 | **M5** | 7 Sep 2026 | Production deploy, tag `v0.1.0`, public URLs in README |
 
 ---
