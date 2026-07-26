@@ -129,4 +129,11 @@ export class ApiError extends Error {
       kind: 'abort',
     });
   }
+
+  static payloadTooLarge(maxBytes: number): ApiError {
+    return new ApiError('Response payload too large', {
+      kind: 'parse',
+      cause: { maxBytes },
+    });
+  }
 }
