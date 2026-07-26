@@ -42,13 +42,20 @@ export function parseGeoJsonIso2(
   return null;
 }
 
+/** Align with GeoJSON feature cap and expected ISO catalogue size. */
+export const MAX_COUNTRIES_LIST_ITEMS = 300;
+
 /** Build ISO2 → country row map; skips rows with invalid API codes. */
 export function buildCountryListLookup(
   countries: ReadonlyArray<CountryListItem>,
 ): CountryListLookup {
   const lookup = new Map<string, CountryListItem>();
+  const capped =
+    countries.length > MAX_COUNTRIES_LIST_ITEMS
+      ? countries.slice(0, MAX_COUNTRIES_LIST_ITEMS)
+      : countries;
 
-  for (const country of countries) {
+  for (const country of capped) {
     const code = normalizeCountryCodeInput(country.code);
     if (code === null) {
       continue;
@@ -94,8 +101,12 @@ export function collectMetricValues(
   metric: MapMetric,
 ): number[] {
   const values: number[] = [];
+  const capped =
+    countries.length > MAX_COUNTRIES_LIST_ITEMS
+      ? countries.slice(0, MAX_COUNTRIES_LIST_ITEMS)
+      : countries;
 
-  for (const country of countries) {
+  for (const country of capped) {
     const value = getMapMetricValue(country, metric);
     if (value !== null) {
       values.push(value);
