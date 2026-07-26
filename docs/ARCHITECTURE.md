@@ -170,7 +170,10 @@ See `api/.env.example`. Secrets never committed.
 | `lib/map/` | Choropleth scale, ISO2 join, tooltip formatters, map fetch hook | Done (DEV-92) |
 | `public/geo/` | Static simplified world countries GeoJSON (Natural Earth 110m) | Done (DEV-92) |
 | `components/charts/` | Time-series chart (confirmed cases, Recharts) | Done (DEV-93) |
+| `components/ui/` | Shared loading/error states for dashboard panels | Done (DEV-94) |
 | `lib/charts/` | Series mappers, axis formatters, chart fetch hook | Done (DEV-93) |
+| `lib/sync/` | SyncStatus formatters and footer fetch hook | Done (DEV-94) |
+| `lib/ui/` | Shared fetch error message helper | Done (DEV-94) |
 | `lib/api/` | Typed client for internal REST base URL | Done (DEV-89) |
 | `lib/dashboard/selection.ts` | Global vs country selection domain helpers | Done (DEV-90) |
 | `lib/country-code.ts` | Shared ISO2 validation for API + selection | Done (DEV-90) |
@@ -231,7 +234,15 @@ Maintenance notes: `web/lib/map/README.md`.
 
 Maintenance notes: `web/lib/charts/README.md`.
 
-### 7.6 Client constraints
+### 7.6 Freshness footer and shared fetch UX (DEV-94)
+
+`DashboardFooter` (Client Component) loads **`GET /sync/status`** via `useSyncStatusData` — canonical freshness per API_SPEC §5.1 (not `summary.meta` alone). Displays `dataSource`, `lastSuccessfulSyncAt` (or honest “Never synced”), optional `lastSyncStatus` and `latestReferenceDate`. Does **not** call `POST /sync`.
+
+Shared **`LoadingState`** / **`ErrorState`** in `components/ui/` unify KPI, map, and chart loading/error copy (REQ-F-51). Recoverable failures expose a **Try again** button that bumps a hook `retryCount` — one refetch per click, no auto-retry loops. Error text flows through `lib/ui/fetch-error-message.ts` (sanitized `ApiError.message`).
+
+Maintenance notes: `web/lib/sync/README.md`.
+
+### 7.7 Client constraints
 
 - **Server Components** where possible; map and chart as **client components** (`"use client"` / dynamic import, no Leaflet SSR).
 - **No** upstream API keys or direct calls to API Ninjas.
