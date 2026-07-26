@@ -1,18 +1,19 @@
 'use client';
 
 /**
- * KPI panel container (DEV-91).
- * Data loading lives in useKpiPanelData; this component renders loading, error,
- * empty, and success states with accessible English copy (REQ-F-51, REQ-F-53).
+ * KPI panel container (DEV-91 / DEV-94).
+ * Data loading lives in useKpiPanelData; shared LoadingState / ErrorState (REQ-F-51).
  */
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
+import { ErrorState } from '@/components/ui/error-state';
+import { LoadingState } from '@/components/ui/loading-state';
 import { useKpiPanelData } from '@/lib/kpis/use-kpi-panel-data';
 
 import { KpiCard } from './kpi-card';
 
 export function KpiPanel() {
   const { isGlobal, selectedCountry } = useDashboardSelection();
-  const { loadState, viewModel, errorMessage } = useKpiPanelData(
+  const { loadState, viewModel, errorMessage, retry } = useKpiPanelData(
     isGlobal,
     selectedCountry,
   );
@@ -23,22 +24,11 @@ export function KpiPanel() {
   return (
     <div className="space-y-3" aria-busy={loadState === 'loading'}>
       {loadState === 'loading' ? (
-        <p
-          role="status"
-          aria-live="polite"
-          className="text-sm text-zinc-600 dark:text-zinc-400"
-        >
-          Loading KPI data…
-        </p>
+        <LoadingState message="Loading KPIs…" />
       ) : null}
 
       {loadState === 'error' && errorMessage ? (
-        <p
-          role="alert"
-          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200"
-        >
-          {errorMessage}
-        </p>
+        <ErrorState message={errorMessage} onRetry={retry} />
       ) : null}
 
       {loadState === 'success' && viewModel?.isEmpty ? (
@@ -65,12 +55,6 @@ export function KpiPanel() {
             ))}
           </div>
         </>
-      ) : null}
-
-      {loadState === 'idle' ? (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Preparing KPI panel…
-        </p>
       ) : null}
     </div>
   );

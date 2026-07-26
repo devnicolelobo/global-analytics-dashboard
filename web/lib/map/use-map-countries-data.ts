@@ -6,11 +6,12 @@
  * Single GET /covid/countries call on mount — tooltips use list rows (no N+1 hover fetches).
  * AbortController + stale guard mirror useKpiPanelData; metric is fixed for MVP (casesTotal).
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getCountries } from '@/lib/api/client';
-import { ApiError, sanitizeErrorMessage } from '@/lib/api/errors';
+import { ApiError } from '@/lib/api/errors';
 import type { CountriesResponse } from '@/lib/api/types';
+import { toFetchErrorMessage } from '@/lib/ui/fetch-error-message';
 
 import { computeMetricExtent, type MetricExtent } from './choropleth-scale';
 import { buildCountryListLookup, type CountryListLookup } from './join-metrics';
@@ -24,24 +25,20 @@ export type UseMapCountriesDataResult = {
   lookup: CountryListLookup;
   metricExtent: MetricExtent | null;
   errorMessage: string | null;
+  retry: () => void;
 };
-
-function toMapCountriesErrorMessage(error: unknown): string {
-  if (error instanceof ApiError) {
-    return error.message;
-  }
-  if (error instanceof Error) {
-    return sanitizeErrorMessage(error.message);
-  }
-  return 'Unable to load map data. Please try again later.';
-}
 
 export function useMapCountriesData(
   metric: MapMetric = DEFAULT_MAP_METRIC,
 ): UseMapCountriesDataResult {
-  const [loadState, setLoadState] = useState<MapCountriesLoadState>('idle');
+  const [loadState, setLoadState] = useState<MapCountriesLoadState>('loading');
   const [response, setResponse] = useState<CountriesResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => {
+    setRetryCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -69,7 +66,12 @@ export function useMapCountriesData(
         }
 
         setResponse(null);
-        setErrorMessage(toMapCountriesErrorMessage(error));
+        setErrorMessage(
+          toFetchErrorMessage(
+            error,
+            'Unable to load map data. Please try again later.',
+          ),
+        );
         setLoadState('error');
       }
     }
@@ -80,7 +82,7 @@ export function useMapCountriesData(
       ignoreResult = true;
       controller.abort();
     };
-  }, [metric]);
+  }, [metric, retryCount]);
 
   const lookup = useMemo(() => {
     if (response === null) {
@@ -104,5 +106,6 @@ export function useMapCountriesData(
     lookup,
     metricExtent,
     errorMessage,
+    retry,
   };
 }
