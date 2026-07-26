@@ -74,8 +74,9 @@ Blocked dependencies must be tracked in Linear (`blocks` / `blocked by`). The de
 | Force push | Disabled (enforced for admins too) |
 | Branch deletion | Disabled (enforced for admins too) |
 | Required status check | `api` (GitHub Actions job name from `ci-api.yml`) must pass before merge |
+| Optional status check | `web` (GitHub Actions job name from `ci-web.yml`) — enable in branch protection when green on `develop`; do not block merges until coordinated |
 
-Do not attempt `git push --force` to either branch. Use pull requests for feature work. CI runs on every PR and push to `main` / `develop` (see `.github/workflows/ci-api.yml`).
+Do not attempt `git push --force` to either branch. Use pull requests for feature work. CI runs on every PR and push to `main` / `develop` (see `.github/workflows/ci-api.yml` and `.github/workflows/ci-web.yml`).
 
 ---
 
@@ -221,7 +222,8 @@ Required sections:
 
 - Next.js App Router + React + TypeScript
 - ESLint via `npm run lint`
-- Tests for critical components and flows
+- Vitest unit tests via `npm test` (pure logic in `web/lib/`)
+- Production build via `npm run build` — both run in `ci-web.yml`
 - No API keys exposed in the client bundle
 
 ### General
