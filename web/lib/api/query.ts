@@ -1,4 +1,5 @@
 import type { CountriesQueryParams, Metric, SeriesQueryParams } from './types';
+import { isValidIsoDate } from '../kpis/sanitize-display';
 
 export { assertCountryCode } from '../country-code';
 
@@ -27,9 +28,15 @@ export function buildSeriesQuery(params: SeriesQueryParams = {}): string {
     search.set('metric', params.metric);
   }
   if (params.from !== undefined) {
+    if (!isValidIsoDate(params.from)) {
+      throw new Error(`Invalid from date: ${String(params.from)}`);
+    }
     search.set('from', params.from);
   }
   if (params.to !== undefined) {
+    if (!isValidIsoDate(params.to)) {
+      throw new Error(`Invalid to date: ${String(params.to)}`);
+    }
     search.set('to', params.to);
   }
 
