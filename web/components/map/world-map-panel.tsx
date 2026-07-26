@@ -17,6 +17,7 @@ import {
   type CountryFeatureCollection,
 } from '@/lib/map/types';
 import { useMapCountriesData } from '@/lib/map/use-map-countries-data';
+import { fetchTextLimited } from '@/lib/fetch/fetch-text-limited';
 import {
   isGeoJsonPayloadWithinSizeLimit,
   parseCountryFeatureCollection,
@@ -52,14 +53,9 @@ export function WorldMapPanel() {
       setGeojsonError(null);
 
       try {
-        const fetchResponse = await fetch(COUNTRIES_GEOJSON_PATH, {
+        const rawText = await fetchTextLimited(COUNTRIES_GEOJSON_PATH, {
           signal: controller.signal,
         });
-        if (!fetchResponse.ok) {
-          throw new Error('Map geometry request failed.');
-        }
-
-        const rawText = await fetchResponse.text();
         if (!isGeoJsonPayloadWithinSizeLimit(rawText)) {
           throw new Error('Map geometry payload too large.');
         }
@@ -131,11 +127,13 @@ export function WorldMapPanel() {
   const isLoading = loadState === 'loading' || geojsonLoadState === 'loading';
 
   const combinedError =
-    loadState === 'error'
-      ? errorMessage
-      : geojsonLoadState === 'error'
-        ? geojsonError
-        : null;
+    loadState === 'error' && geojsonLoadState === 'error'
+      ? [errorMessage, geojsonError].filter(Boolean).join(' ')
+      : loadState === 'error'
+        ? errorMessage
+        : geojsonLoadState === 'error'
+          ? geojsonError
+          : null;
 
   const canRenderMap =
     loadState === 'success' &&
