@@ -1,14 +1,13 @@
 'use client';
 
 /**
- * World map panel — loads API countries + static GeoJSON, wires selection context (DEV-92).
- *
- * Fetches geometry once (memoized by mount); country metrics refetch only when metric changes.
- * Click toggles selection: same ISO2 clears, different ISO2 selects (REQ-F-22, REQ-F-24).
+ * World map panel — loads API countries + static GeoJSON, wires selection context (DEV-92 / DEV-94).
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useDashboardSelection } from '@/components/dashboard/dashboard-selection-provider';
+import { ErrorState } from '@/components/ui/error-state';
+import { LoadingState } from '@/components/ui/loading-state';
 import { KPI_METRIC_DEFINITIONS } from '@/lib/kpis/map-kpi-view-model';
 import { buildChoroplethLegendStops } from '@/lib/map/choropleth-scale';
 import { formatMapDataCoverageSuffix, formatMapReferenceDateSuffix } from '@/lib/map/format-map-subtitle';
@@ -25,19 +24,24 @@ import {
 
 import { WorldMapView } from './world-map-view';
 
-type GeoJsonLoadState = 'idle' | 'loading' | 'success' | 'error';
+type GeoJsonLoadState = 'loading' | 'success' | 'error';
 
 export function WorldMapPanel() {
   const metric = DEFAULT_MAP_METRIC;
   const { selectedCountry, selectCountry, clearSelection } =
     useDashboardSelection();
-  const { loadState, lookup, metricExtent, errorMessage, response } =
+  const { loadState, lookup, metricExtent, errorMessage, response, retry } =
     useMapCountriesData(metric);
 
   const [geojson, setGeojson] = useState<CountryFeatureCollection | null>(null);
   const [geojsonLoadState, setGeojsonLoadState] =
-    useState<GeoJsonLoadState>('idle');
+    useState<GeoJsonLoadState>('loading');
   const [geojsonError, setGeojsonError] = useState<string | null>(null);
+  const [geojsonRetryCount, setGeojsonRetryCount] = useState(0);
+
+  const retryGeoJson = useCallback(() => {
+    setGeojsonRetryCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -82,7 +86,7 @@ export function WorldMapPanel() {
         }
 
         setGeojson(null);
-        setGeojsonError('Unable to load map geometry. Please refresh the page.');
+        setGeojsonError('Unable to load map geometry. Please try again.');
         setGeojsonLoadState('error');
       }
     }
@@ -93,7 +97,7 @@ export function WorldMapPanel() {
       ignoreResult = true;
       controller.abort();
     };
-  }, []);
+  }, [geojsonRetryCount]);
 
   const handleCountryClick = useCallback(
     (code: string) => {
@@ -106,6 +110,15 @@ export function WorldMapPanel() {
     [selectedCountry, selectCountry, clearSelection],
   );
 
+  const handleRetry = useCallback(() => {
+    if (loadState === 'error') {
+      retry();
+    }
+    if (geojsonLoadState === 'error') {
+      retryGeoJson();
+    }
+  }, [loadState, geojsonLoadState, retry, retryGeoJson]);
+
   const metricLabel =
     KPI_METRIC_DEFINITIONS.find((definition) => definition.id === metric)
       ?.label ?? 'Confirmed cases';
@@ -115,11 +128,7 @@ export function WorldMapPanel() {
     [metricExtent],
   );
 
-  const isLoading =
-    loadState === 'idle' ||
-    loadState === 'loading' ||
-    geojsonLoadState === 'idle' ||
-    geojsonLoadState === 'loading';
+  const isLoading = loadState === 'loading' || geojsonLoadState === 'loading';
 
   const combinedError =
     loadState === 'error'
@@ -135,28 +144,21 @@ export function WorldMapPanel() {
     response !== null;
 
   return (
-    <section aria-label="World map" className="space-y-3">
+    <section aria-label="World map" aria-busy={isLoading} className="space-y-3">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-300">
         World map
       </h2>
 
       {isLoading ? (
-        <p
-          role="status"
-          aria-live="polite"
-          className="flex min-h-[280px] items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-50/80 text-sm text-zinc-600 sm:min-h-[360px] dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400"
-        >
-          Loading map…
-        </p>
+        <LoadingState
+          message="Loading map…"
+          variant="panel"
+          panelSize="map"
+        />
       ) : null}
 
       {combinedError ? (
-        <p
-          role="alert"
-          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200"
-        >
-          {combinedError}
-        </p>
+        <ErrorState message={combinedError} onRetry={handleRetry} />
       ) : null}
 
       {canRenderMap ? (
