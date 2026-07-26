@@ -8,7 +8,7 @@
  * - stale-response guard via `ignoreResult`
  * - global vs country routing through typed API client only
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { getCountry, getSummary } from '@/lib/api/client';
 import { ApiError } from '@/lib/api/errors';
@@ -26,15 +26,21 @@ export type UseKpiPanelDataResult = {
   loadState: KpiPanelLoadState;
   viewModel: KpiPanelViewModel | null;
   errorMessage: string | null;
+  retry: () => void;
 };
 
 export function useKpiPanelData(
   isGlobal: boolean,
   selectedCountry: string | null,
 ): UseKpiPanelDataResult {
-  const [loadState, setLoadState] = useState<KpiPanelLoadState>('idle');
+  const [loadState, setLoadState] = useState<KpiPanelLoadState>('loading');
   const [viewModel, setViewModel] = useState<KpiPanelViewModel | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => {
+    setRetryCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -92,7 +98,7 @@ export function useKpiPanelData(
       ignoreResult = true;
       controller.abort();
     };
-  }, [isGlobal, selectedCountry]);
+  }, [isGlobal, selectedCountry, retryCount]);
 
-  return { loadState, viewModel, errorMessage };
+  return { loadState, viewModel, errorMessage, retry };
 }

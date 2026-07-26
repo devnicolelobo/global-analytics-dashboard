@@ -7,9 +7,10 @@
  * Country scope → GET /covid/countries/:code/series?metric=casesTotal (§6.5).
  * AbortController + stale guard mirror useKpiPanelData / useMapCountriesData.
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { ApiError, sanitizeErrorMessage } from '@/lib/api/errors';
+import { ApiError } from '@/lib/api/errors';
+import { toFetchErrorMessage } from '@/lib/ui/fetch-error-message';
 
 import { loadCasesTimeSeriesViewModel } from './load-cases-time-series';
 import type { ChartSeriesViewModel } from './types';
@@ -20,17 +21,8 @@ export type UseCasesTimeSeriesDataResult = {
   loadState: ChartLoadState;
   viewModel: ChartSeriesViewModel | null;
   errorMessage: string | null;
+  retry: () => void;
 };
-
-function toChartErrorMessage(error: unknown): string {
-  if (error instanceof ApiError) {
-    return error.message;
-  }
-  if (error instanceof Error) {
-    return sanitizeErrorMessage(error.message);
-  }
-  return 'Unable to load chart data. Please try again later.';
-}
 
 export function useCasesTimeSeriesData(
   isGlobal: boolean,
@@ -39,6 +31,11 @@ export function useCasesTimeSeriesData(
   const [loadState, setLoadState] = useState<ChartLoadState>('loading');
   const [viewModel, setViewModel] = useState<ChartSeriesViewModel | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => {
+    setRetryCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -72,7 +69,12 @@ export function useCasesTimeSeriesData(
         }
 
         setViewModel(null);
-        setErrorMessage(toChartErrorMessage(error));
+        setErrorMessage(
+          toFetchErrorMessage(
+            error,
+            'Unable to load chart data. Please try again later.',
+          ),
+        );
         setLoadState('error');
       }
     }
@@ -83,7 +85,7 @@ export function useCasesTimeSeriesData(
       ignoreResult = true;
       controller.abort();
     };
-  }, [isGlobal, selectedCountry]);
+  }, [isGlobal, selectedCountry, retryCount]);
 
-  return { loadState, viewModel, errorMessage };
+  return { loadState, viewModel, errorMessage, retry };
 }

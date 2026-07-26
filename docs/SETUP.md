@@ -250,6 +250,8 @@ npm run dev
 
 Default URL: **http://localhost:3000**
 
+The dashboard **footer** reads sync freshness from `GET /sync/status` on the API (`REQ-F-52`). With the API stopped, panels and footer show recoverable error states with **Try again** — start the API and retry or refresh.
+
 ### Port summary
 
 | Service | Port |

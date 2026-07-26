@@ -1,5 +1,5 @@
 import type { CountryDetailResponse, SummaryResponse } from '@/lib/api/types';
-import { ApiError, sanitizeErrorMessage } from '@/lib/api/errors';
+import { toFetchErrorMessage } from '@/lib/ui/fetch-error-message';
 
 import {
   formatMetricValue,
@@ -112,11 +112,8 @@ export function mapCountryDetailToKpiPanel(
 
 /** User-facing error text — sanitized plain text, no stack traces or HTML. */
 export function toKpiPanelErrorMessage(error: unknown): string {
-  if (error instanceof ApiError) {
-    return error.message;
-  }
-  if (error instanceof Error) {
-    return sanitizeErrorMessage(error.message);
-  }
-  return 'Unable to load KPI data. Please try again later.';
+  return toFetchErrorMessage(
+    error,
+    'Unable to load KPI data. Please try again later.',
+  );
 }
