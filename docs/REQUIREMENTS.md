@@ -244,15 +244,17 @@ The following are **explicitly excluded** from `v0.1.0` to prevent scope creep (
 
 ## 10. Future evolution (post-MVP)
 
-Planned enhancements **after** `v0.1.0`. Each requires a new or updated requirement ID and Linear card before implementation.
+Planned enhancements **after** MVP dashboard on `develop` (Sprint 03). Execution is tracked in **[docs/sprints/ROADMAP-POST-MVP.md](./sprints/ROADMAP-POST-MVP.md)** and Sprints 04–07. Each shipped item requires a Linear card and API_SPEC / REQUIREMENTS update when applicable.
 
-| Theme | Examples | Notes |
-|-------|----------|-------|
-| **Analytics** | Date range filter, compare countries, additional chart metrics | Extend REQ-F-40+ |
-| **Data** | Apify integration, richer history backfill, subnational data | Depends on EXTERNAL_APIS |
-| **UX** | Dark mode, improved mobile map UX, keyboard navigation | REQ-NF-08 expansion |
-| **Platform** | Authenticated admin, export, public API versioning | New security NFRs |
-| **Operations** | Hourly sync, metrics dashboard, alerting on ingest failure | REQ-F-04 extension |
+| Theme | Examples | Sprint |
+|-------|----------|--------|
+| **Discovery UX** | Coverage banner, top 10, searchable countries, URL selection | 04 |
+| **Analytics** | Peak day insights, deaths chart toggle, chart annotations | 05 |
+| **Data** | Expand priority series countries (LATAM+), sync runbook | 06 |
+| **Time & quality** | Daily/monthly, date range, Playwright smoke, README demo | 07 |
+| **Platform** | Staging deploy, `v0.1.0` (optional) | 07 / DEV-118 |
+| **Data (later)** | Apify integration, subnational data | Backlog |
+| **UX (later)** | Compare countries, export CSV | Backlog |
 
 ---
 
