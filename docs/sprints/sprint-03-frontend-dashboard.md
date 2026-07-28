@@ -141,10 +141,8 @@ Full-stack smoke: [SETUP.md §9 — Dashboard acceptance smoke](../SETUP.md#dash
 
 ### Deferred / next
 
-- Phase 5 — staging/production hosting, DNS, deploy workflows, `v0.1.0` (M5)
-- Staging URL in DEPLOYMENT.md §14 (M4 deploy gap)
-- Daily production sync cron (REQ-F-04) — HTTP trigger only through Sprint 03
-- Optional: enable `web` as required GitHub status check after first green CI run on `develop`
+- **Post-MVP product (Sprints 04–07):** [ROADMAP-POST-MVP.md](./ROADMAP-POST-MVP.md) — discovery UX, peak insights, ingest expansion, granularity
+- Phase 5 deploy (staging/production, `v0.1.0`) — optional at Sprint 07 / DEV-118
 
 ---
 

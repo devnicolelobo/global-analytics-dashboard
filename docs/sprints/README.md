@@ -38,8 +38,12 @@ sprint-<number>-<theme>.md
 | 01 | Jul 2026 | Repository foundation, governance, and specifications (M1 + M2) | [sprint-01-foundation.md](./sprint-01-foundation.md) | Complete |
 | 02 | Jul 2026 | Backend data layer — Prisma, ingest, internal API (M3) | [sprint-02-backend-data-layer.md](./sprint-02-backend-data-layer.md) | Complete |
 | 03 | Jul–Aug 2026 | Frontend dashboard — map, KPIs, chart (M4) | [sprint-03-frontend-dashboard.md](./sprint-03-frontend-dashboard.md) | Complete |
+| 04 | Aug 2026 | Analytics discovery UX — global clarity, search, top 10 | [sprint-04-analytics-discovery-ux.md](./sprint-04-analytics-discovery-ux.md) | Planned |
+| 05 | Aug 2026 | Country insights & peak days | [sprint-05-country-insights-peaks.md](./sprint-05-country-insights-peaks.md) | Planned |
+| 06 | Aug–Sep 2026 | Data depth — expand series ingest | [sprint-06-data-depth-ingest.md](./sprint-06-data-depth-ingest.md) | Planned |
+| 07 | Sep 2026 | Time granularity, E2E, portfolio polish | [sprint-07-time-granularity-quality.md](./sprint-07-time-granularity-quality.md) | Planned |
 
-*Dates are targets; revised at sprint close per [PROJECT_MANAGEMENT.md](../PROJECT_MANAGEMENT.md#18-sprint-management).*
+**Post-MVP overview:** [ROADMAP-POST-MVP.md](./ROADMAP-POST-MVP.md) (Sprints 04–07). Phase 5 deploy remains optional (DEV-118 in Sprint 07).
 
 ---
 
