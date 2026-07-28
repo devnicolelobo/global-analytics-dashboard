@@ -12,7 +12,7 @@ For development workflow and contribution standards, see [CONTRIBUTING.md](../CO
 |----------|-------------|--------|
 | [PROJECT_MANAGEMENT.md](./PROJECT_MANAGEMENT.md) | Methodology, Linear workflow, GitFlow, releases, definition of done | Available |
 | [PROMPT_WORK_STYLE.md](./PROMPT_WORK_STYLE.md) | AI mentorship + pair programming — file-by-file cycle | Available |
-| [sprints/](./sprints/) | Sprint records — Sprint 01–03 complete | Available |
+| [sprints/](./sprints/) | Sprint records — Sprint 01–03 complete; Sprints 04–07 planned ([roadmap](./sprints/ROADMAP-POST-MVP.md)) | Available |
 
 ---
 

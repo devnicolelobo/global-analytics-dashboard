@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phase 4 (frontend & dashboard) **complete** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) closed (M4 product criteria on `develop`; staging deploy in Phase 5). Phase 5 (CI/CD & production) is next.
+**Current phase.** Phase 4 (frontend & dashboard) **complete** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) closed. **Post-MVP product track** (Sprints 04–07) is **planned** — see [ROADMAP-POST-MVP.md](./sprints/ROADMAP-POST-MVP.md). Phase 5 (CI/CD deploy / M5 / `v0.1.0`) is **optional**, deferred to [Sprint 07](./sprints/sprint-07-time-granularity-quality.md) card DEV-118 unless reprioritized.
 
 ---
 
@@ -152,7 +152,8 @@ Sprints are **time-boxed iterations** (~1–2 weeks). Scope is replanned at each
 | **2** | Architecture & specifications | Architecture, data model, API spec, diagrams, SETUP, DEPLOYMENT | Complete |
 | **3** | Backend & data layer | Prisma, ingest, internal REST API | Complete (Sprint 02 / M3) |
 | **4** | Frontend & dashboard | Maps, KPIs, charts | Complete (Sprint 03 / M4 product on `develop`) |
-| **5** | CI/CD & production | Pipelines, staging, production, MVP release | In progress (next) |
+| **5** | CI/CD & production | Pipelines, staging, production, MVP release | Optional (Sprint 07 / DEV-118) |
+| **Post-MVP** | Analytics product evolution | Discovery UX, peaks, ingest depth, granularity | Planned (Sprints 04–07 — [ROADMAP](./sprints/ROADMAP-POST-MVP.md)) |
 
 Phases are sequential in intent but allow overlap where discovery (docs/specs) runs ahead of delivery (code).
 
