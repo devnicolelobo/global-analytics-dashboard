@@ -61,7 +61,7 @@ This document defines the software engineering management model for the Global A
 
 **Team model.** Individual ownership across product, engineering, quality, and operations within a single integrated delivery unit.
 
-**Current phase.** Phase 4 (frontend & dashboard) **complete** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) closed. **Post-MVP product track** (Sprints 04–07) is **planned** — see [ROADMAP-POST-MVP.md](./sprints/ROADMAP-POST-MVP.md). Phase 5 (CI/CD deploy / M5 / `v0.1.0`) is **optional**, deferred to [Sprint 07](./sprints/sprint-07-time-granularity-quality.md) card DEV-118 unless reprioritized.
+**Current phase.** Phase 4 (frontend & dashboard) **complete** — [Sprint 03](./sprints/sprint-03-frontend-dashboard.md) closed. **Post-MVP product track** in progress — [Sprint 04](./sprints/sprint-04-analytics-discovery-ux.md) (analytics discovery UX); roadmap [Sprints 04–07](./sprints/ROADMAP-POST-MVP.md). Phase 5 (CI/CD deploy / M5 / `v0.1.0`) is **optional**, deferred to [Sprint 07](./sprints/sprint-07-time-granularity-quality.md) card DEV-118 unless reprioritized.
 
 ---
 
