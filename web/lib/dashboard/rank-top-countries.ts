@@ -100,7 +100,16 @@ export function rankTopCountries(
     ];
   });
 
-  const sorted = [...eligible].sort((left, right) => {
+  const seenCodes = new Set<string>();
+  const deduped = eligible.filter((row) => {
+    if (seenCodes.has(row.code)) {
+      return false;
+    }
+    seenCodes.add(row.code);
+    return true;
+  });
+
+  const sorted = [...deduped].sort((left, right) => {
     const byMetric = compareMetricValues(left.metricValue, right.metricValue);
     if (byMetric !== 0) {
       return byMetric;
