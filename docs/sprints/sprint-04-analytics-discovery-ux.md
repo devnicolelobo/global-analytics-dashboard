@@ -22,15 +22,15 @@ Work is tracked in **Linear** (`DEV-XX`). Feature branches target `develop` per 
 
 | Card (Linear) | Title | Status |
 |---------------|-------|--------|
-| — | Open Sprint 04 record and mark sprint in progress | In progress |
-| — | Implement data coverage banner (map vs chart scope) | Planned |
-| — | Implement global top-10 countries panel | Planned |
+| DEV-96 | Open Sprint 04 record and mark sprint in progress | Done |
+| DEV-97 | Implement data coverage banner (map vs chart scope) | Done |
+| DEV-98 | Implement global top-10 countries panel | Done |
 | — | Implement searchable country list synced with map selection | Planned |
 | — | Implement shareable country selection via URL query param | Planned |
 | — | Implement honest empty state when country has no daily series | Planned |
 | — | Close Sprint 04 with acceptance checklist and retrospective | Planned |
 
-*Replace `—` with Linear card IDs when assigned.*
+*Replace remaining `—` with Linear card IDs when assigned.*
 
 ---
 
@@ -92,14 +92,14 @@ Canonical bar for implementation cards 2–6. Reviewers use this section; close 
 
 - [x] [ROADMAP-POST-MVP.md](./ROADMAP-POST-MVP.md) indexed on `main` (pre–Sprint 04)
 - [x] Sprint 04 record opened — this file (card 1)
-- [ ] Copy guidelines in header/footer for historical data cutoff (~2023-03) — optional with coverage banner (card 2)
+- [x] Copy guidelines in header/footer for historical data cutoff (~2023-03) — header + coverage banner (DEV-97)
 
 ### UX — global clarity
 
-- [ ] **Coverage banner** — e.g. “Map & KPIs: {N} countries · Full daily chart: {M} countries · Reference: {date}”
+- [x] **Coverage banner** — “Map & KPIs: {N} countries · Full daily chart: {M} countries · Reference: {date}” (DEV-97)
 - [ ] Remove or demote QA-only `<select>`; replace with production country picker fed by `GET /covid/countries`
-- [ ] **Top 10 panel** — sortable table or cards (cases total, deaths total, new cases) from country list API
-- [ ] Map click + list click + search share one selection context ([REQ-F-22](../REQUIREMENTS.md))
+- [x] **Top 10 panel** — sortable table (cases total, deaths total, new cases) from country list API (DEV-98)
+- [ ] Map click + list click + search share one selection context ([REQ-F-22](../REQUIREMENTS.md)) — partial: map + top-10 panel (DEV-98); search/list (Card 4)
 
 ### UX — shareable state
 
