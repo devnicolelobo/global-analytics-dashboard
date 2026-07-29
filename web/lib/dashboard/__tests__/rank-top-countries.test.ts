@@ -115,6 +115,27 @@ describe('rankTopCountries', () => {
     );
     expect(rows[0]?.name).toBe('United States');
   });
+
+  it('deduplicates by ISO2 code keeping first occurrence', () => {
+    const rows = rankTopCountries(
+      [
+        country('US', 'United States', { casesTotal: 100 }),
+        country('US', 'United States duplicate', { casesTotal: 999 }),
+      ],
+      'casesTotal',
+      10,
+    );
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.name).toBe('United States');
+    expect(rows[0]?.metricValue).toBe(100);
+  });
+
+  it('returns empty array when countries is not an array', () => {
+    expect(rankTopCountries(null as unknown as CountryListItem[], 'casesTotal')).toEqual(
+      [],
+    );
+  });
 });
 
 describe('formatTopCountriesHeading', () => {
