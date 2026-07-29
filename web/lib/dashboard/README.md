@@ -39,7 +39,7 @@ Explains **map/KPI country count** (from `GET /covid/countries`), **chart-ready 
 
 ## Top countries panel (Sprint 04 / DEV-98)
 
-Ranks countries from `GET /covid/countries?metric=…` (default `casesTotal`). User can switch metric (`deathsTotal`, `casesNew`). Row click calls `selectCountry` (REQ-F-22).
+Ranks countries from `GET /covid/countries?metric=…` (default `casesTotal`). User can switch metric (`deathsTotal`, `casesNew`). Row activation calls `selectCountry` (REQ-F-22). Re-fetch uses **stale-while-revalidate**: prior rows stay visible while the sort metric changes.
 
 **Known trade-off:** banner, top-10, map, and footer may each fetch `/covid/countries` or `/sync/status` independently in MVP — acceptable at ~196 countries; consolidate via shared providers if profiling warrants it later.
 
