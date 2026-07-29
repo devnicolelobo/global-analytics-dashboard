@@ -1,4 +1,10 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import type { NextConfig } from "next";
+
+/** Pin Turbopack root to `web/` — avoids picking a stray lockfile under $HOME. */
+const webRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
@@ -23,6 +29,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: webRoot,
+  },
   async headers() {
     return [
       {

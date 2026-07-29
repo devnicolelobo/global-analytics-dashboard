@@ -29,26 +29,26 @@ import { useDashboardSelection } from './dashboard-selection-provider';
 const METRIC_COLUMNS: ReadonlyArray<{
   key: TopCountriesMetric;
   label: string;
-  shortLabel: string;
 }> = [
-  { key: 'casesTotal', label: 'Confirmed cases', shortLabel: 'Cases' },
-  { key: 'deathsTotal', label: 'Deaths', shortLabel: 'Deaths' },
-  { key: 'casesNew', label: 'New cases', shortLabel: 'New' },
+  { key: 'casesTotal', label: 'Confirmed cases' },
+  { key: 'deathsTotal', label: 'Deaths' },
+  { key: 'casesNew', label: 'New cases' },
 ];
 
 function RankBadge({ rank }: { rank: number }) {
+  /** Podium: gold / silver / bronze — ranks 4+ stay neutral so top 3 read clearly. */
   const palette =
     rank === 1
-      ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200'
+      ? 'border-yellow-400 bg-yellow-100 text-yellow-950 dark:border-yellow-500 dark:bg-yellow-500/25 dark:text-yellow-100'
       : rank === 2
-        ? 'bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-100'
+        ? 'border-slate-300 bg-slate-200 text-slate-900 dark:border-slate-400 dark:bg-slate-500/35 dark:text-slate-50'
         : rank === 3
-          ? 'bg-orange-100 text-orange-900 dark:bg-orange-950/40 dark:text-orange-200'
-          : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300';
+          ? 'border-orange-800 bg-orange-900 text-orange-50 dark:border-orange-600 dark:bg-orange-950 dark:text-orange-200'
+          : 'border-transparent bg-zinc-100 text-zinc-600 dark:bg-zinc-800/70 dark:text-zinc-400';
 
   return (
     <span
-      className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums ${palette}`}
+      className={`inline-flex h-6 min-w-7 items-center justify-center rounded-full border px-1.5 text-xs font-semibold tabular-nums ${palette}`}
     >
       {rank}
     </span>
@@ -113,8 +113,7 @@ function TopCountriesTable({
                     : '',
                 ].join(' ')}
               >
-                <span className="hidden sm:inline">{column.label}</span>
-                <span className="sm:hidden">{column.shortLabel}</span>
+                {column.label}
               </th>
             ))}
           </tr>
@@ -227,10 +226,10 @@ export function TopCountriesPanel() {
                   aria-pressed={isActive}
                   onClick={() => setSortMetric(option.value)}
                   className={[
-                    'rounded-md px-3 py-1.5 text-xs font-medium transition-colors',
+                    'rounded-md border px-3 py-1.5 text-xs font-medium transition-colors',
                     isActive
-                      ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50'
-                      : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100',
+                      ? 'border-sky-300 bg-sky-100 text-sky-950 shadow-sm dark:border-sky-700 dark:bg-sky-950/50 dark:text-sky-100'
+                      : 'border-transparent text-zinc-700 hover:border-zinc-300 hover:bg-white hover:text-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-50',
                   ].join(' ')}
                 >
                   {option.label}
