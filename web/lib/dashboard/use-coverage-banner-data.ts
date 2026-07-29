@@ -4,21 +4,33 @@
  * Loads country list count + sync reference date for the coverage banner (Sprint 04).
  *
  * Country count is required for the banner; sync status is best-effort for reference date.
+ *
+ * Note: duplicates GET /covid/countries and GET /sync/status already fetched by map
+ * and footer — acceptable for Sprint 04 MVP; consolidate via shared providers in a
+ * later card if profiling shows measurable cost.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { getCountries, getSyncStatus } from '@/lib/api/client';
+import { getCountries } from '@/lib/api/client';
 import { ApiError } from '@/lib/api/errors';
-import { formatLatestReferenceDate } from '@/lib/sync/format-sync-status';
 import { toFetchErrorMessage } from '@/lib/ui/fetch-error-message';
 
 import { CHART_READY_COUNTRY_COUNT } from './constants';
-import { formatCoverageBannerMessage } from './format-coverage-banner';
+import {
+  buildCoverageBannerDisplay,
+  formatCoverageBannerMessage,
+  resolveMapCountryCount,
+} from './format-coverage-banner';
+import { loadSyncReferenceLabel } from './load-sync-reference-label';
 
 export type CoverageBannerLoadState = 'loading' | 'success' | 'error';
 
+export type CoverageBannerDisplay = ReturnType<typeof buildCoverageBannerDisplay>;
+
 export type UseCoverageBannerDataResult = {
   loadState: CoverageBannerLoadState;
+  display: CoverageBannerDisplay | null;
+  /** Full plain-text line for aria-label / screen readers. */
   message: string | null;
   errorMessage: string | null;
   retry: () => void;
@@ -26,10 +38,7 @@ export type UseCoverageBannerDataResult = {
 
 export function useCoverageBannerData(): UseCoverageBannerDataResult {
   const [loadState, setLoadState] = useState<CoverageBannerLoadState>('loading');
-  const [mapCountryCount, setMapCountryCount] = useState<number | null>(null);
-  const [referenceDateLabel, setReferenceDateLabel] = useState<string | null>(
-    null,
-  );
+  const [display, setDisplay] = useState<CoverageBannerDisplay | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -44,26 +53,25 @@ export function useCoverageBannerData(): UseCoverageBannerDataResult {
     async function loadCoverageData() {
       setLoadState('loading');
       setErrorMessage(null);
-      setMapCountryCount(null);
-      setReferenceDateLabel(null);
+      setDisplay(null);
 
       try {
-        const [countriesResponse, syncStatus] = await Promise.all([
+        const [countriesResponse, referenceDateLabel] = await Promise.all([
           getCountries({}, { signal: controller.signal }),
-          getSyncStatus({ signal: controller.signal }).catch(() => null),
+          loadSyncReferenceLabel(controller.signal),
         ]);
 
         if (ignoreResult) {
           return;
         }
 
-        const referenceLabel =
-          syncStatus !== null
-            ? formatLatestReferenceDate(syncStatus.latestReferenceDate)
-            : null;
+        const nextDisplay = buildCoverageBannerDisplay({
+          mapCountryCount: resolveMapCountryCount(countriesResponse),
+          chartReadyCount: CHART_READY_COUNTRY_COUNT,
+          referenceDateLabel,
+        });
 
-        setMapCountryCount(countriesResponse.countries.length);
-        setReferenceDateLabel(referenceLabel);
+        setDisplay(nextDisplay);
         setLoadState('success');
       } catch (error) {
         if (ignoreResult) {
@@ -74,8 +82,7 @@ export function useCoverageBannerData(): UseCoverageBannerDataResult {
           return;
         }
 
-        setMapCountryCount(null);
-        setReferenceDateLabel(null);
+        setDisplay(null);
         setErrorMessage(
           toFetchErrorMessage(
             error,
@@ -95,16 +102,16 @@ export function useCoverageBannerData(): UseCoverageBannerDataResult {
   }, [retryCount]);
 
   const message = useMemo(() => {
-    if (loadState !== 'success' || mapCountryCount === null) {
+    if (display === null) {
       return null;
     }
 
     return formatCoverageBannerMessage({
-      mapCountryCount,
-      chartReadyCount: CHART_READY_COUNTRY_COUNT,
-      referenceDateLabel,
+      mapCountryCount: display.mapCountryCount,
+      chartReadyCount: display.chartReadyCount,
+      referenceDateLabel: display.referenceDateLabel,
     });
-  }, [loadState, mapCountryCount, referenceDateLabel]);
+  }, [display]);
 
-  return { loadState, message, errorMessage, retry };
+  return { loadState, display, message, errorMessage, retry };
 }
