@@ -11,8 +11,8 @@ export function DashboardHeader() {
         <p className="max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
           Explore persisted country-level metrics from the internal API. Use the
           map or country selector to filter KPIs and the confirmed-cases chart;
-          clear selection to return to the global view. Upstream daily series
-          coverage ends around March 2023 — see the coverage banner below.
+          clear selection to return to the global view. Persisted upstream daily
+          series coverage ends around March 2023 — see data coverage below.
         </p>
       </div>
     </header>
