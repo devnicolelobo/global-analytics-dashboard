@@ -4,6 +4,7 @@ import { DashboardFooter } from "./dashboard-footer";
 import { DashboardHeader } from "./dashboard-header";
 import { DashboardSelectionProvider } from "./dashboard-selection-provider";
 import { SelectionChrome } from "./selection-chrome";
+import { TopCountriesPanel } from "./top-countries-panel";
 import { KpiPanel } from "../kpis/kpi-panel";
 import { WorldMapDynamic } from "../map/world-map-dynamic";
 import { DashboardRegionErrorBoundary } from "../ui/dashboard-region-error-boundary";
@@ -28,6 +29,10 @@ export function DashboardShell() {
               </div>
               <KpiPanel />
             </section>
+          </DashboardRegionErrorBoundary>
+
+          <DashboardRegionErrorBoundary regionLabel="top countries">
+            <TopCountriesPanel />
           </DashboardRegionErrorBoundary>
 
           <DashboardRegionErrorBoundary regionLabel="world map">
