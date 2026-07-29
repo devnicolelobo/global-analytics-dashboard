@@ -10,14 +10,20 @@ import {
   type TopCountriesMetric,
 } from './top-countries-metrics';
 
+export type CountryMetricSnapshot = {
+  casesTotal: number | null;
+  deathsTotal: number | null;
+  casesNew: number | null;
+};
+
 export type RankedCountryRow = {
   rank: number;
   code: string;
   name: string;
-  metricValue: number | null;
+  metrics: CountryMetricSnapshot;
 };
 
-function getMetricValue(
+function readMetricValue(
   country: CountryListItem,
   metric: TopCountriesMetric,
 ): number | null {
@@ -26,6 +32,21 @@ function getMetricValue(
     return null;
   }
   return value;
+}
+
+function readMetricSnapshot(country: CountryListItem): CountryMetricSnapshot {
+  return {
+    casesTotal: readMetricValue(country, 'casesTotal'),
+    deathsTotal: readMetricValue(country, 'deathsTotal'),
+    casesNew: readMetricValue(country, 'casesNew'),
+  };
+}
+
+export function getSortMetricValue(
+  row: RankedCountryRow,
+  metric: TopCountriesMetric,
+): number | null {
+  return row.metrics[metric];
 }
 
 function compareMetricValues(
@@ -50,10 +71,10 @@ export function formatTopCountriesHeading(
   limit = TOP_COUNTRIES_LIMIT,
 ): string {
   if (rankedCount <= 0) {
-    return 'Top countries';
+    return 'Global leaders';
   }
   if (rankedCount === 1) {
-    return 'Top country';
+    return 'Global leader';
   }
 
   const displayed = Math.min(rankedCount, limit);
@@ -65,8 +86,8 @@ export function formatTopCountriesHeading(
 }
 
 /**
- * Rank countries by metric snapshot — null metrics last; ties broken by sanitized name A→Z.
- * Rows with invalid ISO2 codes are excluded.
+ * Rank countries by metric snapshot — null sort values last; ties broken by name A→Z.
+ * Each row carries full cases/deaths/new snapshot for multi-column display.
  */
 export function rankTopCountries(
   countries: CountryListItem[],
@@ -95,7 +116,7 @@ export function rankTopCountries(
       {
         code,
         name,
-        metricValue: getMetricValue(country, metric),
+        metrics: readMetricSnapshot(country),
       },
     ];
   });
@@ -110,7 +131,10 @@ export function rankTopCountries(
   });
 
   const sorted = [...deduped].sort((left, right) => {
-    const byMetric = compareMetricValues(left.metricValue, right.metricValue);
+    const byMetric = compareMetricValues(
+      left.metrics[metric],
+      right.metrics[metric],
+    );
     if (byMetric !== 0) {
       return byMetric;
     }
@@ -121,6 +145,6 @@ export function rankTopCountries(
     rank: index + 1,
     code: row.code,
     name: row.name,
-    metricValue: row.metricValue,
+    metrics: row.metrics,
   }));
 }
