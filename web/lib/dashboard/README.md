@@ -15,14 +15,25 @@ Shared **dashboard selection state** for Sprint 03 (DEV-90). KPI (DEV-91), map (
 |------|------|
 | `selection.ts` | Pure helpers: parse, apply select/clear, `isGlobal`, `toSelectionState` |
 | `qa-countries.ts` | Whitelisted ISO2 list for the QA `<select>` only |
+| `constants.ts` | Chart-ready country count (mirrors ingest priority list until Sprint 06) |
+| `format-coverage-banner.ts` | Pure coverage copy + `resolveMapCountryCount` |
+| `load-sync-reference-label.ts` | Best-effort sync reference date fetch (abort-safe) |
+| `use-coverage-banner-data.ts` | Hook for coverage banner data |
 | `../country-code.ts` | Shared shape validation for API URLs and selection (single boundary) |
 
 ## React integration
 
 - `components/dashboard/dashboard-selection-provider.tsx` — `DashboardSelectionProvider`, `useDashboardSelection()`
 - `components/dashboard/selection-chrome.tsx` — visible global/country UI + QA picker
+- `components/dashboard/coverage-banner.tsx` — map vs chart scope banner (Sprint 04 / DEV-97)
 
 Provider wraps the dashboard shell (`dashboard-shell.tsx`). Root `app/layout.tsx` stays a Server Component.
+
+## Coverage banner (Sprint 04)
+
+Explains **map/KPI country count** (from `GET /covid/countries`), **chart-ready count** (client constant aligned with `PRIORITY_SERIES_COUNTRIES`), and **reference date** (from `GET /sync/status`).
+
+**Known trade-off:** banner, map, and footer each fetch independently in MVP — acceptable at ~196 countries; consolidate via shared providers if profiling warrants it later.
 
 ## Security & robustness
 
