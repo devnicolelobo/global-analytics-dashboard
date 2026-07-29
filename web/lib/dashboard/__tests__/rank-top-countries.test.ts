@@ -4,6 +4,7 @@ import type { CountryListItem } from '@/lib/api/types';
 
 import {
   formatTopCountriesHeading,
+  getSortMetricValue,
   rankTopCountries,
 } from '../rank-top-countries';
 
@@ -53,30 +54,22 @@ describe('rankTopCountries', () => {
     }),
   ];
 
-  it('returns top N by casesTotal descending with null metrics last', () => {
-    expect(rankTopCountries(fixture, 'casesTotal', 3)).toEqual([
-      {
-        rank: 1,
-        code: 'US',
-        name: 'United States',
-        metricValue: 103_000_000,
-      },
-      {
-        rank: 2,
-        code: 'IN',
-        name: 'India',
-        metricValue: 45_000_000,
-      },
-      {
-        rank: 3,
-        code: 'DE',
-        name: 'Germany',
-        metricValue: 38_000_000,
-      },
-    ]);
+  it('returns top N by casesTotal with full metric snapshot', () => {
+    const rows = rankTopCountries(fixture, 'casesTotal', 3);
+
+    expect(rows).toHaveLength(3);
+    expect(rows[0]).toMatchObject({
+      rank: 1,
+      code: 'US',
+      name: 'United States',
+      metrics: { casesTotal: 103_000_000, deathsTotal: 1_100_000, casesNew: 5000 },
+    });
+    expect(rows[1]?.code).toBe('IN');
+    expect(rows[2]?.code).toBe('DE');
+    expect(getSortMetricValue(rows[0]!, 'deathsTotal')).toBe(1_100_000);
   });
 
-  it('re-ranks when metric changes', () => {
+  it('re-ranks when sort metric changes', () => {
     const byDeaths = rankTopCountries(fixture, 'deathsTotal', 2);
     expect(byDeaths[0]?.code).toBe('US');
     expect(byDeaths[1]?.code).toBe('BR');
@@ -128,7 +121,7 @@ describe('rankTopCountries', () => {
 
     expect(rows).toHaveLength(1);
     expect(rows[0]?.name).toBe('United States');
-    expect(rows[0]?.metricValue).toBe(100);
+    expect(rows[0]?.metrics.casesTotal).toBe(100);
   });
 
   it('returns empty array when countries is not an array', () => {
@@ -148,7 +141,7 @@ describe('formatTopCountriesHeading', () => {
   });
 
   it('handles singular and empty states', () => {
-    expect(formatTopCountriesHeading(1)).toBe('Top country');
-    expect(formatTopCountriesHeading(0)).toBe('Top countries');
+    expect(formatTopCountriesHeading(1)).toBe('Global leader');
+    expect(formatTopCountriesHeading(0)).toBe('Global leaders');
   });
 });
