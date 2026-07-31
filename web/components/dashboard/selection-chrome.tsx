@@ -1,8 +1,6 @@
 'use client';
 
-import {
-  COUNTRY_EXPLORER_SECTION_ID,
-} from '@/components/dashboard/country-explorer-panel';
+import { COUNTRY_EXPLORER_SECTION_ID } from '@/lib/dashboard/country-explorer-constants';
 
 import { useDashboardSelection } from './dashboard-selection-provider';
 

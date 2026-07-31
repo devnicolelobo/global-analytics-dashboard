@@ -14,14 +14,13 @@ import type { CountryListItem } from '@/lib/api/types';
 import { formatReferenceDateSubtitle } from '@/lib/kpis/format-metric';
 import { toFetchErrorMessage } from '@/lib/ui/fetch-error-message';
 
+import { COUNTRY_EXPLORER_SEARCH_DEBOUNCE_MS } from './country-explorer-constants';
 import { filterCountriesByQuery } from './filter-countries-by-query';
 import {
   mapExplorerCountryRows,
   sortExplorerCountryRowsByName,
   type ExplorerCountryRow,
 } from './map-explorer-country-rows';
-
-export const COUNTRY_EXPLORER_SEARCH_DEBOUNCE_MS = 280;
 
 export type CountryExplorerLoadState = 'loading' | 'success' | 'error';
 
