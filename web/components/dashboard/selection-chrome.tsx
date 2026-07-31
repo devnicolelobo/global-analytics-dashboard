@@ -1,22 +1,19 @@
 'use client';
 
 import {
-  QA_COUNTRY_OPTIONS,
-  isQaCountryCode,
-} from '@/lib/dashboard/qa-countries';
+  COUNTRY_EXPLORER_SECTION_ID,
+} from '@/components/dashboard/country-explorer-panel';
 
 import { useDashboardSelection } from './dashboard-selection-provider';
 
 /**
- * Lightweight selection chrome — shows global vs country context and clear control (REQ-F-24).
- * Includes an accessible country picker for QA; map will call selectCountry in DEV-92.
+ * Lightweight selection chrome — global vs country context (REQ-F-24).
  *
- * Security: status text uses React text nodes (auto-escaped). The select only applies
- * whitelisted QA codes before calling selectCountry (defense in depth).
+ * Country discovery lives in the Country Explorer panel (DEV-99); map and Top 10
+ * also call selectCountry (REQ-F-22).
  */
 export function SelectionChrome() {
-  const { selectedCountry, isGlobal, selectCountry, clearSelection } =
-    useDashboardSelection();
+  const { selectedCountry, isGlobal, clearSelection } = useDashboardSelection();
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
@@ -38,30 +35,12 @@ export function SelectionChrome() {
         </button>
       ) : null}
 
-      <label className="flex items-center gap-1.5">
-        <span className="sr-only">Select country for dashboard context</span>
-        <select
-          value={selectedCountry ?? ''}
-          onChange={(event) => {
-            const value = event.target.value;
-            if (value === '') {
-              clearSelection();
-              return;
-            }
-            if (isQaCountryCode(value)) {
-              selectCountry(value);
-            }
-          }}
-          className="rounded border border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-800 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
-        >
-          <option value="">Global view</option>
-          {QA_COUNTRY_OPTIONS.map(({ code, label }) => (
-            <option key={code} value={code}>
-              {label} ({code})
-            </option>
-          ))}
-        </select>
-      </label>
+      <a
+        href={`#${COUNTRY_EXPLORER_SECTION_ID}`}
+        className="rounded border border-transparent px-2 py-1 text-xs font-medium text-sky-700 underline-offset-2 transition hover:text-sky-900 hover:underline dark:text-sky-300 dark:hover:text-sky-100"
+      >
+        Search countries
+      </a>
     </div>
   );
 }
