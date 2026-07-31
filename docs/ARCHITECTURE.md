@@ -187,7 +187,7 @@ Country selection is **client-only React Context** (`DashboardSelectionProvider`
 | Validation | Shared `web/lib/country-code.ts` — shape-only ISO2 uppercase; used by API client and selection |
 | Untrusted input | `selectCountry(unknown)` → normalize; reject non-string, oversized, malformed |
 | UI display | React text nodes only; no `dangerouslySetInnerHTML` |
-| QA select | Whitelist in `lib/dashboard/qa-countries.ts` before `selectCountry` |
+| Country discovery | `CountryExplorerPanel` + `selectCountry` on map / Top 10 rows (REQ-F-22) |
 | Persistence | Session memory only (MVP) |
 
 Maintenance notes: `web/lib/dashboard/README.md`.

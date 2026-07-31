@@ -5,6 +5,8 @@ import type { CountryListItem } from '@/lib/api/types';
 import { normalizeCountryCodeInput } from '@/lib/country-code';
 import { sanitizeDisplayText } from '@/lib/kpis/sanitize-display';
 
+import { mapCountryMetricSnapshot } from './country-metric-snapshot';
+
 import {
   TOP_COUNTRIES_LIMIT,
   type TopCountriesMetric,
@@ -22,25 +24,6 @@ export type RankedCountryRow = {
   name: string;
   metrics: CountryMetricSnapshot;
 };
-
-function readMetricValue(
-  country: CountryListItem,
-  metric: TopCountriesMetric,
-): number | null {
-  const value = country.metrics[metric];
-  if (value === null || value === undefined || Number.isNaN(value)) {
-    return null;
-  }
-  return value;
-}
-
-function readMetricSnapshot(country: CountryListItem): CountryMetricSnapshot {
-  return {
-    casesTotal: readMetricValue(country, 'casesTotal'),
-    deathsTotal: readMetricValue(country, 'deathsTotal'),
-    casesNew: readMetricValue(country, 'casesNew'),
-  };
-}
 
 export function getSortMetricValue(
   row: RankedCountryRow,
@@ -116,7 +99,7 @@ export function rankTopCountries(
       {
         code,
         name,
-        metrics: readMetricSnapshot(country),
+        metrics: mapCountryMetricSnapshot(country),
       },
     ];
   });

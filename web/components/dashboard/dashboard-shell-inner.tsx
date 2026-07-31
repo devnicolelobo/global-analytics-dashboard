@@ -5,6 +5,7 @@ import { KpiPanel } from '../kpis/kpi-panel';
 import { WorldMapDynamic } from '../map/world-map-dynamic';
 import { DashboardRegionErrorBoundary } from '../ui/dashboard-region-error-boundary';
 
+import { CountryExplorerPanel } from './country-explorer-panel';
 import { CoverageBanner } from './coverage-banner';
 import { DashboardFooter } from './dashboard-footer';
 import { DashboardHeader } from './dashboard-header';
@@ -39,6 +40,10 @@ export function DashboardShellInner() {
 
           <DashboardRegionErrorBoundary regionLabel="top countries">
             <TopCountriesPanel />
+          </DashboardRegionErrorBoundary>
+
+          <DashboardRegionErrorBoundary regionLabel="country explorer">
+            <CountryExplorerPanel />
           </DashboardRegionErrorBoundary>
 
           <DashboardRegionErrorBoundary regionLabel="world map">
