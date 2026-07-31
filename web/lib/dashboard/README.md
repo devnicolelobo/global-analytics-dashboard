@@ -21,7 +21,10 @@ Shared **dashboard selection state** for Sprint 03 (DEV-90). KPI (DEV-91), map (
 | `top-countries-metrics.ts` | Sort metric options for top-countries panel |
 | `rank-top-countries.ts` | Pure top-N ranking (null last, name tie-break) |
 | `use-top-countries-panel-data.ts` | Hook for top-countries panel |
+| `country-explorer-constants.ts` | Section anchor id + search debounce ms |
 | `filter-countries-by-query.ts` | Pure client search filter (name + ISO2 prefix) |
+| `format-country-explorer-result.ts` | Sanitized result-count copy for explorer search |
+| `country-metric-snapshot.ts` | Shared metric snapshot mapper for country lists |
 | `map-explorer-country-rows.ts` | Map API countries to explorer rows (dedupe, sanitize) |
 | `use-country-explorer-data.ts` | Hook for country explorer panel |
 | `../country-code.ts` | Shared shape validation for API URLs and selection (single boundary) |
