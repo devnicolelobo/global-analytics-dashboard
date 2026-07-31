@@ -1,0 +1,59 @@
+'use client';
+
+import { CasesTimeSeriesDynamic } from '../charts/cases-time-series-dynamic';
+import { KpiPanel } from '../kpis/kpi-panel';
+import { WorldMapDynamic } from '../map/world-map-dynamic';
+import { DashboardRegionErrorBoundary } from '../ui/dashboard-region-error-boundary';
+
+import { CoverageBanner } from './coverage-banner';
+import { DashboardFooter } from './dashboard-footer';
+import { DashboardHeader } from './dashboard-header';
+import { DashboardSelectionProvider } from './dashboard-selection-provider';
+import { SelectionChrome } from './selection-chrome';
+import { TopCountriesPanel } from './top-countries-panel';
+
+/**
+ * Client dashboard tree — single boundary so selection context wraps all panels.
+ */
+export function DashboardShellInner() {
+  return (
+    <DashboardSelectionProvider>
+      <div className="flex min-h-full flex-1 flex-col bg-zinc-100 dark:bg-zinc-950">
+        <DashboardHeader />
+        <DashboardRegionErrorBoundary regionLabel="data coverage">
+          <CoverageBanner />
+        </DashboardRegionErrorBoundary>
+
+        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6">
+          <DashboardRegionErrorBoundary regionLabel="KPIs">
+            <section aria-label="Key performance indicators">
+              <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-300">
+                  KPIs
+                </h2>
+                <SelectionChrome />
+              </div>
+              <KpiPanel />
+            </section>
+          </DashboardRegionErrorBoundary>
+
+          <DashboardRegionErrorBoundary regionLabel="top countries">
+            <TopCountriesPanel />
+          </DashboardRegionErrorBoundary>
+
+          <DashboardRegionErrorBoundary regionLabel="world map">
+            <WorldMapDynamic />
+          </DashboardRegionErrorBoundary>
+
+          <DashboardRegionErrorBoundary regionLabel="chart">
+            <CasesTimeSeriesDynamic />
+          </DashboardRegionErrorBoundary>
+        </main>
+
+        <DashboardRegionErrorBoundary regionLabel="footer">
+          <DashboardFooter />
+        </DashboardRegionErrorBoundary>
+      </div>
+    </DashboardSelectionProvider>
+  );
+}
