@@ -10,13 +10,18 @@ import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ErrorState } from '@/components/ui/error-state';
 import { LoadingState } from '@/components/ui/loading-state';
 import type { ExplorerCountryRow } from '@/lib/dashboard/map-explorer-country-rows';
+import { COUNTRY_EXPLORER_SECTION_ID } from '@/lib/dashboard/country-explorer-constants';
+import { MAX_COUNTRY_SEARCH_QUERY_LENGTH } from '@/lib/dashboard/filter-countries-by-query';
+import { formatCountryExplorerResultCopy } from '@/lib/dashboard/format-country-explorer-result';
 import { type TopCountriesMetric } from '@/lib/dashboard/top-countries-metrics';
 import { useCountryExplorerData } from '@/lib/dashboard/use-country-explorer-data';
 import { formatMetricValue } from '@/lib/kpis/format-metric';
 
 import { useDashboardSelection } from './dashboard-selection-provider';
 
-export const COUNTRY_EXPLORER_SECTION_ID = 'country-explorer';
+function explorerRowSelector(code: string): string {
+  return `[data-country-code="${code}"]`;
+}
 
 const METRIC_COLUMNS: ReadonlyArray<{
   key: TopCountriesMetric;
@@ -26,27 +31,6 @@ const METRIC_COLUMNS: ReadonlyArray<{
   { key: 'deathsTotal', label: 'Deaths' },
   { key: 'casesNew', label: 'New cases' },
 ];
-
-function formatResultCountCopy(
-  visibleCount: number,
-  totalCount: number,
-  query: string,
-): string {
-  if (totalCount === 0) {
-    return 'No countries available';
-  }
-
-  const trimmedQuery = query.trim();
-  if (trimmedQuery.length === 0) {
-    return `Showing all ${totalCount} countries`;
-  }
-
-  if (visibleCount === 0) {
-    return `No countries match “${trimmedQuery}”`;
-  }
-
-  return `Showing ${visibleCount} of ${totalCount} countries`;
-}
 
 function MetricCell({ value }: { value: number | null }) {
   return (
@@ -72,6 +56,7 @@ function CountryExplorerRow({
   return (
     <li
       id={`country-explorer-option-${row.code}`}
+      data-country-code={row.code}
       role="option"
       aria-selected={isSelected}
       tabIndex={isFocused ? 0 : -1}
@@ -131,18 +116,11 @@ export function CountryExplorerPanel() {
     retry,
   } = useCountryExplorerData(searchQuery);
 
-  const resultCopy = formatResultCountCopy(
+  const resultCopy = formatCountryExplorerResultCopy(
     visibleCount,
     totalCount,
     debouncedQuery,
   );
-
-  const focusedIndex = focusedCode
-    ? Math.max(
-        0,
-        rows.findIndex((row) => row.code === focusedCode),
-      )
-    : 0;
 
   const handleSelect = useCallback(
     (code: string) => {
@@ -157,9 +135,19 @@ export function CountryExplorerPanel() {
     }
 
     listRef.current
-      ?.querySelector<HTMLElement>(`#country-explorer-option-${selectedCountry}`)
+      ?.querySelector<HTMLElement>(explorerRowSelector(selectedCountry))
       ?.scrollIntoView({ block: 'nearest' });
   }, [selectedCountry, rows]);
+
+  const focusRowByCode = useCallback((code: string | null) => {
+    if (!code) {
+      return;
+    }
+
+    listRef.current
+      ?.querySelector<HTMLElement>(explorerRowSelector(code))
+      ?.focus();
+  }, []);
 
   const moveFocus = useCallback(
     (direction: 1 | -1) => {
@@ -174,13 +162,9 @@ export function CountryExplorerPanel() {
       const nextIndex = (baseIndex + direction + rows.length) % rows.length;
       const nextCode = rows[nextIndex]?.code ?? null;
       setFocusedCode(nextCode);
-      if (nextCode) {
-        listRef.current
-          ?.querySelector<HTMLElement>(`#country-explorer-option-${nextCode}`)
-          ?.focus();
-      }
+      focusRowByCode(nextCode);
     },
-    [focusedCode, rows],
+    [focusedCode, focusRowByCode, rows],
   );
 
   const handleListKeyDown = useCallback(
@@ -205,11 +189,7 @@ export function CountryExplorerPanel() {
         event.preventDefault();
         const firstCode = rows[0]?.code ?? null;
         setFocusedCode(firstCode);
-        if (firstCode) {
-          listRef.current
-            ?.querySelector<HTMLElement>(`#country-explorer-option-${firstCode}`)
-            ?.focus();
-        }
+        focusRowByCode(firstCode);
         return;
       }
 
@@ -217,14 +197,10 @@ export function CountryExplorerPanel() {
         event.preventDefault();
         const lastCode = rows[rows.length - 1]?.code ?? null;
         setFocusedCode(lastCode);
-        if (lastCode) {
-          listRef.current
-            ?.querySelector<HTMLElement>(`#country-explorer-option-${lastCode}`)
-            ?.focus();
-        }
+        focusRowByCode(lastCode);
       }
     },
-    [moveFocus, rows],
+    [focusRowByCode, moveFocus, rows],
   );
 
   return (
@@ -269,15 +245,19 @@ export function CountryExplorerPanel() {
                 onKeyDown={(event) => {
                   if (event.key === 'Escape') {
                     setSearchQuery('');
+                    setFocusedCode(null);
                     inputRef.current?.blur();
                   }
                   if (event.key === 'ArrowDown' && rows.length > 0) {
                     event.preventDefault();
-                    (listRef.current?.children[focusedIndex] as HTMLElement | undefined)?.focus();
+                    const firstCode = rows[0]?.code ?? null;
+                    setFocusedCode(firstCode);
+                    focusRowByCode(firstCode);
                   }
                 }}
                 placeholder="e.g. Peru or PE"
                 autoComplete="off"
+                maxLength={MAX_COUNTRY_SEARCH_QUERY_LENGTH}
                 aria-controls={listboxId}
                 aria-autocomplete="list"
                 className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-zinc-400 placeholder:text-zinc-400 focus-visible:ring-2 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-50"
@@ -340,12 +320,12 @@ export function CountryExplorerPanel() {
             onKeyDown={handleListKeyDown}
             className="max-h-[380px] divide-y divide-zinc-100 overflow-y-auto dark:divide-zinc-800"
           >
-            {rows.map((row, index) => (
+            {rows.map((row) => (
               <CountryExplorerRow
                 key={row.code}
                 row={row}
                 isSelected={selectedCountry === row.code}
-                isFocused={focusedIndex === index}
+                isFocused={focusedCode === row.code}
                 onSelect={handleSelect}
                 onFocus={() => setFocusedCode(row.code)}
               />
