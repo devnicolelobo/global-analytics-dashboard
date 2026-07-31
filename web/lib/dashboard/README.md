@@ -14,7 +14,6 @@ Shared **dashboard selection state** for Sprint 03 (DEV-90). KPI (DEV-91), map (
 | File | Role |
 |------|------|
 | `selection.ts` | Pure helpers: parse, apply select/clear, `isGlobal`, `toSelectionState` |
-| `qa-countries.ts` | Whitelisted ISO2 list for the QA `<select>` only |
 | `constants.ts` | Chart-ready country count (mirrors ingest priority list until Sprint 06) |
 | `format-coverage-banner.ts` | Pure coverage copy + `resolveMapCountryCount` |
 | `load-sync-reference-label.ts` | Best-effort sync reference date fetch (abort-safe) |
@@ -22,16 +21,20 @@ Shared **dashboard selection state** for Sprint 03 (DEV-90). KPI (DEV-91), map (
 | `top-countries-metrics.ts` | Sort metric options for top-countries panel |
 | `rank-top-countries.ts` | Pure top-N ranking (null last, name tie-break) |
 | `use-top-countries-panel-data.ts` | Hook for top-countries panel |
+| `filter-countries-by-query.ts` | Pure client search filter (name + ISO2 prefix) |
+| `map-explorer-country-rows.ts` | Map API countries to explorer rows (dedupe, sanitize) |
+| `use-country-explorer-data.ts` | Hook for country explorer panel |
 | `../country-code.ts` | Shared shape validation for API URLs and selection (single boundary) |
 
 ## React integration
 
 - `components/dashboard/dashboard-selection-provider.tsx` — `DashboardSelectionProvider`, `useDashboardSelection()`
-- `components/dashboard/selection-chrome.tsx` — visible global/country UI + QA picker
+- `components/dashboard/selection-chrome.tsx` — visible global/country UI + link to explorer
 - `components/dashboard/coverage-banner.tsx` — map vs chart scope banner (Sprint 04 / DEV-97)
 - `components/dashboard/top-countries-panel.tsx` — global top-10 ranking table (Sprint 04 / DEV-98)
+- `components/dashboard/country-explorer-panel.tsx` — searchable full country list (Sprint 04 / DEV-99)
 
-Provider wraps the dashboard shell (`dashboard-shell.tsx`). Root `app/layout.tsx` stays a Server Component.
+Provider wraps the dashboard shell (`dashboard-shell-inner.tsx`). Root `app/layout.tsx` stays a Server Component.
 
 ## Coverage banner (Sprint 04 / DEV-97)
 
@@ -41,17 +44,21 @@ Explains **map/KPI country count** (from `GET /covid/countries`), **chart-ready 
 
 Ranks countries from `GET /covid/countries?metric=…` (default `casesTotal`). **Multi-column table** shows cases, deaths, and new cases together; pill control re-orders rows by selected metric (highlighted column). Row activation calls `selectCountry` (REQ-F-22). Re-fetch uses **stale-while-revalidate**: prior rows stay visible while the sort metric changes.
 
-**Known trade-off:** banner, top-10, map, and footer may each fetch `/covid/countries` or `/sync/status` independently in MVP — acceptable at ~196 countries; consolidate via shared providers if profiling warrants it later.
+**Known trade-off:** banner, top-10, country explorer, map, and footer may each fetch `/covid/countries` or `/sync/status` independently in MVP — acceptable at ~196 countries; consolidate via shared providers if profiling warrants it later.
+
+## Country explorer (Sprint 04 / DEV-99)
+
+Lists all countries from `GET /covid/countries` with debounced client search (name or ISO2 prefix). Rows show cases, deaths, and new cases; row activation calls `selectCountry` (REQ-F-22). Default sort A→Z; empty query shows full list.
 
 ## Security & robustness
 
-- **Untrusted input** (map clicks, top-10 rows, select, future URL sync) must go through `selectCountry(unknown)` → `applySelectCountry` → `normalizeCountryCodeInput`.
+- **Untrusted input** (map clicks, top-10 rows, explorer rows, future URL sync) must go through `selectCountry(unknown)` → `applySelectCountry` → `normalizeCountryCodeInput`.
 - Invalid codes are **ignored** (no throw, no state change). No auto-uppercase — matches API (lowercase → 400).
 - **Max input length** (`COUNTRY_CODE_INPUT_MAX_LENGTH`) rejects oversized strings before trim.
 - **No secrets** in context. Country code is a UI filter key only; display uses React text nodes.
 - Country **names** sanitized via `sanitizeDisplayText` before ranking/display.
 - **No persistence** in MVP (no `localStorage` / URL) — avoids stale country after deploy (URL sync: Card 5).
-- QA `<select>` uses `isQaCountryCode` before calling `selectCountry` (defense in depth). Map (DEV-92) and top-10 panel must still validate via `selectCountry`.
+- Map (DEV-92), top-10, and country explorer must still validate via `selectCountry`.
 
 ## Tests
 
