@@ -5,6 +5,7 @@ import type { CountryListItem } from '@/lib/api/types';
 import { normalizeCountryCodeInput } from '@/lib/country-code';
 import { sanitizeDisplayText } from '@/lib/kpis/sanitize-display';
 
+import { mapCountryMetricSnapshot } from './country-metric-snapshot';
 import type { CountryMetricSnapshot } from './rank-top-countries';
 
 export type ExplorerCountryRow = {
@@ -12,25 +13,6 @@ export type ExplorerCountryRow = {
   name: string;
   metrics: CountryMetricSnapshot;
 };
-
-function readMetricValue(
-  country: CountryListItem,
-  metric: keyof CountryMetricSnapshot,
-): number | null {
-  const value = country.metrics[metric];
-  if (value === null || value === undefined || Number.isNaN(value)) {
-    return null;
-  }
-  return value;
-}
-
-function readMetricSnapshot(country: CountryListItem): CountryMetricSnapshot {
-  return {
-    casesTotal: readMetricValue(country, 'casesTotal'),
-    deathsTotal: readMetricValue(country, 'deathsTotal'),
-    casesNew: readMetricValue(country, 'casesNew'),
-  };
-}
 
 /** Map API list to explorer rows — invalid codes/names dropped, ISO2 deduped. */
 export function mapExplorerCountryRows(
@@ -55,7 +37,7 @@ export function mapExplorerCountryRows(
       {
         code,
         name,
-        metrics: readMetricSnapshot(country),
+        metrics: mapCountryMetricSnapshot(country),
       },
     ];
   });
